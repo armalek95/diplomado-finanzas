@@ -1,0 +1,699 @@
+## Prueba del funcionamiento de los métodos cuantitativos
+
+Cuando se genera cualquier modelo es importante hacer pruebas de
+funcionamiento básico antes de utilizar los valores reales. Esto permite
+corregir cualquier error que pueda no ser aparente a primera vista una
+vez que se intenta utilizar con valores reales, así como para visualizar
+posibles problemas que puedan presentarse a futuro.
+
+Como primer prueba, revisaremos el funcionamiento de la fórmula de valor
+presente neto utilizando los flujos de efectivo mostrados en la tabla
+\@ref(tab:testcashflow1):
+
+```{r testcashflow1, echo = FALSE}
+
+test_df <- tibble(
+  periods = 0:10,
+  cashflow = c(-5000,rep(1000,10))
+)
+
+test_df$cashflow <- currency(test_df$cashflow,digits = 0L)
+
+knitr::kable(test_df, col.names = gsub("[.]", " ", names(test_df)), 
+             caption = 
+               "Flujos de efectivo de prueba", 
+             align = "lccc")
+
+```
+
+```{r testcashflow2, echo=FALSE}
+  # Cargar función de Valor Presente Neto
+  source("scripts/funciones_financieras.R", local = knitr::knit_global())
+
+  rate <- 0.08
+  test_npv <- 
+  npv(rate = rate, cashflow = test_df$cashflow, period = test_df$periods)
+  
+  test_npv <- currency(test_npv, digits = 2L)
+```
+
+Si utilizamos una tasa de descuento de `r percent(rate)` obtenemos un
+valor presente neto de `r test_npv`. Lo cual debería de concordar con un
+valor calculado manualmente de \$1,710.08 usando los principios de flujo
+de efectivo descontado revisados en la parte de metodología.
+
+\newpage
+
+### Valor Monetario Esperado
+
+**Datos ilustrativos** \newline Para realizar nuestra prueba de cálculo
+de EMV, podemos utilizar el siguiente ejemplo:
+
+Una decisión de inversión en una nueva tecnología que permitiría
+disminuir el costo de electricidad de una planta de producción de
+estireno (mediante la reduccion de la demanda energética comparado con
+la tecnología antigua). Supongamos para este ejemplo que los nodos de
+casualidad relevantes son los siguientes:
+
+-   Costo de la implementar la tecnología
+-   Costo de la electricidad
+
+Estamos suponiendo dentro del costo de implementación el costo de
+oportunidad de cerrar la planta de producción. El costo alto o bajo en
+gran parte se estaría viendo afectado por el tiempo que debe de quedar
+cerrada la planta para la instalación y pruebas relacionadas.
+
+```{r ejemploCostos, echo = FALSE}
+# Definir los costos de implementación
+lowImpCost <- 10000
+highImpCost <- 20000
+
+# Definir los costos de electricidad
+lowElecCost <- 50
+highElecCost <- 100
+
+# Definir uso de electricidad
+withImp <- 500
+noImp <- 800
+
+# Definir periodo de evaluación en años
+emv_test_n <- 10
+emv_test_rate <- 0.06
+
+```
+
+Para ambos costos revisaremos solo dos casos, uno bajo y otro alto. Los
+valores específicos que usaremos se pueden encontrar en la tabla
+\@ref(tab:testemv1).
+
+```{r testemv1, echo = FALSE}
+
+# Crear un data frame con los valores especificados en el chunk anterior
+Variable <- c("Costo Implementación","Costo Electricidad")
+Alto <- c(highImpCost, highElecCost)
+Bajo <- c(lowImpCost, lowElecCost)
+emv_test_df <- cbind(Variable, Alto, Bajo)
+emv_test_df <- as.data.frame(emv_test_df)
+
+# Dar formato de moneda
+emv_test_df$Alto <- currency(emv_test_df$Alto, symbol = "$", digits = 0L)
+emv_test_df$Bajo <- currency(emv_test_df$Bajo, symbol = "$", digits = 0L)
+
+# Dar formato de tabla usando knitr
+knitr::kable(emv_test_df, col.names = gsub("[.]", " ", names(emv_test_df)), 
+             caption = "Valores para prueba de funcionamiento de EMV", 
+             align = "lccc")
+
+```
+
+Al igual, imaginemos que por especificaciones de la tecnología sabemos
+que vamos a necesitar de `r withImp` watts anuales bajo la tecnología
+nueva, a comparación de `r noImp` watts anuales requeridos con la
+tecnología antigua.
+
+La estructura del arbol de decisión para este ejemplo se puede
+visualizar en la figura \@ref(fig:testemv2):
+
+```{r testemv2, echo = FALSE, fig.cap = "Árbol de Decisión para el ejemplo de inversión", fig.align = 'center', out.width="90%"}
+
+library(data.tree)
+library(DiagrammeR)
+library(webshot)
+
+invest <- Node$new("Invertir?", type = "decision")
+  yes <- invest$AddChild("Si", type = "chance")
+    lowImplementation <- 
+      yes$AddChild("Costo Bajo de Implementacion", type = "chance")
+      lowHigh <- 
+        lowImplementation$AddChild("Costo Alto de Electricidad", type = "terminal")
+      lowLow <- 
+        lowImplementation$AddChild("Costo Bajo de Electricidad", type = "terminal")
+    highImplementation <- 
+      yes$AddChild("Costo Alto de Implementacion", type = "chance")
+      highHigh <- 
+        highImplementation$AddChild("1 Costo Alto de Electricidad", 
+                                    type = "terminal")
+      highLow <- 
+        highImplementation$AddChild("1 Costo Bajo de Electricidad", 
+                                    type = "terminal")
+  no <- invest$AddChild("No", type = "chance")
+    noHigh <- no$AddChild("2 Costo Alto de Electricidad", type = "terminal")
+    noLow <- no$AddChild("2 Costo Bajo de Electricidad", type = "terminal")
+
+# Cargar funciones de arboles
+source("scripts/tree_functions.R", local = knitr::knit_global())    
+    
+SetGraphStyle(invest, rankdir = "TB")
+SetNodeStyle(invest, style = "filled,rounded", 
+             label = AdjustNodeName, shape = "box")
+
+plot(invest)
+
+```
+
+Utilizando los valores previamente especificados podemos calcular los
+valores para cada una de las ramas, así como los valores monetarios
+esperados para cada uno de los nodos de decisión, cuyos resultados los
+podemos observar en la tabla \@ref(tab:testemv3).
+
+```{r testemv3, echo=FALSE}
+
+# Agregar valores de probabilidad a cada uno de nodos de casualidad
+invest$Si$`Costo Bajo de Implementacion`$prob <- 0.5
+invest$Si$`Costo Bajo de Implementacion`$`Costo Alto de Electricidad`$prob <- 0.6
+invest$Si$`Costo Bajo de Implementacion`$`Costo Bajo de Electricidad`$prob <- 0.4
+invest$Si$`Costo Alto de Implementacion`$prob <- 0.5
+invest$Si$`Costo Alto de Implementacion`$`1 Costo Alto de Electricidad`$prob <- 0.6
+invest$Si$`Costo Alto de Implementacion`$`1 Costo Bajo de Electricidad`$prob <- 0.4
+invest$No$`2 Costo Alto de Electricidad`$prob <- 0.6
+invest$No$`2 Costo Bajo de Electricidad`$prob <- 0.4
+
+# Darle formato de porcentaje
+SetFormat(invest, "prob", formatFun = FormatPercent)
+
+# Cargar funcion de Valor Presente Neto
+source("scripts/funciones_financieras.R", local = knitr::knit_global())
+source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
+
+# Calcular los costos para los escenarios
+low_elect_per <- rep(lowElecCost, emv_test_n)
+high_elect_per <- rep(highElecCost, emv_test_n)
+low_imp_per <- c(lowImpCost, rep(0, emv_test_n - 1))
+high_imp_per <- c(highImpCost, rep(0, emv_test_n - 1))
+emv_test_period <- 0:(emv_test_n-1)
+
+# Calcular valores de NPV para los nodos finales
+invest$Si$`Costo Bajo de Implementacion`$`Costo Alto de Electricidad`$npv <- 
+  npv(emv_test_rate, -(low_imp_per+high_elect_per*withImp), emv_test_period)
+invest$Si$`Costo Bajo de Implementacion`$`Costo Bajo de Electricidad`$npv <-
+  npv(emv_test_rate, -(low_imp_per+low_elect_per*withImp), emv_test_period)
+invest$Si$`Costo Alto de Implementacion`$`1 Costo Alto de Electricidad`$npv <-
+  npv(emv_test_rate, -(high_imp_per+high_elect_per*withImp), emv_test_period)
+invest$Si$`Costo Alto de Implementacion`$`1 Costo Bajo de Electricidad`$npv <-
+  npv(emv_test_rate, -(high_imp_per+low_elect_per*withImp), emv_test_period)
+invest$No$`2 Costo Alto de Electricidad`$npv <-
+  npv(emv_test_rate, -(high_elect_per*noImp), emv_test_period)
+invest$No$`2 Costo Bajo de Electricidad`$npv <-
+  npv(emv_test_rate, -(low_elect_per*noImp), emv_test_period)
+
+# Calcular los valores de NPV para los nodos de decision
+
+
+invest$Do(function(node) node$npv <- 
+            w_npv(node), filterFun = isNotLeaf, traversal = "post-order")
+
+# Convertir a dataframe para visualizar
+df <- ToDataFrameTree(invest, "prob", "npv")
+
+# Cambiar formato
+df$npv[df$levelName == "Invertir?                            "] <- NA
+df$npv <- currency(df$npv, symbol = "$", digits = 0L)
+df$prob <- percent(df$prob)
+
+
+# Mostrar como table usando knitr
+knitr::kable(df, col.names = c("Nivel", "Probabilidad", "NVP"), 
+             caption = "Resultados de prueba de Valor Monetario Esperado", 
+             align = "lccc")
+
+
+```
+
+Otra forma de visualizar nuestros resultados, que puede llegar ser más
+amigable, se encuentra en la figura \@ref(fig:testemv4):
+
+```{r testemv4, echo = FALSE, fig.cap = "Árbol de Decisión para el ejemplo de inversión con valores calculados de EMV", fig.align = 'center', out.width="90%"}
+
+library(data.tree)
+library(DiagrammeR)
+library(webshot)
+
+# Cargar funciones de arboles
+source("scripts/tree_functions.R", local = knitr::knit_global())
+
+PlotDecisionTree(invest)
+
+```
+
+En este ejemplo podemos observar que la opción con el mayor EMV es
+aquella en donde se toma la decisión de instalar la nueva tecnología con
+el fin de disminuir el requerimiento energético de la planta.
+
+Como podemos observar, los valores de EMV de los nodos de casualidad son
+iguales a la suma producto de los valores de NPV de los nodos *hijos* y
+la probabilidad de que ocurra el caso.
+
+Con este ejemplo se demuestra el correcto funcionamiento de las
+funciones de solución para el método de Valor Monetario Esperado.
+
+\newpage
+
+### Análisis de Sensibilidad
+
+Para comprobar el funcionamiento de la solución de análisis de
+sensibilidad podemos usar el siguiente ejemplo adaptado de
+[@Sullivan2015], ejemplo 11-15.
+
+En ese ejemplo se analiza la inversión en un sistema de visión utilizado
+por el servicio postal para ordenar correos.
+
+Este problema tiene 4 variables sujetas a variación:
+
+-   Inversión de Capital
+-   Gasto Anual
+-   Ahorro Anual
+-   TMAR (Tasa Mínima Aceptable de Retorno)
+
+Además de esto, necesitamos una variable que defina el periodo de
+evaluación de la inversión. Para fines de este ejemplo, este periodo
+será estático a través de todos los casos.
+
+Podemos observar los valores base en la tabla \@ref(tab:testsens1):
+
+```{r testsens1, echo=FALSE}
+# Generar valores base
+base_case <- tibble(
+  variable = 
+    c("Inversion.Capital", "Gasto.Anual", "Ahorro.Anual", "TMAR", "Periodo"),
+  valor = c(1100000, 200000, 500000, 0.1, 5)
+)
+
+# Cambiar formato
+print_base <- base_case
+print_base$valor <- currency(print_base$valor, symbol = "", digits = 2L)
+
+# Mostrar como tabla usando knitr
+knitr::kable(print_base, col.names = gsub("[.]", " ", names(print_base)), 
+             caption = "Valores de caso base para prueba de Análisis de Sensibilidad", 
+             align = "lccc")
+
+```
+
+Utilizando estos valores para replicar sobre el periodo de análisis de
+la inversión obtenemos los flujos de efectivo mostrados en la tabla
+\@ref(tab:testsens2):
+
+```{r testsens2, echo=FALSE}
+# Calcular caso base contra lo cual se van a comparar los demás resultados
+
+ult_periodo = base_case$valor[base_case$variable == "Periodo"]
+
+base_tib <- tibble(
+  periodo = c(0:(ult_periodo - 1)),
+  cashflow = c(-base_case$valor[base_case$variable == "Inversion.Capital"], 
+      rep(0, ult_periodo - 1)) +
+    (rep(base_case$valor[base_case$variable == "Ahorro.Anual"], ult_periodo) -
+       rep(base_case$valor[base_case$variable == "Gasto.Anual"], ult_periodo))
+)
+
+base_npv <- npv(rate = base_case$valor[base_case$variable == "TMAR"],
+    cashflow = base_tib$cashflow, period = base_tib$periodo)
+
+base_npv_p <- currency(base_npv, symbol = "$", digits = 2L)
+# Cambiar formato
+base_tib$cashflow <- currency(base_tib$cashflow, symbol = "$", digits = 0L)
+
+# Mostrar como tabla usando knitr
+knitr::kable(base_tib, col.names = gsub("[.]", " ", names(base_tib)), 
+             caption = "Flujos de efectivo de caso base para prueba de Análisis de Sensibilidad", 
+             align = "lccc")
+
+```
+
+Utilizando los valores de la tabla \@ref(tab:testsens2) calculamos el
+valor presente neto en `r base_npv_p`. Lo cual muestra que el caso base
+es rentable.
+
+Ahora proseguiremos a revisar la sensibilidad a los cambios sobre las
+cuatro variables que mencionamos previamente. Para esto vamos a
+especificar un +20% en el caso alto y un -20% en un caso bajo. Como ya
+habíamos comentado, el periodo se mantendrá constante.
+
+```{r testsens3, echo=FALSE}
+# Especificar parámetros de variación
+
+variation <- tibble(
+  variable = base_case$variable,
+  bajo = c(-0.2, -0.2, -0.2, -0.2, 0),
+  alto = c(0.2, 0.2, 0.2, 0.2, 0)
+)
+
+print_var <- variation
+
+print_var$bajo <- percent(print_var$bajo)
+print_var$alto <- percent(print_var$alto)
+
+# Mostrar como tabla usando knitr
+knitr::kable(print_var, col.names = gsub("[.]", " ", names(print_var)), 
+             caption = "Especificación de variación para prueba de Análisis de Sensibilidad", 
+             align = "lccc")
+```
+
+Estos valores de especificación de los casos alto y bajo para cada una
+de las variables nos permite calcular el valor presente neto modificando
+cada una de las variables a su caso particular, mientras que los demás
+valores se mantienen como los valores del caso base. Estos valores de
+NPV los podemos ver en la tabla \@ref(tab:testsens4).
+
+```{r testsens4, echo=FALSE}
+
+# Calcular diferencias entre valores altos contra valores base
+
+variation_case <- tibble(
+  variable = rep(
+    c("Inversion.Capital", "Gasto.Anual", "Ahorro.Anual", "TMAR"),2),
+  caso = c(rep("alto", 4), rep("bajo", 4))
+)
+
+# Por el momento la solución para esta parte del problema requirió de un for 
+# loop. Sin embargo, probablemente se podría intentar utilizar un "Functional"
+# para tener una solución más eficiente. Una opción es pmap de la librería purr
+n <- variation_case$variable
+sens_npv <- list("double", length(n))
+for (i in seq_along(n)) {
+    sens_npv[i] <- as.numeric(sensitivity_npv(base_case, 
+                              variation, 
+                              variation_case$variable[i],
+                              variation_case$caso[i]))
+}
+
+sens_npv <- unlist(sens_npv)
+
+variation_case <- variation_case %>% 
+  mutate(npv = sens_npv, 
+         diff = npv - base_npv)
+
+# Cambiar formato
+print_varc <- variation_case
+print_varc$npv <- currency(print_varc$npv, symbol = "$", digits = 0L)
+print_varc$diff <- currency(print_varc$diff, symbol = "$", digits = 0L)
+
+# Mostrar como tabla usando knitr
+knitr::kable(print_varc, col.names = gsub("[.]", " ", names(print_varc)), 
+             caption = "Valores de NPV para prueba de Análisis de Sensibilidad", 
+             align = "lccc")
+
+```
+
+Lo cual nos permite realizar nuestra gráfica de tornado, la cual podemos
+observar en la figura \@ref(fig:testsens5).
+
+```{r testsens5, echo=FALSE, fig.cap = "Gráfica de Tornado de valores de prueba de funcionamiento", echo = FALSE, out.width="65%", fig.align = 'center'}
+# Graficar
+
+tornado(sensitivity(variables = gsub("[.]", " ", unique(variation_case$variable)),
+                    high = variation_case$diff[variation_case$caso == "alto"],
+                    low = variation_case$diff[variation_case$caso == "bajo"])) +
+        labs(title = "Gráfica Tornado de Prueba de Funcionamiento",
+             subtitle = "Usando cuatro variables con casos alto y bajo",
+             caption = "",
+             fill = "",
+             x = "VPN - VPN Caso Base", y = "Variable")
+
+```
+
+Como podemos observar en la gráfica tornado (figura
+\@ref(fig:testsens5)), el mayor impacto proviene de la variable de
+Ahorro Anual, seguida de la Inversión de Capital. Lo cual nos indicaría
+que son las variables que deben de ser detalladas a mayor nivel en
+análisis subsecuentes por el impacto que tendría en la decisión de
+inversión.
+
+Podemos observar en la gráfica que el --Valor Presente Neto-- tiene una
+correlación positiva con el Ahorro Anual, mientras que tiene una
+correlación negativa con la Inversión de Capital, el Gasto Anual y la
+TMAR, como era esperado.
+
+\newpage
+
+### Simulación Monte Carlo
+
+Para el ejemplo de simulación Monte Carlo vamos a seguir el siguiente
+flujo:
+
+-   Definir los valores medios
+-   Realizar el cálculo para una simulación
+-   Mostrar que se obtiene el mismo valor con la función Monte Carlo
+-   Mostrar los resultados de 1000 simulaciones
+
+```{r montetest1, echo = FALSE}
+
+# Generar estructuras con información caso base y distribuciones estadísticas
+# que aplican a cada caso
+
+inflation = 0.02
+periods = 10
+
+prod_mat_test = tibble(
+  tipo = c(rep("Producto", 2), 
+           rep("Material", 3), 
+           rep("Utility", 2)),
+  periodo = rep(1, 7),
+  material = c("Producto1", "Producto2", 
+               "Material1", "Material2", "Material3",
+               "Electricidad",
+               "Gas"),
+  volumen = c(1000, 500, # Volumen de Productos
+              500, 800, 200, # Volumen de Materiales
+              100, # Cantidad de energia utilizada
+              50), # Cantidad de electricidad utilizada
+  precio = c(5, 3, # Precio de los productos
+             1, 1.5, 2,# Precio de las materias primas
+             0.05, # Precio de electricidad
+             0.03), # Precio del gas
+  dist_vol = c(rep("normal", 2),
+                   rep("cauchy", 3),
+                   rep("poisson", 2)),
+  dist_pre = c(rep("normal", 2),
+               rep("normal", 3),
+               rep("cauchy", 2))
+)
+
+monte_test <- prod_mat_test
+
+# Cambiar formato
+print <- prod_mat_test
+print$precio <- currency(print$precio, symbol = "$", digits = 2L)
+
+# Mostrar como tabla usando knitr
+knitr::kable(print, col.names = gsub("[_]", " ", names(print)), 
+             caption = "Valores caso base de Prueba Monte Carlo", 
+             align = "lccc", label = "tabMonteTest1")
+```
+
+En esta primera parte definimos productos, así como materiales y
+--utilities-- necesarios para su producción. De cada uno de estos
+definimos: volumen, precio, distribución del valor de volumen y
+distribución del valor de su precio. Al igual definimos el valor de
+inflación `r percent(inflation)` y el número de periodos a analizar
+`r periods`.
+
+Con estos valores podemos utilizar alguna función para generar el
+pronóstico de las diferentes variables durante el periodo estudiado.
+
+```{r montetest2, echo = FALSE}
+
+# Generar los valores para todos los periodos considerados
+# Podriamos agregar funciones de forecasting para los precios y el volumen 
+# esperado
+
+seed = 1
+set.seed(seed)
+
+for (i in seq_along(1:(periods-1))) {
+  ext_prod_mat <- prod_mat_test %>%
+    filter(periodo == max(periodo)) %>%
+    mutate(precio = precio * (1 + inflation),
+           periodo = periodo + 1)
+  
+  prod_mat_test <- bind_rows(prod_mat_test, ext_prod_mat)
+}
+
+# Cambiar formato
+print <- prod_mat_test %>% filter(periodo > 8)
+print$precio <- currency(print$precio, symbol = "$", digits = 2L)
+
+# Mostrar como tabla usando knitr
+knitr::kable(print, col.names = gsub("[_]", " ", names(print)), 
+             caption = "Pronóstico de valores caso base de Prueba Monte Carlo", 
+             align = "lccc")
+
+```
+
+Para este ejemplo sólo estamos aumentando el precio de acuerdo a la
+inflación. La tabla \@ref(tab:montetest2) nos muestra los valores de los
+últimos periodos.
+
+Ya que contamos con esta base, podemos alterar los valores de forma
+aleatoria utilizando una función para generar estos valores.
+
+```{r montetest3, echo = FALSE}
+# Generar valores aleatorios con base en el punto anterior
+source("scripts/simulacionMonteCarlo.R", local = knitr::knit_global())
+
+rand_prodmat_test <- prod_mat_test %>%
+  rowwise() %>%
+  mutate(
+    volumen_r = random_values(n.period = 1, mlv = volumen, 
+                              distribution = dist_vol),
+    precio_r = random_values(n.period = 1, mlv = precio, 
+                             distribution = dist_pre)
+  )
+  
+# Cambiar formato
+print <- rand_prodmat_test %>% filter(periodo < 3)
+#print$precio <- currency(print$precio, symbol = "$", digits = 2L)
+#print$precio_r <- currency(print$precio_r, symbol = "$", digits = 2L)
+
+# Mostrar como tabla usando knitr
+knitr::kable(print, col.names = gsub("[.]", " ", names(print)), 
+             caption = "Valores aleatorios de Prueba Monte Carlo", 
+             align = "lccc", digits = 2,
+             format.args = list(big.mark = ",", scientific = FALSE))
+```
+
+Como podemos observar en la tabla \@ref(tab:montetest3), generamos
+valores aleatorios con base en los valores pronosticados.
+
+```{r montetest4, echo = FALSE}
+# Calcular el Flujo de Caja Libre (FCF)
+
+source("scripts/funciones_financieras.R", local = knitr::knit_global())
+source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
+# Calcular variables necesarias para calcular FCF
+
+test_rev <- revenues(products_volume = filter(rand_prodmat_test, tipo == "Producto") %>% 
+           select(volumen_r), 
+         products_price = filter(rand_prodmat_test, tipo == "Producto") %>% 
+           select(precio_r),
+         periods = filter(rand_prodmat_test, tipo == "Producto") %>% 
+           select(periodo))
+
+
+test_costs <- total_costs(
+  period_costs = 0,
+  product_costs = product_costs(
+    direct_materials = direct_materials(
+      # Inician inputs para funcion de materiales directos
+      raw_materials = filter(rand_prodmat_test, tipo == "Material") %>% 
+        select(volumen_r),
+      raw_mat_cost = filter(rand_prodmat_test, tipo == "Material") %>%
+        select(precio_r),
+      period = filter(rand_prodmat_test, tipo == "Material") %>%
+        select(periodo)
+      # Terminan inputs para funcion de materiales directos
+      ),
+    direct_labor = 0,
+    overhead = overhead(
+      #Inicial inputs para funcion de overhead
+      utility_vol = filter(rand_prodmat_test, tipo == "Utility") %>%
+        select(volumen_r),
+      utility_price = filter(rand_prodmat_test, tipo == "Utility") %>%
+        select(precio_r),
+      maintenance_cost = 0,
+      periods = filter(rand_prodmat_test, tipo == "Utility") %>%
+        select(periodo)
+      # Terminan inputs para funcion de overhead
+      )
+  )
+)
+
+test_tab <- tibble(
+  periodo = unique(rand_prodmat_test$periodo),
+  ingresos = test_rev$tot_revenue,
+  costos = test_costs$tot_cost
+)
+
+test_tab <- test_tab %>%
+  mutate(fcf = fcf(revenues = ingresos, 
+    costs = costos, 
+    depreciation = 0, 
+    capital_expenditures = 0, 
+    change_net_working_capital = 0, 
+    tax_rate = 0.3))
+
+# Calcular Valor Presente Neto
+
+npv <- npv(rate = 0.09,
+    cashflow = test_tab$fcf, period = test_tab$periodo)
+
+npv_p <- currency(npv, symbol = "$", digits = 2L)
+
+# Cambiar formato
+print <- test_tab
+print$ingresos <- currency(print$ingresos, 
+                           symbol = "$", digits = 2L)
+print$costos <- currency(print$costos, 
+                           symbol = "$", digits = 2L)
+print$fcf <- currency(print$fcf, 
+                           symbol = "$", digits = 2L)
+
+# Mostrar como tabla usando knitr
+knitr::kable(print, col.names = gsub("[_]", " ", names(print)), 
+             caption = "Flujos de Caja Libre de Prueba Monte Carlo", 
+             align = "lccc", label = "tabMonteTest4")
+```
+
+Estos flujos de caja libre los podemos utilizar para calcular el valor
+presento neto, el cual resulta en `r npv_p`.
+
+```{r montetest5, echo=FALSE, fig.cap = "Histograma de prueba de Monte Carlo", echo = FALSE, out.width="65%", fig.align = 'center'}
+source("scripts/funciones_financieras.R", local = knitr::knit_global())
+source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
+source("scripts/simulacionMonteCarlo.R", local = knitr::knit_global())
+
+# Correr Monte Carlo ilustrativo
+npv_mc <- monte_carlo(df = monte_test, 
+            simulations = 1, 
+            seed = 1,
+            n = periods, 
+            inflation = inflation)
+
+npv_mc_p <- currency(npv_mc$npv, symbol = "$", digits = 2L)
+# Correr Monte Carlo
+sim_n <- 100
+
+monte_run <- monte_carlo(df = monte_test, 
+                         simulations = sim_n, 
+                         seed = 1,
+                         n = periods, 
+                         inflation = inflation)
+
+# Crear gráfica de distribución de los resultados de valor presente neto
+
+ggplot(monte_run, aes(x = npv)) +
+  geom_histogram(binwidth = function(x) 2 * IQR(x) / (length(x)^(1/3)), 
+                 color = "#000000", fill = "#0099F8") +
+  theme_bw() +
+  labs(
+    title = paste("Histograma de VPN con", toString(sim_n),"simulaciones", 
+                  sep = " "),
+    x = "Valor Presente Neto",
+    y = "Simulaciones"
+  ) + 
+  geom_vline(aes(xintercept=mean(npv)),
+             color="gray", linetype="dashed", linewidth=0.75) +
+  scale_x_continuous(
+    labels = label_dollar(scale_cut = cut_short_scale())
+  )
+
+  
+```
+
+El primer paso es comparar el valor de nuestro ejemplo contra la corrida
+de la función Monte Carlo para asegurar que esté funcionando
+correctamente y que pueda ser replicable al usar el mismo número de
+semilla: `r seed`. Los siguientes valores deberían de ser iguales:
+`r npv_p` y `r npv_mc_p`.
+
+Una vez comprobado eso podemos correr la función con un mayor número de
+simulaciones: `r sim_n`. Y podemos observar los resultados en la Figura:
+\@ref(fig:montetest5).
+
+\newpage
+
+### Matriz de Toma de Decisiones
+
+**[Agregar ejemplo de matriz de toma de decisiones]**
+
+\newpage

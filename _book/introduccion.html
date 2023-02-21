@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones</title>
+  <meta name="description" content="Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones" />
+  
+  <meta name="twitter:description" content="Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica" />
+  
+
+
+
+<meta name="date" content="2023-02-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="procedimiento.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.9/grViz.js"></script>
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduccion.html"><a href="introduccion.html"><i class="fa fa-check"></i><b>1</b> Introduccion</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduccion.html"><a href="introduccion.html#medicina-personalizada"><i class="fa fa-check"></i><b>1.1</b> Medicina Personalizada</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introduccion.html"><a href="introduccion.html#tabletas-personalizables"><i class="fa fa-check"></i><b>1.1.1</b> Tabletas Personalizables</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="procedimiento.html"><a href="procedimiento.html"><i class="fa fa-check"></i><b>2</b> Procedimiento</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="procedimiento.html"><a href="procedimiento.html#métodos-cuantitativos-de-toma-de-decisión"><i class="fa fa-check"></i><b>2.1</b> Métodos cuantitativos de toma de decisión</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="procedimiento.html"><a href="procedimiento.html#orden-de-uso-de-los-métodos"><i class="fa fa-check"></i><b>2.1.1</b> Orden de uso de los métodos</a></li>
+<li class="chapter" data-level="2.1.2" data-path="procedimiento.html"><a href="procedimiento.html#ecuaciones-utilizadas"><i class="fa fa-check"></i><b>2.1.2</b> Ecuaciones utilizadas</a></li>
+<li class="chapter" data-level="2.1.3" data-path="procedimiento.html"><a href="procedimiento.html#valor-monetario-esperado"><i class="fa fa-check"></i><b>2.1.3</b> Valor Monetario Esperado</a></li>
+<li class="chapter" data-level="2.1.4" data-path="procedimiento.html"><a href="procedimiento.html#análisis-de-sensibilidad"><i class="fa fa-check"></i><b>2.1.4</b> Análisis de Sensibilidad</a></li>
+<li class="chapter" data-level="2.1.5" data-path="procedimiento.html"><a href="procedimiento.html#simulación-monte-carlo"><i class="fa fa-check"></i><b>2.1.5</b> Simulación Monte Carlo</a></li>
+<li class="chapter" data-level="2.1.6" data-path="procedimiento.html"><a href="procedimiento.html#matriz-de-toma-de-decisiones"><i class="fa fa-check"></i><b>2.1.6</b> Matriz de Toma de Decisiones</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="procedimiento.html"><a href="procedimiento.html#prueba-del-funcionamiento-de-los-métodos-cuantitativos"><i class="fa fa-check"></i><b>2.2</b> Prueba del funcionamiento de los métodos cuantitativos</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="procedimiento.html"><a href="procedimiento.html#valor-monetario-esperado-1"><i class="fa fa-check"></i><b>2.2.1</b> Valor Monetario Esperado</a></li>
+<li class="chapter" data-level="2.2.2" data-path="procedimiento.html"><a href="procedimiento.html#análisis-de-sensibilidad-1"><i class="fa fa-check"></i><b>2.2.2</b> Análisis de Sensibilidad</a></li>
+<li class="chapter" data-level="2.2.3" data-path="procedimiento.html"><a href="procedimiento.html#simulación-monte-carlo-1"><i class="fa fa-check"></i><b>2.2.3</b> Simulación Monte Carlo</a></li>
+<li class="chapter" data-level="2.2.4" data-path="procedimiento.html"><a href="procedimiento.html#matriz-de-toma-de-decisiones-1"><i class="fa fa-check"></i><b>2.2.4</b> Matriz de Toma de Decisiones</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resultados.html"><a href="resultados.html"><i class="fa fa-check"></i><b>3</b> Resultados</a></li>
+<li class="chapter" data-level="4" data-path="discusion.html"><a href="discusion.html"><i class="fa fa-check"></i><b>4</b> Discusion</a></li>
+<li class="chapter" data-level="5" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>5</b> Conclusiones</a></li>
+<li class="appendix"><span><b>Apendice</b></span></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><p><img src="diagramas/FQ.jpg" style="width:2in" /><img src="diagramas/UNAM.jpg" style="width:2in" /><br />
+Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones</p></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title"><p><img src="diagramas/FQ.jpg" style="width:2in" /><img src="diagramas/UNAM.jpg" style="width:2in" /><br />
+Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones</p></h1>
+<p class="author"><em><div class="line-block">Artur Herbert Malek Huidobro<br />
+415031756</div></em></p>
+<p class="date"><em>2023-02-21</em></p>
+</div>
+<div id="introduccion" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Introduccion<a href="introduccion.html#introduccion" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>El avance exponencial que hemos experimentado como sociedad, tanto en el
+desarrollo de nuevas tecnologías (reflejado en el incremento del número
+de patentes concedidas año con año, 391 mil patentes concedidas en 2019
+comparado con 49 mil en 1963) <span class="citation">(<a href="#ref-Marco2015" role="doc-biblioref">Marco et al. 2015</a>)</span>, como en el aumento del
+volumen de información generada <span class="citation">(<a href="#ref-Holst2021" role="doc-biblioref">Holst 2021</a>)</span>, así como en el incremento
+en la rapidez con la que podemos analizarla y extraer significado de
+ella <span class="citation">(<a href="#ref-Davenport2013" role="doc-biblioref">Davenport and Diché 2013</a>)</span> aunado a un ambiente de inversión de mayor
+incentidumbre <span class="citation">(<a href="#ref-Ahir2020" role="doc-biblioref">Ahir, Bloom, and Furceri 2020</a>)</span> hace más crítica la evaluación de proyectos
+previo a su implementación, dada la correlación existente entre el
+aumento de incertidumbre y la disminución en la inversión <span class="citation">(<a href="#ref-Leahy1996" role="doc-biblioref">Leahy and Whited 1996</a>)</span>.</p>
+<p>El uso de técnicas cuantitativas para la toma de decisiones en sin lugar
+a duda una idea que ha sido estudidada por más de seis lustros. John
+Bishop, Robert Schlaifer y Howard Raiffa revolucionaron el concepto de
+Toma de Decisiones por medio de la integración de conceptos de una
+escuela de pensamiento estadístico en los años 50. En específico,
+Raiffer y Schlaifer desarrollaron un método para cuantificar el
+conocimiento subjetivo utilizando <strong>Probabilidad Bayesiana Subjetiva</strong>
+mientras trabajaban en <strong>Harvard Business School</strong>
+<span class="citation">(<a href="#ref-Mcdonald2017Golden" role="doc-biblioref">McDonald 2017</a>)</span>, influenciando de esta manera a generaciones de
+administradores educados en HBS (a través del curso de <strong>Managerial
+Economics Reporting and Control</strong> o MERC) y por lo mismo, su efecto
+debería de sentirse a través de la comunidad de negocios hasta hoy en
+día. Sin embargo, resultados de un análisis de una encuesta a ejecutivos
+de compañías de <strong>Fortune 500</strong> indican que las mayores barreras de
+adopción eran <span class="citation">(<a href="#ref-Green1976survey" role="doc-biblioref">Green, Newson, and Jones 1976</a>)</span>:</p>
+<ol style="list-style-type: decimal">
+<li>Los beneficios de usar las técnicas no son claramente entendibles
+por los administradores</li>
+<li>Los administradores no tienen el conocimiento necesario respecto a
+técnicas cuantitativas</li>
+<li>Los administradores no fueron expuestos a técnicas cuantitativas al
+inicio de su entrenamiento.</li>
+</ol>
+<p>La lista continúa. Sin embargo, este top 3 nos ayuda a ver cierta parte
+de la problemática que se relaciona al entendimiento de los métodos
+cuantitativos por parte de la administración de las empresas. Esto es un
+problema importante que puede ser minimizado (al menos en parte) por el
+uso de tecnologías disponibles hoy en día.</p>
+<p>Para este trabajo, se busca comparar los resultados de decisión de
+inversión, para tres proyectos de implementación de nuevas tecnologías
+en la industria química, con base en los métodos cuantitativos:
+Simulación Monte Carlo, Análisis de Sensibilidad, Valor Monetario
+Esperado (EMV por sus siglas en inglés) y Matriz de Toma de Decisiones
+<span class="citation">(<a href="#ref-Stefanovic2005" role="doc-biblioref">Stefanovic and Stefanovic 2005</a>)</span>. Esto con el fin de mostrar la diferencia entre las
+decisiones que se tomarían con cada uno de los métodos por separado y
+cómo se puede combinar el uso de estos métodos para mejorar la toma de
+decisiones.</p>
+<p>El utilizar R, en específico RMarkdown y paquetes del tidyverse, nos
+permite crear un marco de análisis el cual es fácil de actualizar
+conforme se obtenga mayor (o nueva) información de la(s) inversión(es)
+que está(n) intentando analizarse. En mi experiencia en la industria,
+toma mucho tiempo utilizar herramientas distintas para el análisis de la
+información y para la presentación de la misma (ej. Excel y PowerPoint,
+si se utilizan las herramientas de Microsoft). Incluso si se intenta
+utilizar esfuerzos de automatización para esto, como macros o código en
+VBA, se requiere de mayor esfuerzo y es más fácil hacer cambios sobre
+los documentos que causen errores al correr el código de automatización.</p>
+<p>Los tres proyectos de implementación a ser evaluados; “Digitalización de
+la agricultura”, “Biotecnología Industrial” y “Medicina Personalizada”;
+estos fueron escogidos con base en el impacto que pueden llegar a tener,
+además de que forman parte del cuadrante de tendencias disruptivas y con
+fines económicos de la industria química descritos en: <span class="citation">(<a href="#ref-Falter2017" role="doc-biblioref">Falter et al. 2017</a>)</span>.</p>
+<div style="page-break-after: always;"></div>
+<div id="medicina-personalizada" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Medicina Personalizada<a href="introduccion.html#medicina-personalizada" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Dado que las enfermedades son más similares a una “red” de actividades
+aberrantes (comunicación y comportamiento celular, proteínas
+multifuncionales, genes modificadores, etc.), que a una progresión
+lineal de síntomas <span class="citation">(<a href="#ref-Li2015" role="doc-biblioref">Li et al. 2015</a>)</span>, la medicina personalizada puede ayudar a
+determinar el tratamiento apropiado para un individuo con base en
+grandes cantidades de información a nivel de población <span class="citation">(<a href="#ref-Ho2020" role="doc-biblioref">Ho et al. 2020</a>)</span>.</p>
+<p>La medicina personalizada o de precisión cuenta con dos acercamientos,
+el primero involucra el uso de tecnologías para adquirir y validar
+información de poblaciones, tales como análisis ómico de células y
+descubrimiento de biomarcadores para su subsecuente aplicación a nivel
+de paciente. El segundo, involucra el uso de tecnologías para adquirir y
+evaluar la información de un individuo para su propio tratamiento. El
+uso de ambos acercamientos se podría realizar a través de su
+integración, de manera que la información de población se utilice para
+guiar qué compuesto utilizar con base en la información genética de la
+persona, seguido de una dosificación dinámica guiada por información del
+individuo <span class="citation">(<a href="#ref-Ho2020" role="doc-biblioref">Ho et al. 2020</a>)</span>.</p>
+<p>Para la tecnología específica a evaluar de Medicina Personalizada,
+escogimos una que queda bajo el segundo acercamiento. En específico, en
+una solución para dosificación dinámica, la cual se encuentra al cerca
+del final de la cadena de valor, es decir, de un método de producción de
+las tabletas para cada individuo.</p>
+<div id="tabletas-personalizables" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Tabletas Personalizables<a href="introduccion.html#tabletas-personalizables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La tecnología, de Medicina Personalizada evaluada en este trabajo, está
+enfocada al paso siguiente de los acercamientos descritos en la sección
+anterior, en especial al segundo acercamiento con fines de dosificación
+dinámica y patrón de liberación del compuesto activo en tabletas
+impresas utilizando tecnología de impresión 3D.</p>
+<p>El método propuesto por Neriah para resolver el problema de proveer
+medicina personalizada a la población en general para individuos
+específicos efectiva y eficientemente, es a través de la fabricación
+versátil de tabletas utilizando moldes específicamente diseñados de
+diferentes formas y tamaños con el fin de permitir la personalización de
+los siguientes aspectos de una tableta: dósis, duración, perfil de
+liberación y combinación de diferentes compuestos <span class="citation">(<a href="#ref-Neriah2020" role="doc-biblioref">Tan et al. 2020</a>)</span>.</p>
+<p>Este acercamiento para proveer medicina personalizada a la población en
+general cuenta con sus desafíos logísticos, y de producción, los cuales
+se podrían ver reflejados en costos operativos elevados. Continuaremos
+esta discusión en la sección de resultados específica a esta tecnología.</p>
+<div id="modelos-de-negocio" class="section level4 hasAnchor" number="1.1.1.1">
+<h4><span class="header-section-number">1.1.1.1</span> Modelos de negocio<a href="introduccion.html#modelos-de-negocio" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>La implementación de esta tecnología se presta a dos modelos de negocio
+similares, pero que divergen en el punto de producción de las tabletas
+personalizadas. En el primer modelo de negocio la producción de las
+tabletas personalizadas se lleva a cabo en un centro operativo que
+atiende a un número definido de farmacias y hospitales que se encuentren
+en la cercanía. Mientras que en el segundo modelo de negocio se producen
+las tabletas en las farmacias o en los hospitales mismos.</p>
+<p>En ambos casos el cliente final haría un chequeo inicial en el hospital
+o la farmacia en donde, con la ayuda de un doctor y análisis del caso
+particular del paciente, se determina la dosis, así como el perfil y
+tiempo de liberación de los componentes de la tableta personalizada.
+Esta información se agregaría a un expediente compartido en donde cada
+orden contendría la información necesaria para producir las tabletas
+según las especificaciones necesarias.</p>
+<p>A continuación se muestran los diagramas que muestran los dos modelos de
+negocio.</p>
+<div class="figure">
+<img src="diagramas/TP_Business_Model_1.png" style="width:90.0%" alt="" />
+<p class="caption">Diagrama de modelo de negocio con unidades operativas con producción
+semi-centralizada</p>
+</div>
+<div class="figure">
+<img src="diagramas/TP_Business_Model_2.png" style="width:90.0%" alt="" />
+<p class="caption">Diagrama de modelo de negocio con producción en cada punto de venta
+(Farmacias / Hospitales)</p>
+</div>
+<div style="page-break-after: always;"></div>
+
+</div>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Ahir2020" class="csl-entry">
+Ahir, Hites, Nicholas Bloom, and Davide Furceri. 2020. <span>“60 Years of Uncertainty.”</span> <em>FINANCE &amp; DEVELOPMENT</em> 57 (1): 58–60. <a href="https://doi.org/10.2139/ssrn.3275033">https://doi.org/10.2139/ssrn.3275033</a>.
+</div>
+<div id="ref-Davenport2013" class="csl-entry">
+Davenport, Tom, and Jyll Diché. 2013. <span>“Big Data Analytics: What It Is and Why It Matters.”</span> <em>SAS</em>. <a href="https://www.sas.com/en_us/insights/analytics/big-data-analytics.html">https://www.sas.com/en_us/insights/analytics/big-data-analytics.html</a>.
+</div>
+<div id="ref-Falter2017" class="csl-entry">
+Falter, Wolfgang, Alexander Keller, Johann-Peter Nickel, and Henrik Meincke. 2017. <span>“Chemistry 4.0 Growth Through Innovation in a Transforming World,”</span> October. <a href="https://www2.deloitte.com/content/dam/Deloitte/global/Documents/consumer-industrial-products/gx-chemistry 4.0-full-report.pdf">https://www2.deloitte.com/content/dam/Deloitte/global/Documents/consumer-industrial-products/gx-chemistry 4.0-full-report.pdf</a>.
+</div>
+<div id="ref-Green1976survey" class="csl-entry">
+Green, Thad B, Walter B Newson, and S Roland Jones. 1976. <span>“A Survey of the Application of Quantitative Techniques to Production/Operations Management in Large Corporations.”</span> In <em>Academy of Management Proceedings</em>, 1976:202–6. 1. Academy of Management Briarcliff Manor, NY 10510.
+</div>
+<div id="ref-Ho2020" class="csl-entry">
+Ho, Dean, Stephen R. Quake, Edward R. B. McCabe, Wee Joo Chng, Edward K. Chow, Xianting Ding, Bruce D. Gelb, et al. 2020. <span>“Enabling Technologies for Personalized and Precision Medicine.”</span> <em>Trends in Biotechnology</em> 38 (5): 497–518. https://doi.org/<a href="https://doi.org/10.1016/j.tibtech.2019.12.021">https://doi.org/10.1016/j.tibtech.2019.12.021</a>.
+</div>
+<div id="ref-Holst2021" class="csl-entry">
+Holst, Arne. 2021. <span>“Total Data Volume Worldwide 2010-2024.”</span> Statista. February 2021. <a href="https://www.statista.com/statistics/871513/worldwide-data-created/">https://www.statista.com/statistics/871513/worldwide-data-created/</a>.
+</div>
+<div id="ref-Leahy1996" class="csl-entry">
+Leahy, John V., and Toni M. Whited. 1996. <span>“The Effect of Uncertainty on Investment: Some Stylized Facts.”</span> <em>Journal of Money, Credit and Banking</em> 28 (1): 64–83. <a href="http://www.jstor.org/stable/2077967">http://www.jstor.org/stable/2077967</a>.
+</div>
+<div id="ref-Li2015" class="csl-entry">
+Li, Li, Wei-Yi Cheng, Benjamin S Glicksberg, Omri Gottesman, Ronald Tamler, Rong Chen, Erwin P Bottinger, and Joel T Dudley. 2015. <span>“Identification of Type 2 Diabetes Subgroups Through Topological Analysis of Patient Similarity.”</span> <em>Science Translational Medicine</em> 7 (311): 311ra174–74.
+</div>
+<div id="ref-Marco2015" class="csl-entry">
+Marco, Alan C, Amanda Myers, Stuart JH Graham, Paul D’Agostino, and Kirsten Apple. 2015. <span>“The USPTO Patent Assignment Dataset: Descriptions and Analysis.”</span>
+</div>
+<div id="ref-Mcdonald2017Golden" class="csl-entry">
+McDonald, Duff. 2017. <em>The Golden Passport: Harvard Business School, the Limits of Capitalism, and the Moral Failure of the MBA Elite</em>. HarperBusiness New York, NY.
+</div>
+<div id="ref-Stefanovic2005" class="csl-entry">
+Stefanovic, Michael, and Ingrid Leman Stefanovic. 2005. <span>“Decisions, Decisions— Paper Presented at PMI® Global Congress 2005—North America.”</span> <em>Decisions, Decisions–</em>. PA: Project Management Institute. <a href="https://www.pmi.org/learning/library/decisions-quantitative-making-process-7466">https://www.pmi.org/learning/library/decisions-quantitative-making-process-7466</a>.
+</div>
+<div id="ref-Neriah2020" class="csl-entry">
+Tan, Yan Jie Neriah, Wai Pong Yong, Jaspreet Singh Kochhar, Jayant Khanolkar, Xiukai Yao, Yajuan Sun, Chi Kit Ao, and Siowling Soh. 2020. <span>“On-Demand Fully Customizable Drug Tablets via 3D Printing Technology for Personalized Medicine.”</span> <em>Journal of Controlled Release</em> 322: 42–52. https://doi.org/<a href="https://doi.org/10.1016/j.jconrel.2020.02.046">https://doi.org/10.1016/j.jconrel.2020.02.046</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="procedimiento.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

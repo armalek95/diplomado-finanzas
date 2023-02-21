@@ -1,0 +1,28 @@
+---
+title: |
+  ![](diagramas/FQ.jpg){width=2in}\tab\tab![](diagramas/UNAM.jpg){width=2in}  
+  Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones
+author: |
+  | Artur Herbert Malek Huidobro
+  | 415031756
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [references.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica"
+---
+
+```{r setup, echo = FALSE, message=FALSE}
+# Setup chunk: Carga los paquetes necesarios para realizar los cálculos en 
+# lo que resta del trabajo 
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, EnvStats, knitr, scales, formattable)
+
+```
+
+\newpage

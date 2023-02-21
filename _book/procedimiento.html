@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Procedimiento |  Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones</title>
+  <meta name="description" content="Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Procedimiento |  Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Procedimiento |  Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones" />
+  
+  <meta name="twitter:description" content="Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica" />
+  
+
+
+
+<meta name="date" content="2023-02-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduccion.html"/>
+<link rel="next" href="resultados.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.9/grViz.js"></script>
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduccion.html"><a href="introduccion.html"><i class="fa fa-check"></i><b>1</b> Introduccion</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduccion.html"><a href="introduccion.html#medicina-personalizada"><i class="fa fa-check"></i><b>1.1</b> Medicina Personalizada</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introduccion.html"><a href="introduccion.html#tabletas-personalizables"><i class="fa fa-check"></i><b>1.1.1</b> Tabletas Personalizables</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="procedimiento.html"><a href="procedimiento.html"><i class="fa fa-check"></i><b>2</b> Procedimiento</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="procedimiento.html"><a href="procedimiento.html#métodos-cuantitativos-de-toma-de-decisión"><i class="fa fa-check"></i><b>2.1</b> Métodos cuantitativos de toma de decisión</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="procedimiento.html"><a href="procedimiento.html#orden-de-uso-de-los-métodos"><i class="fa fa-check"></i><b>2.1.1</b> Orden de uso de los métodos</a></li>
+<li class="chapter" data-level="2.1.2" data-path="procedimiento.html"><a href="procedimiento.html#ecuaciones-utilizadas"><i class="fa fa-check"></i><b>2.1.2</b> Ecuaciones utilizadas</a></li>
+<li class="chapter" data-level="2.1.3" data-path="procedimiento.html"><a href="procedimiento.html#valor-monetario-esperado"><i class="fa fa-check"></i><b>2.1.3</b> Valor Monetario Esperado</a></li>
+<li class="chapter" data-level="2.1.4" data-path="procedimiento.html"><a href="procedimiento.html#análisis-de-sensibilidad"><i class="fa fa-check"></i><b>2.1.4</b> Análisis de Sensibilidad</a></li>
+<li class="chapter" data-level="2.1.5" data-path="procedimiento.html"><a href="procedimiento.html#simulación-monte-carlo"><i class="fa fa-check"></i><b>2.1.5</b> Simulación Monte Carlo</a></li>
+<li class="chapter" data-level="2.1.6" data-path="procedimiento.html"><a href="procedimiento.html#matriz-de-toma-de-decisiones"><i class="fa fa-check"></i><b>2.1.6</b> Matriz de Toma de Decisiones</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="procedimiento.html"><a href="procedimiento.html#prueba-del-funcionamiento-de-los-métodos-cuantitativos"><i class="fa fa-check"></i><b>2.2</b> Prueba del funcionamiento de los métodos cuantitativos</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="procedimiento.html"><a href="procedimiento.html#valor-monetario-esperado-1"><i class="fa fa-check"></i><b>2.2.1</b> Valor Monetario Esperado</a></li>
+<li class="chapter" data-level="2.2.2" data-path="procedimiento.html"><a href="procedimiento.html#análisis-de-sensibilidad-1"><i class="fa fa-check"></i><b>2.2.2</b> Análisis de Sensibilidad</a></li>
+<li class="chapter" data-level="2.2.3" data-path="procedimiento.html"><a href="procedimiento.html#simulación-monte-carlo-1"><i class="fa fa-check"></i><b>2.2.3</b> Simulación Monte Carlo</a></li>
+<li class="chapter" data-level="2.2.4" data-path="procedimiento.html"><a href="procedimiento.html#matriz-de-toma-de-decisiones-1"><i class="fa fa-check"></i><b>2.2.4</b> Matriz de Toma de Decisiones</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resultados.html"><a href="resultados.html"><i class="fa fa-check"></i><b>3</b> Resultados</a></li>
+<li class="chapter" data-level="4" data-path="discusion.html"><a href="discusion.html"><i class="fa fa-check"></i><b>4</b> Discusion</a></li>
+<li class="chapter" data-level="5" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>5</b> Conclusiones</a></li>
+<li class="appendix"><span><b>Apendice</b></span></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><p><img src="diagramas/FQ.jpg" style="width:2in" /><img src="diagramas/UNAM.jpg" style="width:2in" /><br />
+Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones</p></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="procedimiento" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Procedimiento<a href="procedimiento.html#procedimiento" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Para el desarrollo de esta tesina se hace uso de R version 4.2.2 (2022-10-31) de forma
+que el trabajo aquí descrito sea totalmente reproducible. A continuación podrán
+observar la información de la sesión activa durante la compilación de este
+trabajo:</p>
+<pre><code>## R version 4.2.2 (2022-10-31)
+## Platform: x86_64-apple-darwin17.0 (64-bit)
+## Running under: macOS Ventura 13.2
+## 
+## Matrix products: default
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] webshot_0.5.4     DiagrammeR_1.0.9  data.tree_1.0.0   formattable_0.2.1 scales_1.2.1     
+##  [6] knitr_1.41        EnvStats_2.7.0    forcats_0.5.2     stringr_1.5.0     dplyr_1.0.10     
+## [11] purrr_0.3.5       readr_2.1.3       tidyr_1.2.1       tibble_3.1.8      ggplot2_3.4.0    
+## [16] tidyverse_1.3.2   pacman_0.5.1      bookdown_0.32    
+## 
+## loaded via a namespace (and not attached):
+##  [1] lubridate_1.9.0     visNetwork_2.1.2    assertthat_0.2.1    digest_0.6.30       utf8_1.2.2         
+##  [6] R6_2.5.1            cellranger_1.1.0    backports_1.4.1     reprex_2.0.2        evaluate_0.18      
+## [11] highr_0.9           httr_1.4.4          pillar_1.8.1        rlang_1.0.6         googlesheets4_1.0.1
+## [16] readxl_1.4.1        rstudioapi_0.14     jquerylib_0.1.4     rmarkdown_2.18      labeling_0.4.2     
+## [21] googledrive_2.0.0   htmlwidgets_1.5.4   munsell_0.5.0       broom_1.0.1         compiler_4.2.2     
+## [26] modelr_0.1.10       xfun_0.35           pkgconfig_2.0.3     htmltools_0.5.3     tidyselect_1.2.0   
+## [31] fansi_1.0.3         crayon_1.5.2        tzdb_0.3.0          dbplyr_2.2.1        withr_2.5.0        
+## [36] grid_4.2.2          jsonlite_1.8.4      gtable_0.3.1        lifecycle_1.0.3     DBI_1.1.3          
+## [41] magrittr_2.0.3      cli_3.4.1           stringi_1.7.8       cachem_1.0.6        farver_2.1.1       
+## [46] fs_1.5.2            xml2_1.3.3          bslib_0.4.1         ellipsis_0.3.2      generics_0.1.3     
+## [51] vctrs_0.5.1         RColorBrewer_1.1-3  tools_4.2.2         glue_1.6.2          hms_1.1.2          
+## [56] fastmap_1.1.0       yaml_2.3.6          timechange_0.1.1    colorspace_2.0-3    gargle_1.2.1       
+## [61] rvest_1.0.3         haven_2.5.1         sass_0.4.4</code></pre>
+<div id="métodos-cuantitativos-de-toma-de-decisión" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Métodos cuantitativos de toma de decisión<a href="procedimiento.html#métodos-cuantitativos-de-toma-de-decisión" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En esta sección se describen los métodos cuantitativos que se usaron
+para el presente trabajo.</p>
+<p>rrr Revisar el documento siguiente: <span class="citation">(<a href="#ref-Tapiero2013" role="doc-biblioref">Tapiero 2013</a>)</span></p>
+<p>rrr Revisión de métodos de evaluación que puede ser útil para este trabajo.
+<span class="citation">(<a href="#ref-Crundwell2008" role="doc-biblioref">Crundwell 2008</a>)</span></p>
+<p>rrr <strong>Artículo que se ve interesante para la introducción a tomar en cuenta
+los riesgos para la evaluación económica de proyectos de inversión</strong>
+<span class="citation">(<a href="#ref-Bartovsova2015" role="doc-biblioref">Bartošová, Majerčák, and Hrašková 2015</a>)</span></p>
+<div id="orden-de-uso-de-los-métodos" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Orden de uso de los métodos<a href="procedimiento.html#orden-de-uso-de-los-métodos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El orden de los métodos utilizado en este trabajo para la evaluación de los
+proyectos de inversión es el representado en el siguiente diagrama:</p>
+<div class="figure">
+<img src="diagramas/OrdenMetodos.jpg" style="width:90.0%" alt="" />
+<p class="caption">Diagrama del orden de uso de los métodos
+cuantitativos</p>
+</div>
+<p>La razón de esto es la siguiente:</p>
+<ol style="list-style-type: decimal">
+<li>El método de valor monetario esperado lo utilizamos como primer
+acercamiento a la evaluación de los proyectos ya que con éste podemos evaluar
+el proyecto utilizando escenarios simples con base en una probabilidad
+asociada a cada escenario.</li>
+<li>El método de análisis de sensibilidad nos permite cuantificar el
+impacto sobre la evaluación del proyecto que produce el cambio sobre
+las diferentes variables del modelo. Esto nos permite identificar las
+variables que tienen el mayor impacto sobre la evaluación del proyecto.</li>
+<li>El método Monte Carlo utiliza distribuciones de probabilidad (en
+específico para las variables que tienen un mayor impacto sobre el
+proyecto), con el fin de calcular la confianza que se tiene sobre el
+resultado de la evaluación.</li>
+<li>El método de matriz de toma de decisiones requiere de la
+cuantificación de diferentes factores de decisión entre los cuales
+se incluye el retorno esperado que calculamos con el método de
+simulación Monte Carlo. Esto nos sirve para tomar decisiones, entre diferentes
+alternativas de inversión, cuando se tiene más que un sólo parámetro de decisión.</li>
+</ol>
+</div>
+<div id="ecuaciones-utilizadas" class="section level3 hasAnchor" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Ecuaciones utilizadas<a href="procedimiento.html#ecuaciones-utilizadas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Flujo de Caja Libre (FCF)</strong> La ecuación para el cálculo del flujo de
+caja libre <em>“Free Cash Flow”</em> utilizada a lo largo del trabajo fue
+tomada de <span class="citation">(<a href="#ref-Berk2017" role="doc-biblioref">Berk and DeMarzo 2017</a>)</span>.</p>
+<span class="math display">\[\begin{equation}
+  FCF = (Ing. - Cost. - Depr.) * (1-\tau_{c}) + Depr. - Inv. - \Delta CTN
+\end{equation}\]</span>
+<p>Donde:</p>
+<ul>
+<li><em>FCF</em> significa Flujo de Caja Libre (o Free Cash Flow)</li>
+<li><em>Ing.</em> representa los ingresos</li>
+<li><em>Cost.</em> representa los costos</li>
+<li><em>Depr.</em> representa la depreciación</li>
+<li><span class="math inline">\(\tau_{c}\)</span> representa la tasa gravable de impuestos</li>
+<li><em>Inv.</em> representa la inversión</li>
+<li><span class="math inline">\(\Delta CTN\)</span> representa el cambio en el capital de trabajo neto</li>
+</ul>
+<p><strong>Valor Presente Neto (NPV)</strong> La ecuación utilizada para el Valor
+Presente Neto es una adaptación de la ecuación para el método <em>“The
+Present Worth Method”</em> tomada de <span class="citation">(<a href="#ref-Sullivan2015" role="doc-biblioref">Sullivan, Wicks, and Koelling 2015</a>)</span>.</p>
+<span class="math display">\[\begin{equation}
+NPV = \sum_{k=0}^{N}FCF_{k} (1+i)^{-k}
+\end{equation}\]</span>
+<p>Donde:</p>
+<ul>
+<li><em>i</em> representa la tasa de interés efectiva (effective interest rate)
+por cada periodo</li>
+<li><em>k</em> representa el índice de cada periodo (<span class="math inline">\(0 \le k \le N\)</span>)</li>
+<li><span class="math inline">\(FCF_{k}\)</span> representa el flujo de caja libre al final del periodo <em>k</em></li>
+<li><em>N</em> representa el número de periodos en el horizonte de la
+evaluación.</li>
+</ul>
+</div>
+<div id="valor-monetario-esperado" class="section level3 hasAnchor" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Valor Monetario Esperado<a href="procedimiento.html#valor-monetario-esperado" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para los fines de este trabajo realizamos el cálculo del valor monetario
+esperado dado por la función: <span class="math display">\[\begin{equation}
+EMV = \sum_{i=0}^{n}NPV_{i} \cdot p_{i}
+\end{equation}\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><em>EMV</em> representa el valor monetario esperado (o Expected Monetary
+Value)</li>
+<li><em>i</em> representa el índice de los posibles escenarios</li>
+<li><em>n</em> representa el número de posibles escenarios</li>
+<li><span class="math inline">\(NPV_{i}\)</span> representa el valor presente neto de los posibles
+escenarios</li>
+<li><span class="math inline">\(p_{i}\)</span> representa la probabilidad de que dicho valor presente neto
+<em>i</em> se materialice</li>
+</ul>
+<p>Para fines de comparación utilizamos la metodología de análisis de
+problemas de toma de decisiones complejas basada en <em>Cumulative Prospect
+Theory</em> propuesta en <span class="citation">(<a href="#ref-Dudzinska2018" role="doc-biblioref">Dudzińska-Baryła 2018</a>)</span>.</p>
+<p><strong>Diagrama de solución</strong></p>
+<div class="figure">
+<img src="diagramas/DecisionTree.jpg" style="width:90.0%" alt="" />
+<p class="caption">Diagrama de arbol de decisión tomando con tres escenarios por cada
+nodo de casualidad</p>
+</div>
+<p>El cálculo del <em>EMV</em> se realizará a través de árboles de decisión
+(<em>decision trees</em>) en donde se representen tres posibles escenarios
+relacionados a la decisión de llevar a cabo la inversión:</p>
+<ul>
+<li><em>Escenario bajo</em>: representa la posibilidad de que el valor sea
+menor al escenario medio (ej. 15%)</li>
+<li><em>Escenario medio</em>: representa el valor más probable resultado de la
+investigación (ej. 70%)</li>
+<li><em>Escenario alto</em>: representa la posibilidad de que el valor sea
+mayor al resultado de la investigación (ej. 15%)</li>
+</ul>
+<p>Esto se llevó a cabo para cada uno de los tres componentes más
+importantes del modelo: ingresos, costos e inversión.</p>
+<p>rrr La siguiente referencia tiene información del algoritmo <span class="citation">(<a href="#ref-Prellezo2017" role="doc-biblioref">Prellezo 2017</a>)</span></p>
+</div>
+<div id="análisis-de-sensibilidad" class="section level3 hasAnchor" number="2.1.4">
+<h3><span class="header-section-number">2.1.4</span> Análisis de Sensibilidad<a href="procedimiento.html#análisis-de-sensibilidad" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El análisis de sensibilidad es un grupo de métodos que nos ayuda a
+validar el modelo, a calibrarlo y a enfocar los esfuerzos de recolección
+de información sobre las variables que tienen un mayor impacto sobre el
+modelo en cuestión <span class="citation">(<a href="#ref-Borgonovo2017" role="doc-biblioref">Borgonovo et al. 2017</a>)</span>. Ya que si las decisiones son
+insensibles ante cambios sobre un aspecto del modelo, entonces no hay
+necesidad de modelar a mayor detalle ese aspecto en particular
+<span class="citation">(<a href="#ref-Felli2004" role="doc-biblioref">Felli and Hazen 2004</a>)</span>.</p>
+<p>Estos métodos se pueden dividir en dos grupos distintivos:
+métodos dedicados al modelo en cuestión y métodos agnósticos al modelo.
+Los primeros buscan responder preguntas específicas al modelo, mientras
+que los segundos buscan responder preguntas más generales
+<span class="citation">(<a href="#ref-Borgonovo2017" role="doc-biblioref">Borgonovo et al. 2017</a>)</span>.</p>
+<p>Borgonovo explica la importancia de la adecuada formulación de la
+pregunta de análisis de sensibilidad y presenta las siguientes
+configuraciones que han encontrado a lo largo de su investigación:</p>
+<ol style="list-style-type: decimal">
+<li>Priorización de parámetros del modelo</li>
+<li>Fijación de parámetros del modelo</li>
+<li>Estructura del modelo</li>
+<li>Dirección del cambio</li>
+<li>Estabilidad</li>
+</ol>
+<p>Este trabajo utiliza principalmente las primeras dos configuraciones con
+el fin de definir qué parámetros deben de ser estudiados a mayor detalle
+para la simulación Monte Carlo.</p>
+<p>El método principal que revisamos en este trabajo es el método
+determinístico de diagramas tornado.</p>
+<div style="page-break-after: always;"></div>
+<p><strong>Diagrama de solución</strong><br />
+El siguiente diagrama muestra el esquema de solución para el análisis de
+sensibilidad utilizando el método determinístico de diagrama de tornado.</p>
+<div class="figure">
+<img src="diagramas/AnalisisSensibilidad.jpg" style="width:90.0%" alt="" />
+<p class="caption">Diagrama de Solución de Análisis de
+Sensibilidad</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:tornadotest"></span>
+<img src="_main_files/figure-html/tornadotest-1.png" alt="Ejemplo de una gráfica tornado con 6 variables y 6 pares de números aleatorios representando valores máximos y mínimos" width="65%" />
+<p class="caption">
+Figure 2.1: Ejemplo de una gráfica tornado con 6 variables y 6 pares de números aleatorios representando valores máximos y mínimos
+</p>
+</div>
+<p>rrr Un ejemplo de evaluación económica con análisis de sensibilidad para
+revisar <span class="citation">(<a href="#ref-Lee2017" role="doc-biblioref">Lee, Chae, et al. 2017</a>)</span></p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="simulación-monte-carlo" class="section level3 hasAnchor" number="2.1.5">
+<h3><span class="header-section-number">2.1.5</span> Simulación Monte Carlo<a href="procedimiento.html#simulación-monte-carlo" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El método Monte Carlo es una técnica para analizar fenómenos por medio
+de algoritmos computacionales basados, en esencia, en la generación de
+números aleatorios. De hecho, uno de los primeros usos de la computadora
+fue la solución de problemas a través del uso de Métodos Monte Carlo.
+Hoy en día los métodos de simulación Monte Carlo siguen teniendo un
+domino casi exclusivo sobre la simulación de interacciones complejas en
+cualquier área donde los modelos cuantitativos son posibles
+<span class="citation">(<a href="#ref-Shonkwiler2009" role="doc-biblioref">Shonkwiler and Mendivil 2009</a>)</span>.</p>
+<p>rrr Temas más avanzados con aplicación en finanzas <span class="citation">(<a href="#ref-Shonkwiler2013" role="doc-biblioref">Shonkwiler 2013</a>)</span></p>
+<p>rrr Framework ejemplo <span class="citation">(<a href="#ref-Dheskali2020" role="doc-biblioref">Dheskali, Koutinas, and Kookos 2020</a>)</span></p>
+<p>rrr Ejemplo de simulación Monte Carlo para la inversión en tecnología de
+tercera generación de plantas nucleares <span class="citation">(<a href="#ref-Wealer2021" role="doc-biblioref">Wealer et al. 2021</a>)</span></p>
+<p>rrr Ejemplo de simulación Monte Carlo para la evaluación económica de
+producción de hidrógeno <span class="citation">(<a href="#ref-Lee2017economic" role="doc-biblioref">Lee, Heo, et al. 2017</a>)</span></p>
+<p><strong>Números aleatorios</strong></p>
+<p>Para el método de simulación Monte Carlo se necesita generar valores
+aleatorios (una secuencia de estos) para las variables cuya variabilidad
+tenga un impacto significativo sobre el resultado de la evaluación del
+proyecto.</p>
+<p>Una secuencia de números aleatorios se define como una secuencia R1,
+R2,… donde Ri~U(0,1) para todo i donde Ri sea independiente de Rj
+para todos los casos donde i != j. <span class="citation">(<a href="#ref-Dagpunar2007" role="doc-biblioref">Dagpunar 2007</a>)</span></p>
+<p>El lenguaje R ya contiene funciones que nos permiten obtener secuencias
+de números aleatorios: <em>rnorm</em> para secuencias aleatorias de números con
+distribución normal, <em>rweibull</em> de distribución Weibull, <em>rcauchy</em> para
+distribución Cauchy, etc.</p>
+<div style="page-break-after: always;"></div>
+<p><strong>Diagrama de solución</strong></p>
+<p>El siguiente diagrama muestra el flujo de información a través de las
+funciones utilizadas para la evaluación por el método de Simulación
+Monte Carlo:</p>
+<div class="figure">
+<img src="diagramas/DiagramaMonteCarlo.jpg" style="width:90.0%" alt="" />
+<p class="caption">Diagrama de Solución Monte Carlo</p>
+</div>
+<p>Para utilizar el método de simulación Monte Carlo se desarrollaron 5
+funciones (1. a 5. del diagrama) las cuales cumplen las siguientes
+funciones:</p>
+<ol style="list-style-type: decimal">
+<li>Función que recibe los valores de entrada para evaluar el proyecto
+específico (número de periodos a evaluar, número de simulaciones a
+realizar, etc.) y llama a las demás funciones el número de veces
+especificado.</li>
+<li>Función que genera los valores aleatorios para calcular los
+ingresos, costos y/o gastos de capital. Esta función como valor de
+entrada necesita que se especifique el tipo de distribución de
+probabilidad a utilizar, el caso estándar utiliza la distribución
+normal para calcular los valores.</li>
+<li>Función que calcula el flujo de caja libre de efectivo tomando como
+valor de entrada las variables descritas en la sección de ecuaciones
+utilizadas.</li>
+<li>Función que calcula el valor presente neto del flujo de caja libre
+calculado previamente.</li>
+<li>Función que toma la información generada y genera las gráficas para
+su visualización.</li>
+</ol>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="matriz-de-toma-de-decisiones" class="section level3 hasAnchor" number="2.1.6">
+<h3><span class="header-section-number">2.1.6</span> Matriz de Toma de Decisiones<a href="procedimiento.html#matriz-de-toma-de-decisiones" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Las metodologías, conceptos, modelos y técnicas utilizadas como soporte
+para la toma de decisiones, tienen como objetivo incrementar la
+consistencia entre el proceso de toma de decisiones con las metas y con
+el sistema de valores establecidos por el individuo o el grupo de
+individuos que buscan llegar a una decisión, es por esto que un problema
+de decisión no puede considerarse como un objeto independiente y
+completamente objetivo, sino que debe de considerarse en su relación con
+el individuo (o individuos) y la realidad <span class="citation">(<a href="#ref-Azzabi2020" role="doc-biblioref">Azzabi et al. 2020</a>)</span>.</p>
+<p>Los métodos de decisión utilizando múltiples criterios se pueden dividir
+en los siguientes <span class="citation">(<a href="#ref-Azzabi2020" role="doc-biblioref">Azzabi et al. 2020</a>)</span>:</p>
+<ul>
+<li>Compensatorio: Compensación absoluta entre las diferentes
+evaluaciones (ej. Método de suma ponderada).</li>
+<li>Compensación parcial: Compensación parcial entre las diferentes
+evaluaciones.</li>
+<li>Sin compensación: No hay compensación entre las diferentes
+evaluaciones o dimensiones de la decisión.</li>
+</ul>
+<p>El acercamiento de toma de decisión multi-criterio (MCDA o
+Multi-Criteria Decision Approach) es tanto un marco teórico como un
+conjunto de técnicas, para la ayuda en la toma de decisiones, que tienen
+la finalidad de proveer con un orden de preferencia de opciones, de
+mayor a menor preferencia, con base en una serie de objetivos definidos
+(a lo que estaremos llamando sistema de valores en este trabajo) que
+pueden tener una naturaleza tanto monetaria como no monetaria
+<span class="citation">(<a href="#ref-Azzabi2020" role="doc-biblioref">Azzabi et al. 2020</a>)</span>. Esto nos permite simplificar un problema de decisión
+complejo en una serie de componentes sobre los cuales podemos utilizar
+nuestro sistema de valores al momento de llevar a cabo el proceso de
+decisión.</p>
+<p>Pasos para realizar el MCDA <span class="citation">(<a href="#ref-Azzabi2020" role="doc-biblioref">Azzabi et al. 2020</a>)</span>:</p>
+<ol style="list-style-type: decimal">
+<li>Establecer el contexto de decisión (o sistema de valores)</li>
+<li>Identificar las opciones</li>
+<li>Identificar criterios y subcriterios</li>
+<li>Puntuación y compensación</li>
+<li>Evaluar los criterios para cada opción</li>
+</ol>
+<p><strong>Sistema de valores</strong></p>
+<p>A continuación se definen los elementos del sistema de valores utilizado
+en este trabajo para la toma de decisión de inversión.</p>
+<p><strong>Criterios y subcriterios</strong></p>
+<p>Los <em>criterios</em> pueden definirse como la base para la evaluación de
+diferentes alternativas, ya que son una medida del rendimiento utilizado para
+evaluar las alternativas de decisión. Ya sean estos cuantitativos o
+cualitativos, aunque normalmente estos últimos se traducen a una
+escala numérica <span class="citation">(<a href="#ref-Korhonen2020" role="doc-biblioref">Korhonen, Wallenius, et al. 2020</a>)</span>.</p>
+<p>Los criterios a utilizar en este análisis son:</p>
+<ol style="list-style-type: decimal">
+<li>Maximizar Valor Presente Neto</li>
+<li>Maximizar beneficio social</li>
+<li>Minimizar impacto ambiental</li>
+</ol>
+<p><strong>Puntuación y compensación</strong></p>
+<p>Para este trabajo el valor relativo de los criterios se basa en el
+Proceso Analítico Jerárquico (<em>AHP o Analytic Hierarchy Process</em>). Este
+es un acercamiento sistemático para el análisis de decisiones complejas
+originalmente desarrollado por <em>Thomas L. Saaty</em> en los años setenta.
+Este acercamiento tiene el objetivo de encontrar una solución que mejor
+se adecue a las metas de los tomadores de decisión, al mismo tiempo que
+les ayuda a comprender de mejor forma lo que en realidad quieren
+<span class="citation">(<a href="#ref-Korhonen2020" role="doc-biblioref">Korhonen, Wallenius, et al. 2020</a>)</span>.</p>
+<p>Un ejemplo de valores relativos se pueden observar en la tabla
+<a href="procedimiento.html#tab:critcomparison">2.1</a>.</p>
+<table>
+<caption><span id="tab:critcomparison">Table 2.1: </span>Comparativo del valor de los criterios (AHP)</caption>
+<thead>
+<tr class="header">
+<th align="left">Criterio</th>
+<th align="center">VPN</th>
+<th align="center">Beneficio Social</th>
+<th align="center">Impacto Ambiental</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">VPN</td>
+<td align="center">1</td>
+<td align="center">1/2</td>
+<td align="center">1/4</td>
+</tr>
+<tr class="even">
+<td align="left">Beneficio Social</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">1/2</td>
+</tr>
+<tr class="odd">
+<td align="left">Impacto Ambiental</td>
+<td align="center">4</td>
+<td align="center">2</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+<p>Esta tabla muestra la importancia relativa entre los criterios, siendo las
+columnas la representación de la importancia relativa del criterio mostrado
+en el renglón en relación al criterio que encabeza la columna. Si revisamos
+la tabla <a href="procedimiento.html#tab:critcomparison">2.1</a> podemos observar que el valor Presente Neto
+tiene una importancia relativa de 1 contra si mismo, mientras que el criterio
+de Beneficio Social tiene una importancia relativa 2 veces mayor que el VPN y
+el Impacto Ambiental tiene una importancia relativa 4 veces mayor al VPN. Si
+continuamos a la siguiente columna podemos ver que el VPN tiene una importancia
+2 veces menor al Beneficio Social y así sucesivamente.</p>
+<p><span class="citation">(<a href="#ref-CISL2019" role="doc-biblioref">Cambridge Institute for Sustainability Leadership (CISL) 2019</a>)</span></p>
+<div style="page-break-after: always;"></div>
+
+</div>
+</div>
+<div id="prueba-del-funcionamiento-de-los-métodos-cuantitativos" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Prueba del funcionamiento de los métodos cuantitativos<a href="procedimiento.html#prueba-del-funcionamiento-de-los-métodos-cuantitativos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Cuando se genera cualquier modelo es importante hacer pruebas de
+funcionamiento básico antes de utilizar los valores reales. Esto permite
+corregir cualquier error que pueda no ser aparente a primera vista una
+vez que se intenta utilizar con valores reales, así como para visualizar
+posibles problemas que puedan presentarse a futuro.</p>
+<p>Como primer prueba, revisaremos el funcionamiento de la fórmula de valor
+presente neto utilizando los flujos de efectivo mostrados en la tabla
+<a href="procedimiento.html#tab:testcashflow1">2.2</a>:</p>
+<table>
+<caption><span id="tab:testcashflow1">Table 2.2: </span>Flujos de efectivo de prueba</caption>
+<thead>
+<tr class="header">
+<th align="left">periods</th>
+<th align="center">cashflow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">0</td>
+<td align="center">$-5,000</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="center">$1,000</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="center">$1,000</td>
+</tr>
+</tbody>
+</table>
+<p>Si utilizamos una tasa de descuento de 8.00% obtenemos un
+valor presente neto de $1,710.08. Lo cual debería de concordar con un
+valor calculado manualmente de $1,710.08 usando los principios de flujo
+de efectivo descontado revisados en la parte de metodología.</p>
+<div style="page-break-after: always;"></div>
+<div id="valor-monetario-esperado-1" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Valor Monetario Esperado<a href="procedimiento.html#valor-monetario-esperado-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Datos ilustrativos</strong> Para realizar nuestra prueba de cálculo
+de EMV, podemos utilizar el siguiente ejemplo:</p>
+<p>Una decisión de inversión en una nueva tecnología que permitiría
+disminuir el costo de electricidad de una planta de producción de
+estireno (mediante la reduccion de la demanda energética comparado con
+la tecnología antigua). Supongamos para este ejemplo que los nodos de
+casualidad relevantes son los siguientes:</p>
+<ul>
+<li>Costo de la implementar la tecnología</li>
+<li>Costo de la electricidad</li>
+</ul>
+<p>Estamos suponiendo dentro del costo de implementación el costo de
+oportunidad de cerrar la planta de producción. El costo alto o bajo en
+gran parte se estaría viendo afectado por el tiempo que debe de quedar
+cerrada la planta para la instalación y pruebas relacionadas.</p>
+<p>Para ambos costos revisaremos solo dos casos, uno bajo y otro alto. Los
+valores específicos que usaremos se pueden encontrar en la tabla
+<a href="procedimiento.html#tab:testemv1">2.3</a>.</p>
+<table>
+<caption><span id="tab:testemv1">Table 2.3: </span>Valores para prueba de funcionamiento de EMV</caption>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="center">Alto</th>
+<th align="center">Bajo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Costo Implementación</td>
+<td align="center">$20,000</td>
+<td align="center">$10,000</td>
+</tr>
+<tr class="even">
+<td align="left">Costo Electricidad</td>
+<td align="center">$100</td>
+<td align="center">$50</td>
+</tr>
+</tbody>
+</table>
+<p>Al igual, imaginemos que por especificaciones de la tecnología sabemos
+que vamos a necesitar de 500 watts anuales bajo la tecnología
+nueva, a comparación de 800 watts anuales requeridos con la
+tecnología antigua.</p>
+<p>La estructura del arbol de decisión para este ejemplo se puede
+visualizar en la figura <a href="procedimiento.html#fig:testemv2">2.2</a>:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:testemv2"></span>
+<div id="htmlwidget-6e939b13f92b78564578" style="width:90%;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6e939b13f92b78564578">{"x":{"diagram":"digraph {\n\ngraph [rankdir = \"TB\"]\n\n\n\n  \"1\" [label = \"Invest?\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"2\" [label = \"Yes\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"3\" [label = \"Low Implementation Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"4\" [label = \"High Electricity Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"5\" [label = \"Low Electricity Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"6\" [label = \"High Implementation Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"7\" [label = \"High Electricity Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"8\" [label = \"Low Electricity Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"9\" [label = \"No\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"10\" [label = \"High Electricity Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"11\" [label = \"Low Electricity Cost\", style = \"filled,rounded\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"1\"->\"2\" \n  \"1\"->\"9\" \n  \"2\"->\"3\" \n  \"2\"->\"6\" \n  \"9\"->\"10\" \n  \"9\"->\"11\" \n  \"3\"->\"4\" \n  \"3\"->\"5\" \n  \"6\"->\"7\" \n  \"6\"->\"8\" \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 2.2: Árbol de Decisión para el ejemplo de inversión
+</p>
+</div>
+<p>Utilizando los valores previamente especificados podemos calcular los
+valores para cada una de las ramas, así como los valores monetarios
+esperados para cada uno de los nodos de decisión, cuyos resultados los
+podemos observar en la tabla <a href="procedimiento.html#tab:testemv3">2.4</a>.</p>
+<table>
+<caption><span id="tab:testemv3">Table 2.4: </span>Resultados de prueba de Valor Monetario Esperado</caption>
+<thead>
+<tr class="header">
+<th align="left">levelName</th>
+<th align="center">prob</th>
+<th align="center">npv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Invest?</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="left">¦–Yes</td>
+<td align="center">NA</td>
+<td align="center">$-327,068</td>
+</tr>
+<tr class="odd">
+<td align="left">¦ ¦–Low Implementation Cost</td>
+<td align="center">50.00%</td>
+<td align="center">$-322,068</td>
+</tr>
+<tr class="even">
+<td align="left">¦ ¦ ¦–High Electricity Cost</td>
+<td align="center">60.00%</td>
+<td align="center">$-400,085</td>
+</tr>
+<tr class="odd">
+<td align="left">¦ ¦ °–Low Electricity Cost</td>
+<td align="center">40.00%</td>
+<td align="center">$-205,042</td>
+</tr>
+<tr class="even">
+<td align="left">¦ °–High Implementation Cost</td>
+<td align="center">50.00%</td>
+<td align="center">$-332,068</td>
+</tr>
+<tr class="odd">
+<td align="left">¦ ¦–1 High Electricity Cost</td>
+<td align="center">60.00%</td>
+<td align="center">$-410,085</td>
+</tr>
+<tr class="even">
+<td align="left">¦ °–1 Low Electricity Cost</td>
+<td align="center">40.00%</td>
+<td align="center">$-215,042</td>
+</tr>
+<tr class="odd">
+<td align="left">°–No</td>
+<td align="center">NA</td>
+<td align="center">$-499,308</td>
+</tr>
+<tr class="even">
+<td align="left">¦–2 High Electricity Cost</td>
+<td align="center">60.00%</td>
+<td align="center">$-624,135</td>
+</tr>
+<tr class="odd">
+<td align="left">°–2 Low Electricity Cost</td>
+<td align="center">40.00%</td>
+<td align="center">$-312,068</td>
+</tr>
+</tbody>
+</table>
+<p>Otra forma de visualizar nuestros resultados, que puede llegar ser más
+amigable, se encuentra en la figura <a href="procedimiento.html#fig:testemv4">2.3</a>:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:testemv4"></span>
+<div id="htmlwidget-27ab1876f7c57926b229" style="width:90%;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-27ab1876f7c57926b229">{"x":{"diagram":"digraph {\n\ngraph [rankdir = \"LR\"]\n\n\n\n  \"1\" [label = \"Invest?\", fontname = \"helvetica\", shape = \"box\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"2\" [label = \"EMV\n$ -327,067.7\", fontname = \"helvetica\", shape = \"circle\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"3\" [label = \"EMV\n$ -322,067.7\", fontname = \"helvetica\", shape = \"circle\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"4\" [label = \"$ -400,084.6\", fontname = \"helvetica\", shape = \"none\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"5\" [label = \"$ -205,042.3\", fontname = \"helvetica\", shape = \"none\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"6\" [label = \"EMV\n$ -332,067.7\", fontname = \"helvetica\", shape = \"circle\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"7\" [label = \"$ -410,084.6\", fontname = \"helvetica\", shape = \"none\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"8\" [label = \"$ -215,042.3\", fontname = \"helvetica\", shape = \"none\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"9\" [label = \"EMV\n$ -499,308.3\", fontname = \"helvetica\", shape = \"circle\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"10\" [label = \"$ -624,135.4\", fontname = \"helvetica\", shape = \"none\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n  \"11\" [label = \"$ -312,067.7\", fontname = \"helvetica\", shape = \"none\", fillcolor = \"#FFFFFF\", fontcolor = \"#000000\"] \n\"1\"->\"2\" [fontname = \"helvetica\", label = \"Yes\"] \n\"1\"->\"9\" [fontname = \"helvetica\", label = \"No\"] \n\"2\"->\"3\" [fontname = \"helvetica\", label = \"Low Implementation Cost (0.5)\"] \n\"2\"->\"6\" [fontname = \"helvetica\", label = \"High Implementation Cost (0.5)\"] \n\"9\"->\"10\" [fontname = \"helvetica\", label = \"High Electricity Cost (0.6)\"] \n\"9\"->\"11\" [fontname = \"helvetica\", label = \"Low Electricity Cost (0.4)\"] \n\"3\"->\"4\" [fontname = \"helvetica\", label = \"High Electricity Cost (0.6)\"] \n\"3\"->\"5\" [fontname = \"helvetica\", label = \"Low Electricity Cost (0.4)\"] \n\"6\"->\"7\" [fontname = \"helvetica\", label = \"High Electricity Cost (0.6)\"] \n\"6\"->\"8\" [fontname = \"helvetica\", label = \"Low Electricity Cost (0.4)\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 2.3: Árbol de Decisión para el ejemplo de inversión con valores calculados de EMV
+</p>
+</div>
+<p>En este ejemplo podemos observar que la opción con el mayor EMV es
+aquella en donde se toma la decisión de instalar la nueva tecnología con
+el fin de disminuir el requerimiento energético de la planta.</p>
+<p>Como podemos observar, los valores de EMV de los nodos de casualidad son
+iguales a la suma producto de los valores de NPV de los nodos <em>hijos</em> y
+la probabilidad de que ocurra el caso.</p>
+<p>Con este ejemplo se demuestra el correcto funcionamiento de las
+funciones de solución para el método de Valor Monetario Esperado.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="análisis-de-sensibilidad-1" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Análisis de Sensibilidad<a href="procedimiento.html#análisis-de-sensibilidad-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para comprobar el funcionamiento de la solución de análisis de
+sensibilidad podemos usar el siguiente ejemplo adaptado de
+<span class="citation">(<a href="#ref-Sullivan2015" role="doc-biblioref">Sullivan, Wicks, and Koelling 2015</a>)</span>, ejemplo 11-15.</p>
+<p>En ese ejemplo se analiza la inversión en un sistema de visión utilizado
+por el servicio postal para ordenar correos.</p>
+<p>Este problema tiene 4 variables sujetas a variación:</p>
+<ul>
+<li>Inversión de Capital</li>
+<li>Gasto Anual</li>
+<li>Ahorro Anual</li>
+<li>TMAR (Tasa Mínima Aceptable de Retorno)</li>
+</ul>
+<p>Además de esto, necesitamos una variable que defina el periodo de
+evaluación de la inversión. Para fines de este ejemplo, este periodo
+será estático a través de todos los casos.</p>
+<p>Podemos observar los valores base en la tabla <a href="procedimiento.html#tab:testsens1">2.5</a>:</p>
+<table>
+<caption><span id="tab:testsens1">Table 2.5: </span>Valores de caso base para prueba de Análisis de Sensibilidad</caption>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="center">valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Inversion.Capital</td>
+<td align="center">1,100,000.00</td>
+</tr>
+<tr class="even">
+<td align="left">Gasto.Anual</td>
+<td align="center">200,000.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Ahorro.Anual</td>
+<td align="center">500,000.00</td>
+</tr>
+<tr class="even">
+<td align="left">TMAR</td>
+<td align="center">0.10</td>
+</tr>
+<tr class="odd">
+<td align="left">Periodo</td>
+<td align="center">5.00</td>
+</tr>
+</tbody>
+</table>
+<p>Utilizando estos valores para replicar sobre el periodo de análisis de
+la inversión obtenemos los flujos de efectivo mostrados en la tabla
+<a href="procedimiento.html#tab:testsens2">2.6</a>:</p>
+<table>
+<caption><span id="tab:testsens2">Table 2.6: </span>Flujos de efectivo de caso base para prueba de Análisis de Sensibilidad</caption>
+<thead>
+<tr class="header">
+<th align="left">periodo</th>
+<th align="center">cashflow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">0</td>
+<td align="center">$-800,000</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="center">$300,000</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="center">$300,000</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="center">$300,000</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="center">$300,000</td>
+</tr>
+</tbody>
+</table>
+<p>Utilizando los valores de la tabla <a href="procedimiento.html#tab:testsens2">2.6</a> calculamos el
+valor presente neto en $150,959.63. Lo cual muestra que el caso base
+es rentable.</p>
+<p>Ahora proseguiremos a revisar la sensibilidad a los cambios sobre las
+cuatro variables que mencionamos previamente. Para esto vamos a
+especificar un +20% en el caso alto y un -20% en un caso bajo. Como ya
+habíamos comentado, el periodo se mantendrá constante.</p>
+<table>
+<caption><span id="tab:testsens3">Table 2.7: </span>Especificación de variación para prueba de Análisis de Sensibilidad</caption>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="center">bajo</th>
+<th align="center">alto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Inversion.Capital</td>
+<td align="center">-20.00%</td>
+<td align="center">20.00%</td>
+</tr>
+<tr class="even">
+<td align="left">Gasto.Anual</td>
+<td align="center">-20.00%</td>
+<td align="center">20.00%</td>
+</tr>
+<tr class="odd">
+<td align="left">Ahorro.Anual</td>
+<td align="center">-20.00%</td>
+<td align="center">20.00%</td>
+</tr>
+<tr class="even">
+<td align="left">TMAR</td>
+<td align="center">-20.00%</td>
+<td align="center">20.00%</td>
+</tr>
+<tr class="odd">
+<td align="left">Periodo</td>
+<td align="center">0.00%</td>
+<td align="center">0.00%</td>
+</tr>
+</tbody>
+</table>
+<p>Estos valores de especificación de los casos alto y bajo para cada una
+de las variables nos permite calcular el valor presente neto modificando
+cada una de las variables a su caso particular, mientras que los demás
+valores se mantienen como los valores del caso base. Estos valores de
+NPV los podemos ver en la tabla <a href="procedimiento.html#tab:testsens4">2.8</a>.</p>
+<table>
+<caption><span id="tab:testsens4">Table 2.8: </span>Valores de NPV para prueba de Análisis de Sensibilidad</caption>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="center">caso</th>
+<th align="center">npv</th>
+<th align="center">diff</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Inversion.Capital</td>
+<td align="center">alto</td>
+<td align="center">$-69,040</td>
+<td align="center">$-220,000</td>
+</tr>
+<tr class="even">
+<td align="left">Gasto.Anual</td>
+<td align="center">alto</td>
+<td align="center">$-15,835</td>
+<td align="center">$-166,795</td>
+</tr>
+<tr class="odd">
+<td align="left">Ahorro.Anual</td>
+<td align="center">alto</td>
+<td align="center">$567,946</td>
+<td align="center">$416,987</td>
+</tr>
+<tr class="even">
+<td align="left">TMAR</td>
+<td align="center">alto</td>
+<td align="center">$111,205</td>
+<td align="center">$-39,755</td>
+</tr>
+<tr class="odd">
+<td align="left">Inversion.Capital</td>
+<td align="center">bajo</td>
+<td align="center">$370,960</td>
+<td align="center">$220,000</td>
+</tr>
+<tr class="even">
+<td align="left">Gasto.Anual</td>
+<td align="center">bajo</td>
+<td align="center">$317,754</td>
+<td align="center">$166,795</td>
+</tr>
+<tr class="odd">
+<td align="left">Ahorro.Anual</td>
+<td align="center">bajo</td>
+<td align="center">$-266,027</td>
+<td align="center">$-416,987</td>
+</tr>
+<tr class="even">
+<td align="left">TMAR</td>
+<td align="center">bajo</td>
+<td align="center">$193,638</td>
+<td align="center">$42,678</td>
+</tr>
+</tbody>
+</table>
+<p>Lo cual nos permite realizar nuestra gráfica de tornado, la cual podemos
+observar en la figura <a href="procedimiento.html#fig:testsens5">2.4</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:testsens5"></span>
+<img src="_main_files/figure-html/testsens5-1.png" alt="Gráfica de Tornado de valores de prueba de funcionamiento" width="65%" />
+<p class="caption">
+Figure 2.4: Gráfica de Tornado de valores de prueba de funcionamiento
+</p>
+</div>
+<p>Como podemos observar en la gráfica tornado (figura
+<a href="procedimiento.html#fig:testsens5">2.4</a>), el mayor impacto proviene de la variable de
+Ahorro Anual, seguida de la Inversión de Capital. Lo cual nos indicaría
+que son las variables que deben de ser detalladas a mayor nivel en
+análisis subsecuentes por el impacto que tendría en la decisión de
+inversión.</p>
+<p>Podemos observar en la gráfica que el –Valor Presente Neto– tiene una
+correlación positiva con el Ahorro Anual, mientras que tiene una
+correlación negativa con la Inversión de Capital, el Gasto Anual y la
+TMAR, como era esperado.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="simulación-monte-carlo-1" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Simulación Monte Carlo<a href="procedimiento.html#simulación-monte-carlo-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para el ejemplo de simulación Monte Carlo vamos a seguir el siguiente
+flujo:</p>
+<ul>
+<li>Definir los valores medios</li>
+<li>Realizar el cálculo para una simulación</li>
+<li>Mostrar que se obtiene el mismo valor con la función Monte Carlo</li>
+<li>Mostrar los resultados de 1000 simulaciones</li>
+</ul>
+<table>
+<caption><span id="tab:tabMonteTest1">Table 2.9: </span>Valores caso base de Prueba Monte Carlo</caption>
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="20%" />
+<col width="13%" />
+<col width="10%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">tipo</th>
+<th align="center">periodo</th>
+<th align="center">material</th>
+<th align="center">volumen</th>
+<th align="left">precio</th>
+<th align="center">dist vol</th>
+<th align="center">dist pre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Producto</td>
+<td align="center">1</td>
+<td align="center">Producto1</td>
+<td align="center">1000</td>
+<td align="left">$5.00</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Producto</td>
+<td align="center">1</td>
+<td align="center">Producto2</td>
+<td align="center">500</td>
+<td align="left">$3.00</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">1</td>
+<td align="center">Material1</td>
+<td align="center">500</td>
+<td align="left">$1.00</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Material</td>
+<td align="center">1</td>
+<td align="center">Material2</td>
+<td align="center">800</td>
+<td align="left">$1.50</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">1</td>
+<td align="center">Material3</td>
+<td align="center">200</td>
+<td align="left">$2.00</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Utility</td>
+<td align="center">1</td>
+<td align="center">Electricidad</td>
+<td align="center">100</td>
+<td align="left">$0.05</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+</tr>
+<tr class="odd">
+<td align="left">Utility</td>
+<td align="center">1</td>
+<td align="center">Gas</td>
+<td align="center">50</td>
+<td align="left">$0.03</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+</tr>
+</tbody>
+</table>
+<p>En esta primera parte definimos productos, así como materiales y
+–utilities– necesarios para su producción. De cada uno de estos
+definimos: volumen, precio, distribución del valor de volumen y
+distribución del valor de su precio. Al igual definimos el valor de
+inflación 2.00% y el número de periodos a analizar
+10.</p>
+<p>Con estos valores podemos utilizar alguna función para generar el
+pronóstico de las diferentes variables durante el periodo estudiado.</p>
+<table>
+<caption><span id="tab:montetest2">Table 2.10: </span>Pronóstico de valores caso base de Prueba Monte Carlo</caption>
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="20%" />
+<col width="13%" />
+<col width="10%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">tipo</th>
+<th align="center">periodo</th>
+<th align="center">material</th>
+<th align="center">volumen</th>
+<th align="left">precio</th>
+<th align="center">dist vol</th>
+<th align="center">dist pre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Producto</td>
+<td align="center">9</td>
+<td align="center">Producto1</td>
+<td align="center">1000</td>
+<td align="left">$5.86</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Producto</td>
+<td align="center">9</td>
+<td align="center">Producto2</td>
+<td align="center">500</td>
+<td align="left">$3.51</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">9</td>
+<td align="center">Material1</td>
+<td align="center">500</td>
+<td align="left">$1.17</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Material</td>
+<td align="center">9</td>
+<td align="center">Material2</td>
+<td align="center">800</td>
+<td align="left">$1.76</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">9</td>
+<td align="center">Material3</td>
+<td align="center">200</td>
+<td align="left">$2.34</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Utility</td>
+<td align="center">9</td>
+<td align="center">Electricidad</td>
+<td align="center">100</td>
+<td align="left">$0.06</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+</tr>
+<tr class="odd">
+<td align="left">Utility</td>
+<td align="center">9</td>
+<td align="center">Gas</td>
+<td align="center">50</td>
+<td align="left">$0.04</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+</tr>
+<tr class="even">
+<td align="left">Producto</td>
+<td align="center">10</td>
+<td align="center">Producto1</td>
+<td align="center">1000</td>
+<td align="left">$5.98</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+</tr>
+<tr class="odd">
+<td align="left">Producto</td>
+<td align="center">10</td>
+<td align="center">Producto2</td>
+<td align="center">500</td>
+<td align="left">$3.59</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Material</td>
+<td align="center">10</td>
+<td align="center">Material1</td>
+<td align="center">500</td>
+<td align="left">$1.20</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">10</td>
+<td align="center">Material2</td>
+<td align="center">800</td>
+<td align="left">$1.79</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="even">
+<td align="left">Material</td>
+<td align="center">10</td>
+<td align="center">Material3</td>
+<td align="center">200</td>
+<td align="left">$2.39</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+</tr>
+<tr class="odd">
+<td align="left">Utility</td>
+<td align="center">10</td>
+<td align="center">Electricidad</td>
+<td align="center">100</td>
+<td align="left">$0.06</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+</tr>
+<tr class="even">
+<td align="left">Utility</td>
+<td align="center">10</td>
+<td align="center">Gas</td>
+<td align="center">50</td>
+<td align="left">$0.04</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+</tr>
+</tbody>
+</table>
+<p>Para este ejemplo sólo estamos aumentando el precio de acuerdo a la
+inflación. La tabla <a href="procedimiento.html#tab:montetest2">2.10</a> nos muestra los valores de los
+últimos periodos.</p>
+<p>Ya que contamos con esta base, podemos alterar los valores de forma
+aleatoria utilizando una función para generar estos valores.</p>
+<table>
+<caption><span id="tab:montetest3">Table 2.11: </span>Valores aleatorios de Prueba Monte Carlo</caption>
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="15%" />
+<col width="10%" />
+<col width="7%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">tipo</th>
+<th align="center">periodo</th>
+<th align="center">material</th>
+<th align="center">volumen</th>
+<th align="left">precio</th>
+<th align="center">dist_vol</th>
+<th align="center">dist_pre</th>
+<th align="center">volumen_r</th>
+<th align="left">precio_r</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Producto</td>
+<td align="center">1</td>
+<td align="center">Producto1</td>
+<td align="center">1,000</td>
+<td align="left">5.00</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+<td align="center">999.37</td>
+<td align="left">4.96</td>
+</tr>
+<tr class="even">
+<td align="left">Producto</td>
+<td align="center">1</td>
+<td align="center">Producto2</td>
+<td align="center">500</td>
+<td align="left">3.00</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+<td align="center">500.18</td>
+<td align="left">3.69</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">1</td>
+<td align="center">Material1</td>
+<td align="center">500</td>
+<td align="left">1.00</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+<td align="center">500.73</td>
+<td align="left">1.03</td>
+</tr>
+<tr class="even">
+<td align="left">Material</td>
+<td align="center">1</td>
+<td align="center">Material2</td>
+<td align="center">800</td>
+<td align="left">1.50</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+<td align="center">799.67</td>
+<td align="left">0.76</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">1</td>
+<td align="center">Material3</td>
+<td align="center">200</td>
+<td align="left">2.00</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+<td align="center">199.82</td>
+<td align="left">2.19</td>
+</tr>
+<tr class="even">
+<td align="left">Utility</td>
+<td align="center">1</td>
+<td align="center">Electricidad</td>
+<td align="center">100</td>
+<td align="left">0.05</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+<td align="center">104.00</td>
+<td align="left">0.16</td>
+</tr>
+<tr class="odd">
+<td align="left">Utility</td>
+<td align="center">1</td>
+<td align="center">Gas</td>
+<td align="center">50</td>
+<td align="left">0.03</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+<td align="center">39.00</td>
+<td align="left">-2.05</td>
+</tr>
+<tr class="even">
+<td align="left">Producto</td>
+<td align="center">2</td>
+<td align="center">Producto1</td>
+<td align="center">1,000</td>
+<td align="left">5.10</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+<td align="center">1,000.49</td>
+<td align="left">6.57</td>
+</tr>
+<tr class="odd">
+<td align="left">Producto</td>
+<td align="center">2</td>
+<td align="center">Producto2</td>
+<td align="center">500</td>
+<td align="left">3.06</td>
+<td align="center">normal</td>
+<td align="center">normal</td>
+<td align="center">500.74</td>
+<td align="left">3.21</td>
+</tr>
+<tr class="even">
+<td align="left">Material</td>
+<td align="center">2</td>
+<td align="center">Material1</td>
+<td align="center">500</td>
+<td align="left">1.02</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+<td align="center">498.77</td>
+<td align="left">3.19</td>
+</tr>
+<tr class="odd">
+<td align="left">Material</td>
+<td align="center">2</td>
+<td align="center">Material2</td>
+<td align="center">800</td>
+<td align="left">1.53</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+<td align="center">799.97</td>
+<td align="left">2.01</td>
+</tr>
+<tr class="even">
+<td align="left">Material</td>
+<td align="center">2</td>
+<td align="center">Material3</td>
+<td align="center">200</td>
+<td align="left">2.04</td>
+<td align="center">cauchy</td>
+<td align="center">normal</td>
+<td align="center">202.53</td>
+<td align="left">1.33</td>
+</tr>
+<tr class="odd">
+<td align="left">Utility</td>
+<td align="center">2</td>
+<td align="center">Electricidad</td>
+<td align="center">100</td>
+<td align="left">0.05</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+<td align="center">107.00</td>
+<td align="left">-1.09</td>
+</tr>
+<tr class="even">
+<td align="left">Utility</td>
+<td align="center">2</td>
+<td align="center">Gas</td>
+<td align="center">50</td>
+<td align="left">0.03</td>
+<td align="center">poisson</td>
+<td align="center">cauchy</td>
+<td align="center">44.00</td>
+<td align="left">6.69</td>
+</tr>
+</tbody>
+</table>
+<p>Como podemos observar en la tabla <a href="procedimiento.html#tab:montetest3">2.11</a>, generamos
+valores aleatorios con base en los valores pronosticados.</p>
+<table>
+<caption><span id="tab:tabMonteTest4">Table 2.12: </span>Flujos de Caja Libre de Prueba Monte Carlo</caption>
+<thead>
+<tr class="header">
+<th align="left">periodo</th>
+<th align="center">ingresos</th>
+<th align="center">costos</th>
+<th align="center">fcf</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="center">$6,803.20</td>
+<td align="center">$1,494.27</td>
+<td align="center">$3,716.25</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="center">$8,177.75</td>
+<td align="center">$3,644.13</td>
+<td align="center">$3,173.54</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="center">$5,194.90</td>
+<td align="center">$938.98</td>
+<td align="center">$2,979.14</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="center">$6,029.42</td>
+<td align="center">$2,778.26</td>
+<td align="center">$2,275.82</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="center">$7,902.15</td>
+<td align="center">$2,635.33</td>
+<td align="center">$3,686.77</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="center">$8,960.58</td>
+<td align="center">$4,079.49</td>
+<td align="center">$3,416.76</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="center">$6,138.58</td>
+<td align="center">$900.56</td>
+<td align="center">$3,666.61</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="center">$7,297.64</td>
+<td align="center">$3,875.64</td>
+<td align="center">$2,395.41</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="center">$8,985.57</td>
+<td align="center">$3,577.83</td>
+<td align="center">$3,785.42</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="center">$7,213.67</td>
+<td align="center">$2,665.63</td>
+<td align="center">$3,183.63</td>
+</tr>
+</tbody>
+</table>
+<p>Estos flujos de caja libre los podemos utilizar para calcular el valor
+presento neto, el cual resulta en $20,722.30.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:montetest5"></span>
+<img src="_main_files/figure-html/montetest5-1.png" alt="Histograma de prueba de Monte Carlo" width="65%" />
+<p class="caption">
+Figure 2.5: Histograma de prueba de Monte Carlo
+</p>
+</div>
+<p>El primer paso es comparar el valor de nuestro ejemplo contra la corrida
+de la función Monte Carlo para asegurar que esté funcionando
+correctamente y que pueda ser replicable al usar el mismo número de
+semilla: 1. Los siguientes valores deberían de ser iguales:
+$20,722.30 y $20,722.30.</p>
+<p>Una vez comprobado eso podemos correr la función con un mayor número de
+simulaciones: 100. Y podemos observar los resultados en la Figura:
+<a href="procedimiento.html#fig:montetest5">2.5</a>.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="matriz-de-toma-de-decisiones-1" class="section level3 hasAnchor" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Matriz de Toma de Decisiones<a href="procedimiento.html#matriz-de-toma-de-decisiones-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>[Agregar ejemplo de matriz de toma de decisiones]</strong></p>
+<div style="page-break-after: always;"></div>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Azzabi2020" class="csl-entry">
+Azzabi, Lotfi, Dorra Azzabi, Abdessamad Kobi, et al. 2020. <span>“The Multi-Criteria Approach for Decision Support.”</span> <em>International Series in Operations Research and Management Science</em>.
+</div>
+<div id="ref-Bartovsova2015" class="csl-entry">
+Bartošová, Viera, Peter Majerčák, and Dagmar Hrašková. 2015. <span>“Taking Risk into Account in the Evaluation of Economic Efficiency of Investment Projects: Traditional Methods.”</span> <em>Procedia Economics and Finance</em> 24: 68–75.
+</div>
+<div id="ref-Berk2017" class="csl-entry">
+Berk, Jonathan, and Peter DeMarzo. 2017. <span>“Corporate Finance (; Global Ed.).”</span> Pearson.
+</div>
+<div id="ref-Borgonovo2017" class="csl-entry">
+Borgonovo, Emanuele et al. 2017. <span>“Sensitivity Analysis.”</span> <em>An Introduction for the Management Scientist. International Series in Operations Research and Management Science. Cham, Switzerland: Springer</em>.
+</div>
+<div id="ref-CISL2019" class="csl-entry">
+Cambridge Institute for Sustainability Leadership (CISL), University of. 2019. <span>“In Search of Impact: Measuring the Full Value of Capital. Update: The Sustainable Investment Framework.”</span> January. <a href="https://www.cisl.cam.ac.uk/resources/sustainable-finance-publications/in-search-impact-measuring-full-value-capital-update">https://www.cisl.cam.ac.uk/resources/sustainable-finance-publications/in-search-impact-measuring-full-value-capital-update</a>.
+</div>
+<div id="ref-Crundwell2008" class="csl-entry">
+Crundwell, Frank. 2008. <em>Finance for Engineers: Evaluation and Funding of Capital Projects</em>. Springer Science &amp; Business Media.
+</div>
+<div id="ref-Dagpunar2007" class="csl-entry">
+Dagpunar, John Selim. 2007. <em>Simulation and Monte Carlo: With Applications in Finance and MCMC</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-Dheskali2020" class="csl-entry">
+Dheskali, Endrit, Apostolis A. Koutinas, and Ioannis K. Kookos. 2020. <span>“Risk Assessment Modeling of Bio-Based Chemicals Economics Based on Monte-Carlo Simulations.”</span> <em>Chemical Engineering Research and Design</em> 163: 273–80. https://doi.org/<a href="https://doi.org/10.1016/j.cherd.2020.09.011">https://doi.org/10.1016/j.cherd.2020.09.011</a>.
+</div>
+<div id="ref-Dudzinska2018" class="csl-entry">
+Dudzińska-Baryła, Renata. 2018. <span>“Analysis of Complex Decision Problems Based on Cumulative Prospect Theory.”</span> <em>Operations Research and Decisions</em> 28 (3): 5–16.
+</div>
+<div id="ref-Felli2004" class="csl-entry">
+Felli, James C, and Gordon B Hazen. 2004. <span>“Javelin Diagrams: A Graphical Tool for Probabilistic Sensitivity Analysis.”</span> <em>Decision Analysis</em> 1 (2): 93–107.
+</div>
+<div id="ref-Korhonen2020" class="csl-entry">
+Korhonen, Pekka J, Jyrki Wallenius, et al. 2020. <em>Making Better Decisions</em>. Springer.
+</div>
+<div id="ref-Lee2017" class="csl-entry">
+Lee, Boreum, Heetae Chae, Nak Heon Choi, Changhwan Moon, Sangbong Moon, and Hankwon Lim. 2017. <span>“Economic Evaluation with Sensitivity and Profitability Analysis for Hydrogen Production from Water Electrolysis in Korea.”</span> <em>International Journal of Hydrogen Energy</em> 42 (10): 6462–71.
+</div>
+<div id="ref-Lee2017economic" class="csl-entry">
+Lee, Boreum, Juheon Heo, Nak Heon Choi, Changhwan Moon, Sangbong Moon, and Hankwon Lim. 2017. <span>“Economic Evaluation with Uncertainty Analysis Using a Monte-Carlo Simulation Method for Hydrogen Production from High Pressure PEM Water Electrolysis in Korea.”</span> <em>International Journal of Hydrogen Energy</em> 42 (39): 24612–19.
+</div>
+<div id="ref-Prellezo2017" class="csl-entry">
+Prellezo, Raúl. 2017. <span>“Expected Economic Value of the Information Provided by Fishery Research Surveys.”</span> <em>Fisheries Research</em> 190: 95–102. https://doi.org/<a href="https://doi.org/10.1016/j.fishres.2017.02.004">https://doi.org/10.1016/j.fishres.2017.02.004</a>.
+</div>
+<div id="ref-Shonkwiler2013" class="csl-entry">
+Shonkwiler, Ronald W. 2013. <em>Finance with Monte Carlo</em>. Springer.
+</div>
+<div id="ref-Shonkwiler2009" class="csl-entry">
+Shonkwiler, Ronald W, and Franklin Mendivil. 2009. <em>Explorations in Monte Carlo Methods</em>. Springer Science &amp; Business Media.
+</div>
+<div id="ref-Sullivan2015" class="csl-entry">
+Sullivan, William G, Elin M Wicks, and C Patrick Koelling. 2015. <em>Engineering Economy</em>. Pearson.
+</div>
+<div id="ref-Tapiero2013" class="csl-entry">
+Tapiero, Charles S. 2013. <em>Engineering Risk and Finance</em>. Springer Science &amp; Business Media.
+</div>
+<div id="ref-Wealer2021" class="csl-entry">
+Wealer, B., S. Bauer, C.v. Hirschhausen, C. Kemfert, and L. Göke. 2021. <span>“Investing into Third Generation Nuclear Power Plants - Review of Recent Trends and Analysis of Future Investments Using Monte Carlo Simulation.”</span> <em>Renewable and Sustainable Energy Reviews</em> 143: 110836. https://doi.org/<a href="https://doi.org/10.1016/j.rser.2021.110836">https://doi.org/10.1016/j.rser.2021.110836</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduccion.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="resultados.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
