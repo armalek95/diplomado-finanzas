@@ -647,21 +647,28 @@ source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
 source("scripts/simulacionMonteCarlo.R", local = knitr::knit_global())
 
 # Correr Monte Carlo ilustrativo
+
 npv_mc <- monte_carlo(df = monte_test, 
             simulations = 1, 
             seed = 1,
-            n = periods, 
+            n = 1, 
             inflation = inflation)
 
 npv_mc_p <- currency(npv_mc$npv, symbol = "$", digits = 2L)
 # Correr Monte Carlo
 sim_n <- 100
 
-monte_run <- monte_carlo(df = monte_test, 
+if (file.exists("datos/monte_ejemplo5.csv")) {
+  monte_run <- read.csv(file = "datos/monte_ejemplo5.csv")
+} else {
+  monte_run <- monte_carlo(df = monte_test, 
                          simulations = sim_n, 
                          seed = 1,
                          n = periods, 
                          inflation = inflation)
+  
+  write.csv(monte_run, "datos/monte_ejemplo5.csv")
+}
 
 # Crear gráfica de distribución de los resultados de valor presente neto
 

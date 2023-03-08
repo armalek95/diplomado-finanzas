@@ -91,7 +91,7 @@ monte_carlo <- function(df,
         ),
         direct_labor = 0,
         overhead = overhead(
-          #Inicial inputs para funcion de overhead
+          #Inician inputs para funcion de overhead
           utility_vol = filter(rand, tipo == "Utility") %>%
             select(volumen_r),
           utility_price = filter(rand, tipo == "Utility") %>%
