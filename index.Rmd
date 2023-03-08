@@ -1,6 +1,6 @@
 ---
 title: |
-  ![](diagramas/FQ.jpg){width=2in}\tab\tab![](diagramas/UNAM.jpg){width=2in}  
+  ![](diagramas/FQ.jpg){width=2in}  ![](diagramas/UNAM.jpg){width=2in}  
   Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones
 author: |
   | Artur Herbert Malek Huidobro

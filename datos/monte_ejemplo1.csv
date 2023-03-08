@@ -1,0 +1,8 @@
+"","tipo","periodo","material","volumen","precio","dist_vol","dist_pre"
+"1","Producto",10,"Producto1",1000,5.97546284311156,"normal","normal"
+"2","Producto",10,"Producto2",500,3.58527770586693,"normal","normal"
+"3","Material",10,"Material1",500,1.19509256862231,"cauchy","normal"
+"4","Material",10,"Material2",800,1.79263885293347,"cauchy","normal"
+"5","Material",10,"Material3",200,2.39018513724462,"cauchy","normal"
+"6","Utility",10,"Electricidad",100,0.0597546284311156,"poisson","cauchy"
+"7","Utility",10,"Gas",50,0.0358527770586693,"poisson","cauchy"

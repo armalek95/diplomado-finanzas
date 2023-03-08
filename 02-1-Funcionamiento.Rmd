@@ -17,7 +17,7 @@ test_df <- tibble(
   cashflow = c(-5000,rep(1000,10))
 )
 
-test_df$cashflow <- currency(test_df$cashflow,digits = 0L)
+test_df$cashflow <- currency(test_df$cashflow, digits = 0L)
 
 knitr::kable(test_df, col.names = gsub("[.]", " ", names(test_df)), 
              caption = 
@@ -51,7 +51,7 @@ de EMV, podemos utilizar el siguiente ejemplo:
 
 Una decisión de inversión en una nueva tecnología que permitiría
 disminuir el costo de electricidad de una planta de producción de
-estireno (mediante la reduccion de la demanda energética comparado con
+estireno (mediante la reducción de la demanda energética comparado con
 la tecnología antigua). Supongamos para este ejemplo que los nodos de
 casualidad relevantes son los siguientes:
 
@@ -419,7 +419,7 @@ que son las variables que deben de ser detalladas a mayor nivel en
 análisis subsecuentes por el impacto que tendría en la decisión de
 inversión.
 
-Podemos observar en la gráfica que el --Valor Presente Neto-- tiene una
+Podemos observar en la gráfica que el -Valor Presente Neto- tiene una
 correlación positiva con el Ahorro Anual, mientras que tiene una
 correlación negativa con la Inversión de Capital, el Gasto Anual y la
 TMAR, como era esperado.
@@ -494,19 +494,23 @@ pronóstico de las diferentes variables durante el periodo estudiado.
 ```{r montetest2, echo = FALSE}
 
 # Generar los valores para todos los periodos considerados
-# Podriamos agregar funciones de forecasting para los precios y el volumen 
+# Podríamos agregar funciones de forecasting para los precios y el volumen 
 # esperado
-
 seed = 1
 set.seed(seed)
 
-for (i in seq_along(1:(periods-1))) {
-  ext_prod_mat <- prod_mat_test %>%
-    filter(periodo == max(periodo)) %>%
-    mutate(precio = precio * (1 + inflation),
-           periodo = periodo + 1)
-  
-  prod_mat_test <- bind_rows(prod_mat_test, ext_prod_mat)
+if (file.exists("datos/monte_ejemplo1.csv")) {
+  ext_prod_mat <- read.csv(file = "datos/monte_ejemplo1.csv")
+} else {
+  for (i in seq_along(1:(periods-1))) {
+    ext_prod_mat <- prod_mat_test %>%
+      filter(periodo == max(periodo)) %>%
+      mutate(precio = precio * (1 + inflation),
+             periodo = periodo + 1)
+    
+    prod_mat_test <- bind_rows(prod_mat_test, ext_prod_mat)
+  }
+  write.csv(ext_prod_mat, "datos/monte_ejemplo1.csv")
 }
 
 # Cambiar formato
