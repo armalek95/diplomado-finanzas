@@ -1,0 +1,277 @@
+## Proceso de Producción de Tabletas Personalizables
+
+El proceso de producción de las tabletas personalizables se puede
+visualizar en la siguiente imagen:
+
+![Proceso de Producción de Tabletas
+Personalizables](Diagramas/ProcesoProduccion.jpg){width="90%"}
+
+El componente de costos de la ecuación \@ref(eq:fcfeq) se puede expresar
+de la siguiente manera:
+
+```{=tex}
+\begin{equation}
+  Costo = C_{Directo} + C_{Mantenimiento} (\#eq:costos)
+\end{equation}
+```
+
+Cuyo componente de $C_{Directo}$ es el resultado del producto del costo unitario
+por el número de tabletas personalizables impresas en un el periodo:
+
+```{=tex}
+\begin{equation}
+  C_{Directo}=\left(C_{Material}+C_{Labor}+C_{Energia}+C_{Distribucion}\right)
+  \times N_tabletas
+  (\#eq:costodirecto)
+\end{equation}
+```
+
+En donde:
+
+-   $C_{Material}$ representa el costo de los materiales que constituyen
+    la tableta, desde los componentes activos hasta la cera que los
+    envuelve:
+    
+    \begin{equation}
+    C_{Material}=\sum_{i=0}^n\left(m_i \times c_i \right) + C_{frasco}
+    (\#eq:costomaterial)
+    \end{equation}
+    
+-   $C_{Labor}$ representa el costo de la mano de obra que conlleva
+    realizar el proceso de producción:
+    
+    \begin{equation}
+    C_{Labor}=\frac{t_{tableta}^{fabricacion} \times Salario_{trabajador}}
+    {\eta_{trabajador}}
+    (\#eq:costolabor)
+    \end{equation}
+    
+-   $C_{Energia}$ representa el costo energético de producción
+    ocasionado por 1) el gasto energético de la impresora 3D
+    ($G_{impresora}^E$) y 2) el gasto energético para el cambio de fase
+    de los componentes $G_{transicion}^E$ para vertirse en los moldes:
+
+```{=tex}
+\begin{align}
+  G_{impresora}^E & = t_{impresion} \times C_{impresora}^E \notag \\
+  G_{transicion}^E & = \sum_{i=0}^n\left(m_i c_s\right)\Delta T_1 + 
+  m_{cera}^{matrizCA}L_f^1 \notag \\
+  & + \sum_{j=0}^m\left(m_j c_s\right)\Delta T_1 + m_{cera}^{matrizSCA}L_f^1
+  \notag \\
+  & + m_{cera}^{exterior} \times (c_s\Delta T_2 + L_f^2) \notag \\
+  C_{Energia} & = \left(\frac{G_{transicion}^E}{\eta_{calentador}}
+  +G_{impresora}^E \right) \times C_{electricidad} (\#eq:costoenergetico)
+\end{align}
+```
+
+-   $C_D$ representa el costo de distribución de las tabletas el cual es
+    resultado de la relación entre el tiempo de transporte, la distancia
+    recorrida, el precio de la gasolina y el costo del trabajador
+    necesario para transportar cierto número de tabletas:
+
+```{=tex}
+    \begin{equation}
+    C_D = \frac{t_{transporte} \times C_{trabajador} + \frac{Distancia \times 
+    P_{gasolina}}{\eta_{vehiculo}}}{N_{tabletas}} 
+    (\#eq:costodistribucion)
+    \end{equation}
+```
+
+
+Mientras que el componente de ingresos de la ecuación \@ref(eq:fcfeq) se puede 
+expresar en función de los costos directos de la siguiente forma:
+
+```{=tex}
+  \begin{equation}
+  Ingresos = (1+MU) \times C_{Directo}
+  (\#eq:ingresos)
+  \end{equation}
+```
+
+En donde $MU$ (**Markup**) es un número decimal que representa la cantidad 
+adicional sobre el costo de producción que estamos agregando al precio.
+
+Con esta definición para el componente de ingresos, la ecuación \@ref(eq:fcfeq) 
+puede ser simplificada de la siguiente manera:
+
+```{=tex}
+\begin{align}
+  FCF & = (Ing. - Cost. - Depr.) \times (1-\tau_{c}) + Depr. - Inv. - \Delta CTN 
+  \notag \\
+  & = \left( \left((1 + MU) \times C_{Directo} \right) - 
+  (C_{Directo} + C_{Mantenimiento})-Depr. \right)
+  \times (1-\tau_{c}) + Depr. - Inv. - \Delta CTN \notag \\
+  & = \left( \left(MU \times C_{Directo} \right) - C_{Mantenimiento} - Depr.
+  \right)
+  \times (1-\tau_{c}) + Depr. - Inv. - \Delta CTN
+  (\#eq:fcfmod)
+\end{align}
+```
+
+### Composición de tabletas
+
+```{r porcentajetabletas, echo=FALSE}
+ca_cap <- 0.09
+ca_floor <- 0.06
+
+ma_cap <- 0.94
+ma_floor <- 0.91
+```
+
+
+La composición de las tabletas de formulación E1 es de 4%-9% de componente 
+activo y de 96%-91% de compuestos que forman la matriz (para la porción que 
+contiene el(los) compuesto(s) activo(s)). En la siguiente tabla podemos observar 
+la composición de la matriz:
+
+```{r composicion, echo=FALSE}
+comp <- read_csv("datos/composicion.csv")
+knitr::kable(comp, col.names = c("Compuesto", "%"),
+             caption = "Composición de la matriz con formulación E1",
+             align = "lc",
+             label = "tabcomposicion")
+```
+
+## Cálculo de material necesario para moldes
+
+Para poder calcular la cantidad de ABS que va a ser necesario para imprimir los 
+moldes en los cuales se van a formar las piezas (o componentes) de las 
+tabletas personalizables, utilizamos una forma sencilla como base para la 
+geometría de los componentes. Podemos observar la geometría en la siguiente 
+figura:
+
+![Geometría de los componentes de las tabletas y de sus moldes](Diagramas/geometria_tabletas.jpg){width="90%"}
+
+### Secuencia de cálculos
+
+1. Calcular el área transversal con base en $z$, el "ancho" de la matriz
+2. Calcular la masa de ABS necesaria para el primer molde $m_{ABS}^{MACA}$
+3. Calcular el espesor de la cubierta de matriz sin compuesto activo $\gamma$
+4. Calcular la masa de ABS necesaria para el segundo molde $m_{ABS}^{MAS}$
+5. Calcular la masa de la cera necesaria para cubrir las dos matrices $m_{cera}$
+6. Calcular la masa de ABS necesaria para el molde de la cubierta 
+$m_{ABS}^{cubierta}$
+
+### Variables
+
+Para poder resolver el problema necesitamos reducir los grados de libertad del 
+mismo a través de la definición de las siguientes variables y o relaciones 
+entre variables:
+
+a. El ancho de la matriz $z$
+b. La relación entre $x$ y $y$
+c. El espesor de las paredes del molde $\kappa$
+d. El espesor de la cubierta exterior de cera $\omega$
+
+
+### Ecuaciones para la resolución del problema
+
+*Paso 1a*
+
+```{=tex}
+\begin{equation}
+A^{MACA}=\frac{\sum_{i=1}^n\left(m_i / \rho_i \right)}{z}
+\end{equation}
+```
+
+*Paso 1b*
+
+```{=tex}
+\begin{align}
+y &= 2x \notag \\
+A^{MACA} &= x \times y = 3x \notag \\
+x &= \frac{A^{MACA}}{3} \notag \\
+y &= \frac{2}{3} \times A^{MACA} \notag
+\end{align}
+```
+
+*Paso 2*
+
+```{=tex}
+\begin{align}
+m_{ABS}^{MACA} & = \frac{V_{ABS}^{MACA}}{\rho_{ABS}} \notag \\
+& = \frac{\left((x+2\kappa)(y+2\kappa) - (x \times y) \right) \times z}
+{\rho_{ABS}} \notag \\
+& = \frac{2\kappa\left(x+y+2\kappa \right) \times z}{\rho_{ABS}}
+\end{align}
+```
+
+*Paso 3*
+
+```{=tex}
+\begin{align}
+V^{MAS}&=\left( (x+2\gamma)(y+2\gamma)-x \times y \right) \times z \notag \\
+V^{MAS}&=\sum_{j=1}^n(m_j / \rho_j) \notag \\
+\sum_{j=1}^n(m_j / \rho_j) &= \left( (x+2\gamma)(y+2\gamma)-x \times y \right) 
+\times z \notag \\
+0 &= 4\gamma^2+2(x+y)\gamma-\frac{\sum_{j=1}^n(m_j / \rho_j)}{z} (\#eq:gamma)
+\end{align}
+```
+
+Si observamos la ecuación \@ref(eq:gamma), podemos observar que está en la 
+forma de la fórmula general $x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$ en donde:
+
+```{=tex}
+\begin{align}
+a &= 4 \\
+b &= 2(x+y) \\
+c &= -\frac{\sum_{j=1}^n(m_j / \rho_j)}{z}
+\end{align}
+```
+
+Con lo cual podemos calcular el valor de $\gamma$:
+
+```{=tex}
+\begin{align
+\gamma &= \frac{-2(x+y)\pm\sqrt{\left(2(x+y)\right)^2-4(4) 
+\left( -\frac{\sum_{j=1}^n(m_j / \rho_j)}{z}\right)}}{2(4)} \notag \\
+ &= \frac{-2(x+y)\pm\sqrt{4(x+y)^2+16
+\left(\frac{\sum_{j=1}^n(m_j / \rho_j)}{z}\right)}}{8} (\#eq:gamma1)
+\end{align}
+```
+
+Dado que $\gamma$ representa el espesor de las paredes de los moldes, 
+el resultado de la ecuación \@ref(eq:gamma1) debe de ser positivo. Así que la 
+ecuación se reduce a:
+
+```{=tex}
+\begin{equation}
+\gamma = \frac{-2(x+y)+\sqrt{4(x+y)^2+16
+\left(\frac{\sum_{j=1}^n(m_j / \rho_j)}{z}\right)}}{8} (\#eq:gamma2)
+\end{equation}
+```
+
+*Paso 4*
+
+```{=tex}
+\begin{align}
+m_{ABS}&=\frac{V_{molde}^{MAS}}{\rho_{ABS}} \notag \\
+V_{molde}^{MAS} &= \left[\left(x+2(\gamma+\kappa) \right)
+\left(y+(\gamma+\kappa) \right)-V^{MAS} \right] \times z (\#eq:mpaso4)
+\end{align}
+```
+
+*Paso 5*
+
+```{=tex}
+\begin{align}
+m_{cera} &= \frac{V_{cera}}{\rho_{cera}} \notag \\
+V_{cera} &= \left\{\left[x+2(\gamma+\omega)\right]\left[z+2\omega\right]-
+(x+2\gamma)(z)\right\} \times (y+2\gamma) \notag \\
+&= \left\{xz+2x\omega+2z(\gamma+\omega)+4\omega(\gamma+\omega)-xz-2z\gamma 
+\right\} \times (y+2\gamma) \notag \\
+&= \left\{2x\omega+2z\omega+4\omega(\gamma+\omega) \right\} 
+\times (y+2\gamma) \notag \\
+&= 2\omega \left\{x+z+2(\gamma+\omega) \right\} \times (y+2\gamma) (\#eq:vcera)
+\end{align}
+```
+
+*Paso 6*
+
+```{=tex}
+\begin{align}
+m_{ABS}^{cubierta} &=\frac{V_{molde}^{cubierta}}{\rho_{cera}} \notag \\
+V_{molde}^{cubierta} &= \left\{\left[x+2(\gamma+\omega+\kappa) \right]\left[ 
+z+2(\omega+\kappa\right] \right\} \times (y+2\gamma) (\#eq:vmoldecubierta)
+\end{align}
+```

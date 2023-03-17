@@ -35,11 +35,13 @@ La razón de esto es la siguiente:
 
 ### Ecuaciones utilizadas
 
-**Flujo de Caja Libre (FCF)** La ecuación para el cálculo del flujo de caja libre *"Free Cash Flow"* utilizada a lo largo del trabajo fue tomada de [@Berk2017].
+**Flujo de Caja Libre (FCF)** 
+La ecuación (\@ref(eq:fcfeq)) para el cálculo del flujo de caja libre *"Free Cash Flow"* utilizada a lo largo del trabajo fue tomada de [@Berk2017].
 
 ```{=tex}
 \begin{equation}
   FCF = (Ing. - Cost. - Depr.) * (1-\tau_{c}) + Depr. - Inv. - \Delta CTN
+  (\#eq:fcfeq)
 \end{equation}
 ```
 Donde:
@@ -52,11 +54,14 @@ Donde:
 -   *Inv.* representa la inversión
 -   $\Delta CTN$ representa el cambio en el capital de trabajo neto
 
-**Valor Presente Neto (NPV)** La ecuación utilizada para el Valor Presente Neto es una adaptación de la ecuación para el método *"The Present Worth Method"* tomada de [@Sullivan2015].
+**Valor Presente Neto (NPV)** 
+La ecuación (\@ref(eq:npveq)) utilizada para el Valor Presente Neto es una 
+adaptación de la ecuación para el método *"The Present Worth Method"* tomada de [@Sullivan2015].
 
 ```{=tex}
 \begin{equation}
-NPV = \sum_{k=0}^{N}FCF_{k} (1+i)^{-k}
+  NPV = \sum_{k=0}^{N}FCF_{k} (1+i)^{-k}
+  (\#eq:npveq)
 \end{equation}
 ```
 Donde:
@@ -68,8 +73,11 @@ Donde:
 
 ### Valor Monetario Esperado
 
-Para los fines de este trabajo realizamos el cálculo del valor monetario esperado dado por la función: \begin{equation}
-EMV = \sum_{i=0}^{n}NPV_{i} \cdot p_{i}
+Para los fines de este trabajo realizamos el cálculo del valor monetario esperado dado por la función \@ref(eq:emveq): 
+
+\begin{equation}
+  EMV = \sum_{i=0}^{n}NPV_{i} \cdot p_{i}
+  (\#eq:emveq)
 \end{equation}
 
 Donde:

@@ -1,1 +1,25 @@
-# (APPENDIX) Apendice {-}
+# Apendice
+
+El siguiente código forma parte del cuerpo del trabajo:
+
+```{r ref.label=knitr::all_labels(), echo = T, eval = F}
+
+```
+
+Los siguientes scripts muestran las funciones que fueron llamadas a lo largo del
+trabajo:
+```{r, code = readLines("scripts/funciones_financieras.R")}
+
+```
+
+```{r, code = readLines("scripts/valorMonetarioEsperado.R")}
+```
+
+```{r, code = readLines("scripts/SensitivityAnalysis.R")}
+```
+
+```{r, code = readLines("scripts/simulacionMonteCarlo.R")}
+```
+
+```{r, code = readLines("scripts/tree_functions.R")}
+```

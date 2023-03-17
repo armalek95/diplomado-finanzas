@@ -38,7 +38,7 @@ monte_carlo <- function(df,
   
   set.seed(seed)
   
-  # Generar valores forecasted para el periodo
+  # Generar valores pronosticados para el periodo
   for (i in seq_along(1:(n-1))) {
     forecast_df <- df %>%
       filter(periodo == max(periodo)) %>%

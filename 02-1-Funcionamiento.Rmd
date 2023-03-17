@@ -500,7 +500,7 @@ seed = 1
 set.seed(seed)
 
 if (file.exists("datos/monte_ejemplo1.csv")) {
-  ext_prod_mat <- read.csv(file = "datos/monte_ejemplo1.csv")
+  prod_mat_test <- read.csv(file = "datos/monte_ejemplo1.csv")
 } else {
   for (i in seq_along(1:(periods-1))) {
     ext_prod_mat <- prod_mat_test %>%
@@ -510,7 +510,7 @@ if (file.exists("datos/monte_ejemplo1.csv")) {
     
     prod_mat_test <- bind_rows(prod_mat_test, ext_prod_mat)
   }
-  write.csv(ext_prod_mat, "datos/monte_ejemplo1.csv")
+  write.csv(prod_mat_test, "datos/monte_ejemplo1.csv")
 }
 
 # Cambiar formato
@@ -617,8 +617,8 @@ test_tab <- test_tab %>%
     tax_rate = 0.3))
 
 # Calcular Valor Presente Neto
-
-npv <- npv(rate = 0.09,
+discount_rate = 0.09
+npv <- npv(rate = discount_rate,
     cashflow = test_tab$fcf, period = test_tab$periodo)
 
 npv_p <- currency(npv, symbol = "$", digits = 2L)
@@ -639,7 +639,8 @@ knitr::kable(print, col.names = gsub("[_]", " ", names(print)),
 ```
 
 Estos flujos de caja libre los podemos utilizar para calcular el valor
-presento neto, el cual resulta en `r npv_p`.
+presento neto, el cual resulta en `r npv_p`, con bas en una tasa de descuento de 
+`r discount_rate`.
 
 ```{r montetest5, echo=FALSE, fig.cap = "Histograma de prueba de Monte Carlo", echo = FALSE, out.width="65%", fig.align = 'center'}
 source("scripts/funciones_financieras.R", local = knitr::knit_global())
@@ -651,12 +652,12 @@ source("scripts/simulacionMonteCarlo.R", local = knitr::knit_global())
 npv_mc <- monte_carlo(df = monte_test, 
             simulations = 1, 
             seed = 1,
-            n = 1, 
+            n = 2, 
             inflation = inflation)
 
 npv_mc_p <- currency(npv_mc$npv, symbol = "$", digits = 2L)
 # Correr Monte Carlo
-sim_n <- 100
+sim_n <- 300
 
 if (file.exists("datos/monte_ejemplo5.csv")) {
   monte_run <- read.csv(file = "datos/monte_ejemplo5.csv")
@@ -691,14 +692,8 @@ ggplot(monte_run, aes(x = npv)) +
   
 ```
 
-El primer paso es comparar el valor de nuestro ejemplo contra la corrida
-de la función Monte Carlo para asegurar que esté funcionando
-correctamente y que pueda ser replicable al usar el mismo número de
-semilla: `r seed`. Los siguientes valores deberían de ser iguales:
-`r npv_p` y `r npv_mc_p`.
-
-Una vez comprobado eso podemos correr la función con un mayor número de
-simulaciones: `r sim_n`. Y podemos observar los resultados en la Figura:
+Utilizando un número de
+simulaciones igual a: `r sim_n`, podemos observar los resultados en la Figura:
 \@ref(fig:montetest5).
 
 \newpage
