@@ -142,6 +142,17 @@ figura:
 
 ![Geometría de los componentes de las tabletas y de sus moldes](Diagramas/geometria_tabletas.jpg){width="90%"}
 
+Cabe mencionar que las figuras representan el área transversal sobre los ejes 
+$x$ e $y$ para las representaciones de la matriz con compuesto activo y para 
+la matriz sin compuesto activo, así como para las representaciones de sus 
+moldes respectivos. Mientras que las figuras para la cubierta de cera y su molde 
+representan en área transversal sobre los ejes $x$ y $z$.
+
+Están representados así, porque al momento de ensamblar los componentes 
+la matriz con compuesto activo se inserta en la matriz sin compuesto activo 
+sobre el eje $z$, mientras que las matrices se insertan en el exterior de cera 
+sobre el eje $y$.
+
 ### Secuencia de cálculos
 
 1. Calcular el área transversal con base en $z$, el "ancho" de la matriz
@@ -152,7 +163,7 @@ figura:
 6. Calcular la masa de ABS necesaria para el molde de la cubierta 
 $m_{ABS}^{cubierta}$
 
-### Variables
+### Grados de libertad
 
 Para poder resolver el problema necesitamos reducir los grados de libertad del 
 mismo a través de la definición de las siguientes variables y o relaciones 
@@ -178,10 +189,10 @@ A^{MACA}=\frac{\sum_{i=1}^n\left(m_i / \rho_i \right)}{z}
 
 ```{=tex}
 \begin{align}
-y &= 2x \notag \\
-A^{MACA} &= x \times y = 3x \notag \\
-x &= \frac{A^{MACA}}{3} \notag \\
-y &= \frac{2}{3} \times A^{MACA} \notag
+y &= \alpha x \notag \\
+A^{MACA} &= x \times y = \alpha x^2 \notag \\
+x &= \sqrt{\frac{A^{MACA}}{\alpha}} \notag \\
+y &= \alpha\sqrt{\frac{A^{MACA}}{\alpha}}  \notag
 \end{align}
 ```
 
@@ -189,10 +200,10 @@ y &= \frac{2}{3} \times A^{MACA} \notag
 
 ```{=tex}
 \begin{align}
-m_{ABS}^{MACA} & = \frac{V_{ABS}^{MACA}}{\rho_{ABS}} \notag \\
-& = \frac{\left((x+2\kappa)(y+2\kappa) - (x \times y) \right) \times z}
-{\rho_{ABS}} \notag \\
-& = \frac{2\kappa\left(x+y+2\kappa \right) \times z}{\rho_{ABS}}
+m_{ABS}^{MACA} & = V_{ABS}^{MACA}\times\rho_{ABS} \notag \\
+& = \left\{\left((x+2\kappa)(y+2\kappa) - (x \times y) \right) \times z \right\}
+\times \rho_{ABS} \notag \\
+& = \left\{2\kappa\left(x+y+2\kappa \right) \times z \right\} \times \rho_{ABS}
 \end{align}
 ```
 
@@ -213,16 +224,16 @@ forma de la fórmula general $x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$ en donde:
 
 ```{=tex}
 \begin{align}
-a &= 4 \\
-b &= 2(x+y) \\
-c &= -\frac{\sum_{j=1}^n(m_j / \rho_j)}{z}
+a &= 4 \notag \\
+b &= 2(x+y) \notag \\
+c &= -\frac{\sum_{j=1}^n(m_j / \rho_j)}{z} \notag
 \end{align}
 ```
 
 Con lo cual podemos calcular el valor de $\gamma$:
 
 ```{=tex}
-\begin{align
+\begin{align}
 \gamma &= \frac{-2(x+y)\pm\sqrt{\left(2(x+y)\right)^2-4(4) 
 \left( -\frac{\sum_{j=1}^n(m_j / \rho_j)}{z}\right)}}{2(4)} \notag \\
  &= \frac{-2(x+y)\pm\sqrt{4(x+y)^2+16
@@ -245,7 +256,7 @@ ecuación se reduce a:
 
 ```{=tex}
 \begin{align}
-m_{ABS}&=\frac{V_{molde}^{MAS}}{\rho_{ABS}} \notag \\
+m_{ABS}^{MAS}&=V_{molde}^{MAS} \times \rho_{ABS} \notag \\
 V_{molde}^{MAS} &= \left[\left(x+2(\gamma+\kappa) \right)
 \left(y+(\gamma+\kappa) \right)-V^{MAS} \right] \times z (\#eq:mpaso4)
 \end{align}
@@ -255,7 +266,7 @@ V_{molde}^{MAS} &= \left[\left(x+2(\gamma+\kappa) \right)
 
 ```{=tex}
 \begin{align}
-m_{cera} &= \frac{V_{cera}}{\rho_{cera}} \notag \\
+m_{cera} &= V_{cera}\times \rho_{cera} \notag \\
 V_{cera} &= \left\{\left[x+2(\gamma+\omega)\right]\left[z+2\omega\right]-
 (x+2\gamma)(z)\right\} \times (y+2\gamma) \notag \\
 &= \left\{xz+2x\omega+2z(\gamma+\omega)+4\omega(\gamma+\omega)-xz-2z\gamma 
@@ -270,8 +281,9 @@ V_{cera} &= \left\{\left[x+2(\gamma+\omega)\right]\left[z+2\omega\right]-
 
 ```{=tex}
 \begin{align}
-m_{ABS}^{cubierta} &=\frac{V_{molde}^{cubierta}}{\rho_{cera}} \notag \\
+m_{ABS}^{cubierta} &=V_{molde}^{cubierta}\times \rho_{ABS} \notag \\
 V_{molde}^{cubierta} &= \left\{\left[x+2(\gamma+\omega+\kappa) \right]\left[ 
-z+2(\omega+\kappa\right] \right\} \times (y+2\gamma) (\#eq:vmoldecubierta)
+z+2(\omega+\kappa)\right] - V_{cera}\right\} \times (y+2\gamma) 
+(\#eq:vmoldecubierta)
 \end{align}
 ```
