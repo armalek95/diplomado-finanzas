@@ -19,7 +19,7 @@ test_df <- tibble(
 
 test_df$cashflow <- currency(test_df$cashflow, digits = 0L)
 
-knitr::kable(test_df, col.names = gsub("[.]", " ", names(test_df)), 
+kbl(test_df, col.names = gsub("[.]", " ", names(test_df)), 
              caption = 
                "Flujos de efectivo de prueba", 
              align = "lccc")
@@ -99,8 +99,8 @@ emv_test_df <- as.data.frame(emv_test_df)
 emv_test_df$Alto <- currency(emv_test_df$Alto, symbol = "$", digits = 0L)
 emv_test_df$Bajo <- currency(emv_test_df$Bajo, symbol = "$", digits = 0L)
 
-# Dar formato de tabla usando knitr
-knitr::kable(emv_test_df, col.names = gsub("[.]", " ", names(emv_test_df)), 
+# Dar formato de tabla
+kbl(emv_test_df, col.names = gsub("[.]", " ", names(emv_test_df)), 
              caption = "Valores para prueba de funcionamiento de EMV", 
              align = "lccc")
 
@@ -212,7 +212,7 @@ df$prob <- percent(df$prob)
 
 
 # Mostrar como table usando knitr
-knitr::kable(df, col.names = c("Nivel", "Probabilidad", "NVP"), 
+kbl(df, col.names = c("Nivel", "Probabilidad", "NVP"), 
              caption = "Resultados de prueba de Valor Monetario Esperado", 
              align = "lccc")
 
@@ -283,7 +283,7 @@ print_base <- base_case
 print_base$valor <- currency(print_base$valor, symbol = "", digits = 2L)
 
 # Mostrar como tabla usando knitr
-knitr::kable(print_base, col.names = gsub("[.]", " ", names(print_base)), 
+kbl(print_base, col.names = gsub("[.]", " ", names(print_base)), 
              caption = "Valores de caso base para prueba de Análisis de Sensibilidad", 
              align = "lccc")
 
@@ -314,7 +314,7 @@ base_npv_p <- currency(base_npv, symbol = "$", digits = 2L)
 base_tib$cashflow <- currency(base_tib$cashflow, symbol = "$", digits = 0L)
 
 # Mostrar como tabla usando knitr
-knitr::kable(base_tib, col.names = gsub("[.]", " ", names(base_tib)), 
+kbl(base_tib, col.names = gsub("[.]", " ", names(base_tib)), 
              caption = "Flujos de efectivo de caso base para prueba de Análisis de Sensibilidad", 
              align = "lccc")
 
@@ -344,7 +344,7 @@ print_var$bajo <- percent(print_var$bajo)
 print_var$alto <- percent(print_var$alto)
 
 # Mostrar como tabla usando knitr
-knitr::kable(print_var, col.names = gsub("[.]", " ", names(print_var)), 
+kbl(print_var, col.names = gsub("[.]", " ", names(print_var)), 
              caption = "Especificación de variación para prueba de Análisis de Sensibilidad", 
              align = "lccc")
 ```
@@ -389,7 +389,7 @@ print_varc$npv <- currency(print_varc$npv, symbol = "$", digits = 0L)
 print_varc$diff <- currency(print_varc$diff, symbol = "$", digits = 0L)
 
 # Mostrar como tabla usando knitr
-knitr::kable(print_varc, col.names = gsub("[.]", " ", names(print_varc)), 
+kbl(print_varc, col.names = gsub("[.]", " ", names(print_varc)), 
              caption = "Valores de NPV para prueba de Análisis de Sensibilidad", 
              align = "lccc")
 
@@ -476,7 +476,7 @@ print <- prod_mat_test
 print$precio <- currency(print$precio, symbol = "$", digits = 2L)
 
 # Mostrar como tabla usando knitr
-knitr::kable(print, col.names = gsub("[_]", " ", names(print)), 
+kbl(print, col.names = gsub("[_]", " ", names(print)), 
              caption = "Valores caso base de Prueba Monte Carlo", 
              align = "lccc", label = "tabMonteTest1")
 ```
@@ -518,7 +518,7 @@ print <- prod_mat_test %>% filter(periodo > 8)
 print$precio <- currency(print$precio, symbol = "$", digits = 2L)
 
 # Mostrar como tabla usando knitr
-knitr::kable(print, col.names = gsub("[_]", " ", names(print)), 
+kbl(print, col.names = gsub("[_]", " ", names(print)), 
              caption = "Pronóstico de valores caso base de Prueba Monte Carlo", 
              align = "lccc")
 
@@ -550,10 +550,11 @@ print <- rand_prodmat_test %>% filter(periodo < 3)
 #print$precio_r <- currency(print$precio_r, symbol = "$", digits = 2L)
 
 # Mostrar como tabla usando knitr
-knitr::kable(print, col.names = gsub("[.]", " ", names(print)), 
+kbl(print, col.names = gsub("[.]", " ", names(print)), 
              caption = "Valores aleatorios de Prueba Monte Carlo", 
              align = "lccc", digits = 2,
-             format.args = list(big.mark = ",", scientific = FALSE))
+             format.args = list(big.mark = ",", scientific = FALSE)) %>%
+  kable_styling(latex_options = c("scale_down"))
 ```
 
 Como podemos observar en la tabla \@ref(tab:montetest3), generamos
@@ -633,7 +634,7 @@ print$fcf <- currency(print$fcf,
                            symbol = "$", digits = 2L)
 
 # Mostrar como tabla usando knitr
-knitr::kable(print, col.names = gsub("[_]", " ", names(print)), 
+kbl(print, col.names = gsub("[_]", " ", names(print)), 
              caption = "Flujos de Caja Libre de Prueba Monte Carlo", 
              align = "lccc", label = "tabMonteTest4")
 ```

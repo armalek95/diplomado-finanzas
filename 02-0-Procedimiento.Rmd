@@ -240,7 +240,7 @@ Impacto.Ambiental <- c("1/4","1/2","1")
 df <- cbind(Criterio, VPN,Beneficio.Social,Impacto.Ambiental)
 df <- as.data.frame(df)
 
-knitr::kable(df, col.names = gsub("[.]", " ", names(df)), 
+kbl(df, col.names = gsub("[.]", " ", names(df)), 
              caption = "Comparativo del valor de los criterios (AHP)", 
              align = "lccc")
 

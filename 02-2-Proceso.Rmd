@@ -1,13 +1,43 @@
-## Proceso de Producción de Tabletas Personalizables
+## Proceso de Producción
+
+```{r procesoprod, fig.cap="Proceso de Producción de Tabletas E1"}
+knitr::include_graphics("diagramas/ProcesoProduccion.jpg")
+```
 
 El proceso de producción de las tabletas personalizables se puede
-visualizar en la siguiente imagen:
+visualizar en la figura \@ref(fig:procesoprod). Esta imagen ilustra nuestra
+adaptación de los pasos para producir las tabletas personalizables descritos en 
+[@Neriah2020]. Estos son:
 
-![Proceso de Producción de Tabletas
-Personalizables](Diagramas/ProcesoProduccion.jpg){width="90%"}
+1. Imprimir los moldes
+2. Pesar los compuestos
+3. Calentar los compuestos
+4. Verter en los moldes correspondientes
+5. Enfriar
+6. Extraer los componentes de los moldes
+7. Ensamblar los componentes
 
-El componente de costos de la ecuación \@ref(eq:fcfeq) se puede expresar
-de la siguiente manera:
+Los pasos 2 a 7 son secuenciales, ya que la impresión de los moldes se puede 
+realizar en paralelo a pesar y calentar los compuestos que conformarán las 
+piezas de las tabletas personalizables.
+
+Dentro de cada uno de los pasos podemos observar un ícono que representa el 
+insumo necesario. Los insumos considerados en este trabajo son:
+
+
+* Energía Eléctrica
+* Energía Térmica
+* Labor Manual
+* Tiempo de espera
+
+
+En los primeros dos pasos podemos observar que está dividido en tres partes, ya 
+que los compuestos que conformarán las diferentes piezas se deben de pesar y 
+calentar por separado ya que serán vertidas en diferentes moldes con la 
+respectiva forma complementaria.
+
+Esta descripción del proceso nos lleva a que el componente de costos de la 
+ecuación \@ref(eq:fcfeq) se pueda expresar de la siguiente manera:
 
 ```{=tex}
 \begin{equation}
@@ -21,7 +51,7 @@ por el número de tabletas personalizables impresas en un el periodo:
 ```{=tex}
 \begin{equation}
   C_{Directo}=\left(C_{Material}+C_{Labor}+C_{Energia}+C_{Distribucion}\right)
-  \times N_tabletas
+  \times N_{tabletas}
   (\#eq:costodirecto)
 \end{equation}
 ```
@@ -33,7 +63,7 @@ En donde:
     envuelve:
     
     \begin{equation}
-    C_{Material}=\sum_{i=0}^n\left(m_i \times c_i \right) + C_{frasco}
+    C_{Material}=\sum_{i=0}^n\left(m_i \times c_i \right) + C_{frasco}^{tableta}
     (\#eq:costomaterial)
     \end{equation}
     
@@ -121,12 +151,13 @@ ma_floor <- 0.91
 
 La composición de las tabletas de formulación E1 es de 4%-9% de componente 
 activo y de 96%-91% de compuestos que forman la matriz (para la porción que 
-contiene el(los) compuesto(s) activo(s)). En la siguiente tabla podemos observar 
-la composición de la matriz:
+contiene el compuesto activo). En la tabla \@ref(tab:tabcomposicion) podemos 
+observar la composición de la matriz:
 
-```{r composicion, echo=FALSE}
-comp <- read_csv("datos/composicion.csv")
-knitr::kable(comp, col.names = c("Compuesto", "%"),
+```{r composicion}
+comp <- read_csv("datos/composicion.csv", show_col_types = FALSE)
+
+kbl(mutate(comp, Composicion_E1=Composicion_E1*100), col.names = c("Compuesto", "%"),
              caption = "Composición de la matriz con formulación E1",
              align = "lc",
              label = "tabcomposicion")
@@ -134,13 +165,23 @@ knitr::kable(comp, col.names = c("Compuesto", "%"),
 
 ## Cálculo de material necesario para moldes
 
-Para poder calcular la cantidad de ABS que va a ser necesario para imprimir los 
-moldes en los cuales se van a formar las piezas (o componentes) de las 
-tabletas personalizables, utilizamos una forma sencilla como base para la 
-geometría de los componentes. Podemos observar la geometría en la siguiente 
-figura:
+```{r geotabletas, fig.width=0.9, fig.cap="Geometría de los componentes y sus moldes"}
+knitr::include_graphics("Diagramas/geometria_tabletas.jpg")
+```
 
-![Geometría de los componentes de las tabletas y de sus moldes](Diagramas/geometria_tabletas.jpg){width="90%"}
+Para poder calcular la cantidad de ABS requerida, para imprimir los 
+moldes en los cuales se van a formar las piezas (o componentes) de las 
+tabletas personalizables, es necesario hacer ciertas suposiciones respecto a la 
+geometría de las pastillas y de sus moldes. Este trabajo utiliza el rectángulo
+como base para la geometría de los componentes (ver la figura 
+\@ref(fig:geotabletas)).
+
+En esta figura podemos observar dos columnas y tres filas. En la columna del 
+lado izquierdo se muestra la geometría de los componentes que conforman la 
+tableta, mientras que del lado derecho está se encuentra el molde que generaría 
+el componente. La primer fila contiene la matriz con el compuesto activo (o 
+matriz interna), la segunda fila muestra la matriz sin el compuesto activo (o 
+matriz externa), y el último renglón ilustra la cubierta externa de cera.
 
 Cabe mencionar que las figuras representan el área transversal sobre los ejes 
 $x$ e $y$ para las representaciones de la matriz con compuesto activo y para 
@@ -148,20 +189,22 @@ la matriz sin compuesto activo, así como para las representaciones de sus
 moldes respectivos. Mientras que las figuras para la cubierta de cera y su molde 
 representan en área transversal sobre los ejes $x$ y $z$.
 
-Están representados así, porque al momento de ensamblar los componentes 
+Están representados así, porque son las superficies que nos son de mayor 
+importancia, ya que al momento de ensamblar los componentes 
 la matriz con compuesto activo se inserta en la matriz sin compuesto activo 
 sobre el eje $z$, mientras que las matrices se insertan en el exterior de cera 
 sobre el eje $y$.
 
 ### Secuencia de cálculos
 
-1. Calcular el área transversal con base en $z$, el "ancho" de la matriz
-2. Calcular la masa de ABS necesaria para el primer molde $m_{ABS}^{MACA}$
-3. Calcular el espesor de la cubierta de matriz sin compuesto activo $\gamma$
-4. Calcular la masa de ABS necesaria para el segundo molde $m_{ABS}^{MAS}$
-5. Calcular la masa de la cera necesaria para cubrir las dos matrices $m_{cera}$
-6. Calcular la masa de ABS necesaria para el molde de la cubierta 
-$m_{ABS}^{cubierta}$
+1. Calcular el área transversal de la matriz interna
+2. Calcular la masa de ABS ($m_{ABS}^{MACA}$) necesaria para el primer molde
+3. Calcular el espesor ($\gamma$) de la cubierta de matriz sin compuesto activo 
+4. Calcular la masa de ABS ($m_{ABS}^{MAS}$) necesaria para el segundo molde
+5. Calcular la masa de cera ($m_{cera}$) necesaria para cubrir las dos matrices
+6. Calcular la masa de ABS ($m_{ABS}^{cubierta}$) necesaria para el molde de la 
+cubierta
+
 
 ### Grados de libertad
 
@@ -169,34 +212,99 @@ Para poder resolver el problema necesitamos reducir los grados de libertad del
 mismo a través de la definición de las siguientes variables y o relaciones 
 entre variables:
 
-a. El ancho de la matriz $z$
-b. La relación entre $x$ y $y$
-c. El espesor de las paredes del molde $\kappa$
-d. El espesor de la cubierta exterior de cera $\omega$
+a. El ancho de la matriz, $z$
+b. La relación entre la base $x$ y la altura $y$ de la matriz, $\alpha$
+c. El espesor de las paredes del molde, $\kappa$
+d. El espesor de la cubierta exterior de cera, $\omega$
 
 
 ### Ecuaciones para la resolución del problema
 
-*Paso 1a*
+*Paso 1a*: Cálculo del área transversal $A^{MACA}$
+
+Iniciamos con conocimiento de la masa del compuesto activo, y por lo tanto, 
+la masa de los compuestos de la matriz. Utilizando la densidad a 25 grados 
+Celcius podemos obtener el volumen total de la matriz interna.
 
 ```{=tex}
 \begin{equation}
-A^{MACA}=\frac{\sum_{i=1}^n\left(m_i / \rho_i \right)}{z}
+V^{MACA}=\sum_{i=1}^n\left(m_i / \rho_i \right)
 \end{equation}
 ```
 
-*Paso 1b*
+Una vez que calculamos el volumen total de los compuestos, podemos utilizar el 
+ancho de la matriz ($z$) para obtener el área transversal correspondiente:
+
+```{=tex}
+\begin{equation}
+A^{MACA}=\frac{V^{MACA}}{z}
+\end{equation}
+```
+
+*Paso 1b*: Cálculo de la base y de la altura de $A^{MACA}$
+
+```{r geom1, out.width="50%", fig.align="center", fig.cap="Área transversal de la matriz interna"}
+knitr::include_graphics("diagramas/geom_1.png")
+```
+
+
+El área que estamos buscando describir es la de un rectángulo (figura 
+\@ref(fig:geom1)), por lo que:
+
+```{=tex}
+\begin{equation}
+A^{MACA}= x \times y \notag
+\end{equation}
+```
+
+Para la solución del problema consideramos que hay una relación entre la base 
+$x$ y la altura $y$ del rectángulo, la cual es descrita por $\alpha$:
+
+```{=tex}
+\begin{equation}
+y = \alpha x \notag
+\end{equation}
+```
+
+Podemos sustituir $y$ en la ecuación original del área y después despejar 
+para obtener cada uno de los lados:
 
 ```{=tex}
 \begin{align}
-y &= \alpha x \notag \\
 A^{MACA} &= x \times y = \alpha x^2 \notag \\
 x &= \sqrt{\frac{A^{MACA}}{\alpha}} \notag \\
 y &= \alpha\sqrt{\frac{A^{MACA}}{\alpha}}  \notag
 \end{align}
 ```
 
-*Paso 2*
+*Paso 2*: Cálculo de la masa necesaria para el primer molde
+
+```{r geom2, out.width="50%", fig.align="center",  fig.cap="Volumen del molde de la matriz interna"}
+knitr::include_graphics("diagramas/geom_2.png")
+```
+
+La figura \@ref(fig:geom2) muestra la geometría específica al molde necesario 
+para producir la matriz interna, cuyo volumen podemos calcular utilizando la 
+siguiente fórmula:
+
+```{=tex}
+\begin{equation}
+V_{ABS}^{MACA}=\left\{\left[(x+2\kappa)(y+2\kappa) - (x \times y) \right] 
+\times z \right\} (\#eq:volabsmaca)
+\end{equation}
+```
+
+Con base en el volumen podemos calcular la masa necesaria para producir dicho 
+molde:
+
+```{=tex}
+\begin{equation}
+m_{ABS}^{MACA} = V_{ABS}^{MACA}\times\rho_{ABS} (\#eq:masaabsmaca)
+\end{equation}
+```
+
+Sustituyendo la ecuación \@ref(eq:volabsmaca) en la ecuación 
+\@ref(eq:masaabsmaca), obtenemos:
 
 ```{=tex}
 \begin{align}
@@ -207,20 +315,44 @@ m_{ABS}^{MACA} & = V_{ABS}^{MACA}\times\rho_{ABS} \notag \\
 \end{align}
 ```
 
-*Paso 3*
+*Paso 3*: Cálculo del espesor ($\gamma$) de la matriz externa
+
+```{r geom3, out.width="50%", fig.align="center", fig.cap="Volumen de la matriz externa"}
+knitr::include_graphics("diagramas/geom_3.png")
+```
+
+Podemos representar el volumen de la matriz externa mostrada en la figura 
+\@ref(fig:geom3) a través de la siguiente ecuación:
+
+```{=tex}
+\begin{equation}
+V^{MAS}=\left[ (x+2\gamma)(y+2\gamma)-(x \times y) \right] \times z 
+(\#eq:volmasgeom)
+\end{equation}
+```
+
+Al mismo tiempo, podemos calcular el mismo volumen utilizando el volumen de los 
+compuestos que componen el diseño de la tableta:
+
+```{=tex}
+\begin{equation}
+V^{MAS}=\sum_{j=1}^n(m_j / \rho_j) (\#eq:volmasdens)
+\end{equation}
+```
+
+De manera que podemos igualar las dos ecuaciones y reorganizar la ecuación de 
+la siguiente forma:
 
 ```{=tex}
 \begin{align}
-V^{MAS}&=\left( (x+2\gamma)(y+2\gamma)-x \times y \right) \times z \notag \\
-V^{MAS}&=\sum_{j=1}^n(m_j / \rho_j) \notag \\
 \sum_{j=1}^n(m_j / \rho_j) &= \left( (x+2\gamma)(y+2\gamma)-x \times y \right) 
 \times z \notag \\
 0 &= 4\gamma^2+2(x+y)\gamma-\frac{\sum_{j=1}^n(m_j / \rho_j)}{z} (\#eq:gamma)
 \end{align}
 ```
 
-Si observamos la ecuación \@ref(eq:gamma), podemos observar que está en la 
-forma de la fórmula general $x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$ en donde:
+Podemos observa que al reorganizar la ecuación \@ref(eq:gamma), llegamos a un 
+paralelo de la fórmula general $x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$ en donde:
 
 ```{=tex}
 \begin{align}
@@ -242,8 +374,8 @@ Con lo cual podemos calcular el valor de $\gamma$:
 ```
 
 Dado que $\gamma$ representa el espesor de las paredes de los moldes, 
-el resultado de la ecuación \@ref(eq:gamma1) debe de ser positivo. Así que la 
-ecuación se reduce a:
+el resultado de la ecuación \@ref(eq:gamma1) debe de ser positivo. Con lo que 
+podemos reducir la ecuación de la siguiente forma:
 
 ```{=tex}
 \begin{equation}
@@ -252,21 +384,50 @@ ecuación se reduce a:
 \end{equation}
 ```
 
-*Paso 4*
+*Paso 4*: Cálculo de la masa necesaria para el segundo molde
 
-```{=tex}
-\begin{align}
-m_{ABS}^{MAS}&=V_{molde}^{MAS} \times \rho_{ABS} \notag \\
-V_{molde}^{MAS} &= \left[\left(x+2(\gamma+\kappa) \right)
-\left(y+(\gamma+\kappa) \right)-V^{MAS} \right] \times z (\#eq:mpaso4)
-\end{align}
+```{r geom4, out.width="50%", fig.align="center", fig.cap="Volumen del molde para la matriz externa"}
+knitr::include_graphics("diagramas/geom_4.png")
 ```
 
-*Paso 5*
+El flujo para calcular la masa de ABS que necesitamos para imprimir el 
+segundo molde es idéntico al que utilizamos para el paso 2, sólamente que con 
+una geometría un poco más complicada (ver figura \@ref(fig:geom4)).
+
+Empezamos con la ecuación para describir el volumen del molde:
+
+```{=tex}
+\begin{equation}
+V_{molde}^{MAS} = \left\{\left[x+2(\gamma+\kappa) \right]
+\left[y+(\gamma+\kappa) \right]\right\} \times z -V^{MAS}
+\end{equation}
+```
+
+Una vez que calculemos el valor del volumen, lo introducimos en la siguiente 
+ecuación para obtener la masa con base en la densidad del compuesto:
+
+```{=tex}
+\begin{equation}
+m_{ABS}^{MAS}=V_{molde}^{MAS} \times \rho_{ABS} (\#eq:masaabsmas)
+\end{equation}
+```
+
+*Paso 5*: Cálculo de la masa de cera
+
+```{r geom5, out.width="50%", fig.align="center", fig.cap="Volumen del exterior de cera"}
+knitr::include_graphics("diagramas/geom_5.png")
+```
+
+La cera exterior sólo nos ayuda a delimitar el camino a través del cuál se 
+degrada la tableta, pero no tiene efecto sobre el perfil de liberación, ni la 
+dosis, podemos utilizar un espesor $\omega$ tal que cumpla su función con la
+mínima cantidad de masa posible.
+
+Tal como lo hicimos en los pasos 2 y 4, empezamos con el cálculo del volumen de 
+la cubierta:
 
 ```{=tex}
 \begin{align}
-m_{cera} &= V_{cera}\times \rho_{cera} \notag \\
 V_{cera} &= \left\{\left[x+2(\gamma+\omega)\right]\left[z+2\omega\right]-
 (x+2\gamma)(z)\right\} \times (y+2\gamma) \notag \\
 &= \left\{xz+2x\omega+2z(\gamma+\omega)+4\omega(\gamma+\omega)-xz-2z\gamma 
@@ -277,13 +438,40 @@ V_{cera} &= \left\{\left[x+2(\gamma+\omega)\right]\left[z+2\omega\right]-
 \end{align}
 ```
 
-*Paso 6*
+El cual multiplicamos por su densidad para obtener la masa necesaria:
 
 ```{=tex}
-\begin{align}
-m_{ABS}^{cubierta} &=V_{molde}^{cubierta}\times \rho_{ABS} \notag \\
-V_{molde}^{cubierta} &= \left\{\left[x+2(\gamma+\omega+\kappa) \right]\left[ 
+\begin{equation}
+m_{cera} = V_{cera}\times \rho_{cera}(\#eq:masacera)
+\end{equation}
+```
+
+*Paso 6*: Cálculo de la masa necesaria para el tercer molde
+
+```{r geom6, out.width="50%", fig.align="center", fig.cap="Volumen del molde para la cubierta"}
+knitr::include_graphics("diagramas/geom_6.png")
+```
+
+Mismo flujo que en los pasos 2, 4 y 5, empezamos con el cálculo del volumen 
+representado por la figura \@ref(fig:geom6) de acuerdo a la siguiente ecuación:
+
+```{=tex}
+\begin{equation}
+V_{molde}^{cubierta} = \left\{\left[x+2(\gamma+\omega+\kappa) \right]\left[ 
 z+2(\omega+\kappa)\right] - V_{cera}\right\} \times (y+2\gamma) 
 (\#eq:vmoldecubierta)
-\end{align}
+\end{equation}
 ```
+
+El cual sustituimos en la siguiente ecuación para obtener la masa necesaria:
+
+```{=tex}
+\begin{equation}
+m_{ABS}^{cubierta} =V_{molde}^{cubierta}\times \rho_{ABS} 
+(\#eq:masaabscubierta)
+\end{equation}
+```
+
+Con la masa de ABS obtenida en los pasos 2, 4 y 6, así como la masa de cera 
+obtenida en el paso 5, podemos continuar con el cálculo de costos directos 
+de producción.

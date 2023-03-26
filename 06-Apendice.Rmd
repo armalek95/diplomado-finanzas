@@ -1,4 +1,4 @@
-# Apendice
+# Apéndice
 
 El siguiente código forma parte del cuerpo del trabajo:
 
@@ -8,18 +8,24 @@ El siguiente código forma parte del cuerpo del trabajo:
 
 Los siguientes scripts muestran las funciones que fueron llamadas a lo largo del
 trabajo:
-```{r, code = readLines("scripts/funciones_financieras.R")}
+```{r, code = readLines("scripts/funciones_financieras.R"), echo=TRUE, eval=FALSE}
 
 ```
 
-```{r, code = readLines("scripts/valorMonetarioEsperado.R")}
+```{r, code = readLines("scripts/valorMonetarioEsperado.R"), echo=TRUE, eval=FALSE}
 ```
 
-```{r, code = readLines("scripts/SensitivityAnalysis.R")}
+```{r, code = readLines("scripts/SensitivityAnalysis.R"),echo=TRUE, eval=FALSE}
 ```
 
-```{r, code = readLines("scripts/simulacionMonteCarlo.R")}
+```{r, code = readLines("scripts/simulacionMonteCarlo.R"), echo=TRUE, eval=FALSE}
 ```
 
-```{r, code = readLines("scripts/tree_functions.R")}
+```{r, code = readLines("scripts/calcular_abs.R"), echo=TRUE, eval=FALSE}
+
 ```
+
+```{r, code = readLines("scripts/tree_functions.R"), echo=TRUE, eval=FALSE}
+```
+
+# Bibliografía

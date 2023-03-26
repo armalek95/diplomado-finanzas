@@ -17,14 +17,14 @@ Bishop, Robert Schlaifer y Howard Raiffa revolucionaron el concepto de
 Toma de Decisiones por medio de la integración de conceptos de una
 escuela de pensamiento estadístico en los años 50. En específico,
 Raiffer y Schlaifer desarrollaron un método para cuantificar el
-conocimiento subjetivo utilizando **Probabilidad Bayesiana Subjetiva**
-mientras trabajaban en **Harvard Business School**
+conocimiento subjetivo utilizando *Probabilidad Bayesiana Subjetiva*
+mientras trabajaban en *Harvard Business School*
 [@Mcdonald2017Golden], influenciando de esta manera a generaciones de
-administradores educados en HBS (a través del curso de **Managerial
-Economics Reporting and Control** o MERC) y por lo mismo, su efecto
+administradores educados en HBS (a través del curso de *Managerial
+Economics Reporting and Control* o MERC) y por lo mismo, su efecto
 debería de sentirse a través de la comunidad de negocios hasta hoy en
 día. Sin embargo, resultados de un análisis de una encuesta a ejecutivos
-de compañías de **Fortune 500** indican que las mayores barreras de
+de compañías de *Fortune 500* indican que las mayores barreras de
 adopción eran [@Green1976survey]:
 
 1.  Los beneficios de usar las técnicas no son claramente entendibles
@@ -106,7 +106,7 @@ anterior, en especial al segundo acercamiento con fines de dosificación
 dinámica y patrón de liberación del compuesto activo en tabletas
 impresas utilizando tecnología de impresión 3D.
 
-El método propuesto por Neriah para resolver el problema de proveer
+El método propuesto por Yan Jie Neriah Tan para resolver el problema de proveer
 medicina personalizada a la población en general para individuos
 específicos efectiva y eficientemente, es a través de la fabricación
 versátil de tabletas utilizando moldes específicamente diseñados de

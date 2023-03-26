@@ -1,6 +1,6 @@
 ---
 title: |
-  ![](diagramas/FQ.jpg){width=2in}  ![](diagramas/UNAM.jpg){width=2in} 
+  ![](diagramas/FQ.jpg){width=2in}  ![](diagramas/UNAM.jpg){width=2in} \newline
   Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones
 author: |
   | Artur Herbert Malek Huidobro
@@ -8,17 +8,28 @@ author: |
 date: "`r Sys.Date()`"
 output: bookdown::pdf_book
 documentclass: book
+classoption: openany
 bibliography: [references.bib]
 biblio-style: apa.csl
 link-citations: yes
+toc-title: "Contenido"
+toc-depth: 3
+fontsize: 12pt
+linestrech: 2
+geometry: "left=3cm, right=3cm, top=2.5cm, bottom=2.5cm"
 description: "Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica"
+header-includes:
+  - \usepackage{titlesec}
+  - \titleformat{\chapter}{}{}{0em}{\bf\LARGE}
+  - \pagestyle{plain}
+  - \usepackage{makecell}
 ---
 
 ```{=tex}
-\renewcommand{\figurename}{Figura}
 \renewcommand{\listfigurename}{Lista de Figuras}
 \renewcommand{\listtablename}{Lista de Tablas}
 \renewcommand{\tablename}{Tabla}
+\renewcommand{\figurename}{Figura}
 ```
 
 ```{=tex}
@@ -33,7 +44,12 @@ description: "Tesina para obtener el titulo de Licenciatura en Ingenieria Quimic
 # lo que resta del trabajo 
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, EnvStats, knitr, scales, formattable)
+pacman::p_load(tidyverse, EnvStats, knitr, scales, formattable, tinytex,
+               kableExtra)
+
+knitr::opts_chunk$set(
+  echo = FALSE
+)
 
 ```
 
