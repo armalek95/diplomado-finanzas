@@ -212,7 +212,7 @@ df$prob <- percent(df$prob)
 
 
 # Mostrar como table usando knitr
-kbl(df, col.names = c("Nivel", "Probabilidad", "NVP"), 
+kbl(df, col.names = c("Nivel", "Probabilidad", "VME"), 
              caption = "Resultados de prueba de Valor Monetario Esperado", 
              align = "lccc")
 
@@ -615,7 +615,8 @@ test_tab <- test_tab %>%
     depreciation = 0, 
     capital_expenditures = 0, 
     change_net_working_capital = 0, 
-    tax_rate = 0.3))
+    tax_rate = 0.3)) %>%
+  unnest(fcf)
 
 # Calcular Valor Presente Neto
 discount_rate = 0.09
@@ -641,7 +642,7 @@ kbl(print, col.names = gsub("[_]", " ", names(print)),
 
 Estos flujos de caja libre los podemos utilizar para calcular el valor
 presento neto, el cual resulta en `r npv_p`, con bas en una tasa de descuento de 
-`r discount_rate`.
+`r percent(discount_rate)`.
 
 ```{r montetest5, echo=FALSE, fig.cap = "Histograma de prueba de Monte Carlo", echo = FALSE, out.width="65%", fig.align = 'center'}
 source("scripts/funciones_financieras.R", local = knitr::knit_global())

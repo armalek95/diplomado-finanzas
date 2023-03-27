@@ -157,9 +157,12 @@ observar la composición de la matriz:
 ```{r composicion}
 comp <- read_csv("datos/composicion.csv", show_col_types = FALSE)
 
-kbl(mutate(comp, Composicion_E1=Composicion_E1*100), col.names = c("Compuesto", "%"),
-             caption = "Composición de la matriz con formulación E1",
-             align = "lc",
+comp %>%
+  mutate(Composicion_E1=percent(Composicion_E1), 
+         Composicion_E2=percent(Composicion_E2)) %>%
+kbl(col.names = c("Compuesto", "E1", "E2"),
+             caption = "Composición de las matrices",
+             align = "lcc",
              label = "tabcomposicion")
 ```
 

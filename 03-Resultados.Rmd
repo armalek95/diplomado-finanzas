@@ -1,24 +1,73 @@
 # Resultados
 ## Datos Utilizados
-```{r infocompuestos, echo = FALSE}
+
+```{r inputs}
+
+source("scripts/calcular_abs.R", local = knitr::knit_global())
+source("scripts/sim_tabletas.R", local = knitr::knit_global())
+source("scripts/costos_tabletas.R", local = knitr::knit_global())
 
 # inputs / suposiciones
 
-cambio_usd_mxn <- 18.83 
+tipo_cambio <- 18.83 
 # tomado de https://www.banxico.org.mx/tipcamb/main.do?page=tip&idioma=sp
 # el 14 de marzo de 2023
+
+# Opciones de formulacion
+formulaciones <- c("E1", "E2") 
+# faltan opciones para "E1-E1", "E1-E2", "E1-E1-E2"
+
+# opciones de compuestos activos para formulacion "E1"
+opciones_E1 <- c("Phenylephrine Hydrochloride", "Diphenhydramine hydrochloride")
+
+# opciones de compuestos activos para formulacion E2
+opciones_E2 <- c("Acetaminophen")
+
+# cargar composicion de las formulaciones
+composicion <- read_csv("datos/composicion.csv", show_col_types = FALSE)
+
+# Definir parametros para simulacion
+sim_num <- 100
+
+# Definir variables para funciones de costos:
+
+# Material
+costo_frasco <- 10 #[MXN]
+
+## Labor
+t_fabricacion <- 40 #[min]
+salario_trabajador <- 400 / (8 * 60) #[MXN/min]
+eficiencia_trabajador <- 0.75 #[]
+
+## Energia
+t_impresion <- 20 #[min]
+consumo_energetico_impresora <- 100#[J/min]
+eficiencia_calentador <- 0.6 #[]
+costo_electricidad <- 0.976 / 3600000 #[MXN/J]
+#https://www.cfe.mx/hogar/tarifas/Pages/Acuerdosdetarifasant.aspx#
+#:~:text=Cargos%20por%20energ%C3%ADa%20consumida%3A,hora%20adicional%
+#20a%20los%20anteriores.
+
+## Distribucion
+t_transporte <- 180 #[min]
+distancia <- 20 #[km]
+precio_gasolina <- 25 #[MXN/L]
+eficiencia_vehiculo <- 35 #[km/L]
+numero_tabletas_viaje <- 1000 #[tabletas]
+
+```
+
+```{r infocompuestos}
 
 # leer el archivo compounds, el cual tiene información del costo de los 
 # compuestos, así como del calor de fusión y el calor específico (los cuales
 # se encuentran en J/g y en J/gC, respectivamente)
-material <- read_csv("datos/compounds.csv", col_select = c(1:5), 
-                     show_col_types = FALSE)
+info_compuestos <- read_csv("datos/compounds.csv", show_col_types = FALSE)
 
-# calcular precio por gramo en pesos
-material <- mutate(material, 
-                   Price_mxn_g = round(Price_kg_usd / 1000 * cambio_usd_mxn, 2))
+info_compuestos <- info_compuestos[1:5] %>%
+  mutate(Precio_mxn_g=Price_kg_usd*tipo_cambio/1000) %>% select(-(Price_kg_usd))
 
-material[c(1, 3:6)] %>%
+info_compuestos %>%
   kbl(booktabs=T, col.names =
         c("Compuestos", "Calor Específico (J/gC)", 
                     "Calor de Fusión (J/g)", 
@@ -49,27 +98,210 @@ ejemplo_1 %>% select(formulacion, compuesto_activo, dosis) %>%
   mutate(dosis = round(dosis, 3)) %>%
   kbl(col.names = c("Formulación", "Compuesto Activo", "Dosis [g]"), 
       caption = "Ejemplo Costo Unitario", 
-      align = "clc", label = "tabejemplocostounitdatos")
-  
+      align = "clc", label = "tabcostounitdatos")
+```
+
+```{r cudimensiones}
+ejemplo_1$dimensiones[[1]] %>%
+  kbl(col.names = c("Variable", "Valor"), 
+      caption = "Ejemplo Costo Unitario - Dimensiones", 
+      align = "lc", label = "tabcudimensiones")
+```
+
+```{r cucomposicion}
+ejemplo_1$composicion[[1]] %>%
+  kbl(col.names = c("Compuesto", "Composicion"), 
+      caption = "Ejemplo Costo Unitario - Composición", 
+      align = "lc", label = "tabcucomposicion")
+
+```
+
+```{r cucompuestos}
+ejemplo_1$materiales[[1]] %>% select(Compound, masa, Componente) %>%
+  mutate(masa=round(masa, 3)) %>%
+  kbl(col.names = c("Compuesto", "Masa [g]", "Componente"), 
+      caption = "Ejemplo Costo Unitario - Compuestos", 
+      align = "lcc", label = "tabcompuestos")
 
 ```
 
 
+### Muestra `r sim_num` preescripciones
 
-### Componente de material
+```{r ordenes}
+ordenes <- ordenes_personalizadas(sim_num)
 
+if (file.exists("datos/ordenestabletassim.rds")) {
+  costo_ordenes_ej <- read_rds("datos/ordenestabletassim.rds")
+} else {
+  costo_ordenes_ej <- ordenes %>%
+  mutate(tabletas=round(rnorm(sim_num, 30, 1),0)) %>%
+  mutate(c_materiales=pmap(list(materiales, tabletas), 
+                               .f=costo_materiales)) %>%
+  unnest(c_materiales) %>%
+  mutate(t_fabricacion=round(rnorm(sim_num, t_fabricacion, 1),0)) %>%
+  mutate(c_labor=pmap(list(tabletas, t_fabricacion), 
+                      .f=costo_labor)) %>%
+  unnest(c_labor) %>%
+  mutate(t_impresion=round(rnorm(sim_num,t_impresion,1), 0),
+         costo_electricidad=rep(costo_electricidad,sim_num),
+         consumo_energetico=rep(consumo_energetico_impresora, sim_num)) %>%
+  mutate(c_energia=pmap(list(materiales, t_impresion, 
+                              costo_electricidad, consumo_energetico, 
+                              formulacion),
+                        .f=costo_energia)) %>%
+  unnest(c_energia) %>%
+  mutate(t_transporte=rnorm(sim_num,t_transporte,1), 
+         salario_trabajador=rep(salario_trabajador, sim_num), 
+         distancia=rnorm(sim_num, distancia, 3), 
+         precio_gasolina=rep(precio_gasolina, sim_num), 
+         eficiencia_vehiculo=rep(eficiencia_vehiculo, sim_num),
+         numero_tabletas_viaje=rep(numero_tabletas_viaje, sim_num)) %>%
+  mutate(c_distribucion=pmap(list(t_transporte, salario_trabajador, 
+                                  distancia, precio_gasolina, 
+                                  eficiencia_vehiculo,
+                                  numero_tabletas_viaje), 
+                             .f=costo_distribucion)) %>%
+  unnest(c_distribucion) %>%
+  select(formulacion, compuesto_activo, tabletas, 
+         c_materiales, c_energia, c_labor, c_distribucion) %>%
+  mutate(c_total=(c_materiales+c_energia+c_labor+c_distribucion)*tabletas) %>%
+  mutate(across(c(4:8), ~round(.x, digits = 2)))
+  
+  write_rds(costo_ordenes_ej, "datos/ordenestabletassim.rds")
+}
 
-### Componente de labor
+costo_ordenes_ej[1:5,] %>%
+  kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
+                    "Costo Material u.", "Costo Energético u.", 
+                    "Costo Labor u.", "Costo Distribución u.", "Costo Total"),
+      align = "clcccccc",
+      caption = "Preescripciones Aleatorias", label ="tabordenesej1") %>%
+  kable_styling(latex_options = c("scale_down"))
+```
 
+```{r costounitariotableta}
+costo_promedio <- costo_ordenes_ej %>%
+  summarise(costo_tableta=sum(c_total)/sum(tabletas))
 
-### Componente de energía
+costo_promedio <- round(costo_promedio[[1]], 2)
 
-
-### Componente de distribución
+costo_ordenes_ej %>%
+  group_by(formulacion, compuesto_activo) %>%
+  summarise(costo_tableta=round(sum(c_total)/sum(tabletas), 2), 
+            .groups="keep") %>%
+  kbl(col.names = c("Formulación","Compuesto Activo", 
+                    "Costo Promedio"),
+      align = "clc",
+      caption = "Costo de Tableta Promedio por Formulación", 
+      label = "tabcostopromedioformula")
+```
 
 
 ## Costo de inversión
 
+```{r inversioninstrumentos}
+
+instrumentos <- read_csv("datos/instrumentos.csv", show_col_types = FALSE)
+instrumentos[1:3] %>% 
+  mutate(Precio=currency(Precio, symbol = "$", digits = 0L)) %>%
+  kbl(col.names = c("Instrumento","Cantidad", 
+                    "Precio"),
+      align = "lcr",
+      caption = "Equipo de Producción de Tabletas", 
+      label = "tabequipoproduccion")
+```
+
+```{r inversiontotal}
+inversion_total <- instrumentos %>%
+  mutate(costo=Precio*Cantidad) %>%
+  select(costo) %>%
+  sum()
+
+inversion <- c(inversion_total, rep(0,10))
+
+inv_total_print <- currency(inversion_total, "$", 0)
+```
+
+La inversión total estimada para el caso base es de `r inv_total_print`.
 
 ## Depreciación
 
+```{r depbase}
+depreciacion <- tibble(
+  periodo=0:10,
+  depr=c(0, MACRS(investment = inversion_total, 
+                     recovery_period = 5, n.period = 10))
+)
+
+depreciacion %>% 
+  mutate(depr=currency(depr, "$", 0)) %>%
+    kbl(col.names = c("Periodo","Depreciación"),
+      align = "cr",
+      caption = "Perfil de Depreciación MACRS a 5 años", 
+      label = "tabperfildepreciacion")
+```
+
+
+## Resultados Caso base
+
+```{r casobase}
+
+expectativa_anual <- 36000 #[tabletas/periodo]
+markup <- 0.3
+
+costos_anuales <- c(0, rep(expectativa_anual*costo_promedio, 10))
+ingresos_anuales <- costos_anuales * (1 + markup)
+
+capital_trabajo_inicial <- info_compuestos %>%
+  mutate(capital_trabajo=Precio_mxn_g*10*1000) %>%
+  select(capital_trabajo) %>% sum()
+
+cambio_CTN <- c(capital_trabajo_inicial, rep(0,10))
+
+caso_base <- tibble(periodo=0:10,
+      ingresos=ingresos_anuales, 
+      costos=costos_anuales, 
+      inversion=inversion, 
+      depreciacion=depreciacion$depr, 
+      cambio_CTN=cambio_CTN) 
+
+caso_base%>%
+  mutate(across(-1, ~currency(.x, symbol="$", digits=0))) %>%
+  kbl(col.names = c("Periodo","Ingresos",
+                    "Costos", "Inversión", 
+                    "Depreciación", "Cambio de CTN"),
+      align = "crrrrr",
+      caption = "Flujos de Efectivo Caso Base", 
+      label = "tabflujoscasobase")
+
+```
+
+```{r fcfcasobase}
+
+tasa_gravable <- 0.3
+fcf_caso_base <- caso_base %>%
+  mutate(fcf=fcf(revenues=ingresos, 
+                costs=costos, 
+                depreciation=depreciacion, 
+                capital_expenditures=inversion, 
+                change_net_working_capital=cambio_CTN,
+                tax_rate=tasa_gravable)) %>%
+  unnest(fcf) %>%
+  select(periodo, fcf)
+
+fcf_caso_base %>%
+  mutate(fcf=currency(fcf, "$", 0)) %>%
+  kbl(col.names = c("Periodo","Flujo Libre"),
+      align = "cr",
+      caption = "Flujos de Efectivo Libre - Caso Base", 
+      label = "tabflujolibrecasobase")
+```
+
+```{r npvcasobase}
+npv_caso_base <- npv(rate=0.08, cashflow=fcf_caso_base$fcf, 
+                     period=fcf_caso_base$periodo)
+npv_caso_base_imp <- currency(npv_caso_base, "$", 0)
+```
+
+Con lo cual obtenemos un Valor Presente Neto de `r npv_caso_base_imp`.

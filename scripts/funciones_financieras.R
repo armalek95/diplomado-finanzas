@@ -17,6 +17,14 @@ npv <- function(rate = 0.09, cashflow = 0, period = 0){
   net_present_value 
 }
 
+# funcion de apoyo para calcular impuestos solo cuando haya una
+mayor_a_cero <- function(num) {
+  if (num > 0) {
+    return(num)
+  } else {
+    return(0)
+  }
+}
 
 ## función que calcula el flujo de efectivo "libre" tomando en cuenta:
 ##los ingresos, costos, depreciación, inversiones, cambios en el capital 
@@ -35,13 +43,23 @@ fcf <- function(revenues,
   ## (el valor de default es 0)
   ## tax_rate es la tasa de impuestos (el valor default es 30%)
   
+  datos <- tibble(revenues,
+                  costs,
+                  depreciation,
+                  capital_expenditures,
+                  change_net_working_capital)
+
+  
   # cálculo del flujo de efectivo
-  free_cash_flow <- (revenues - costs- depreciation)*(1-tax_rate)
-  +depreciation-capital_expenditures-change_net_working_capital
+  free_cash_flow <- datos %>% 
+    mutate(part_1=(revenues - costs - depreciation)) %>%
+    mutate(tax=map_dbl(.x=part_1, .f=mayor_a_cero)*(tax_rate)) %>%
+    mutate(fcf=part_1-tax+depreciation
+           -capital_expenditures-change_net_working_capital) %>%
+    select(fcf)
   
   free_cash_flow # regresa el valor del flujo de efectivo
 }
-
 
 ## función que regresa el vector de depreciación utilizando 
 ## MACRS (Modified Accelerated Cost Recovery System)

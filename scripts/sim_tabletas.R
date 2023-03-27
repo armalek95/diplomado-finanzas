@@ -48,7 +48,7 @@ compuestos_matriz_externa <- function(comp_matriz_interna, compuesto_activo) {
 
 # Regresar todos los materiales necesarios para la produccion
 
-costo_material <- function(formulacion, CA, dosis, dimensiones, composicion) {
+requerimiento_material <- function(formulacion, CA, dosis, dimensiones, composicion) {
   
   if (formulacion == "E1") {
     
@@ -117,5 +117,3 @@ costo_material <- function(formulacion, CA, dosis, dimensiones, composicion) {
   
   return(compuestos)
 }
-
-info_compuestos %>% select(-"Density")
