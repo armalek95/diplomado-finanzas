@@ -12,16 +12,16 @@ trabajo:
 
 ```
 
-```{r, code = readLines("scripts/valorMonetarioEsperado.R"), echo=TRUE, eval=FALSE}
+```{r, code = readLines("scripts/valor_esperado.R"), echo=TRUE, eval=FALSE}
 ```
 
-```{r, code = readLines("scripts/SensitivityAnalysis.R"),echo=TRUE, eval=FALSE}
+```{r, code = readLines("scripts/analisis_sensibilidad.R"),echo=TRUE, eval=FALSE}
 ```
 
-```{r, code=readLines("scripts/simulacionMonteCarlo.R"), echo=TRUE, eval=FALSE}
+```{r, code=readLines("scripts/monte_carlo.R"), echo=TRUE, eval=FALSE}
 ```
 
-```{r, code=readLines("scripts/tree_functions.R"), echo=TRUE, eval=FALSE}
+```{r, code=readLines("scripts/arboles_decision.R"), echo=TRUE, eval=FALSE}
 
 ```
 
