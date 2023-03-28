@@ -29,11 +29,11 @@ trabajo:
 
 ```
 
-```{r, code=readLines("scripts/sim_tabletas.R", echo=TRUE, eval=FALSE)}
+```{r, code=readLines("scripts/sim_tabletas.R"), echo=TRUE, eval=FALSE}
 
 ```
 
-```{r, code=readLines("scripts/costos_tabletas.R", echo=TRUE, eval=FALSE)}
+```{r, code=readLines("scripts/costos_tabletas.R"), echo=TRUE, eval=FALSE}
 
 ```
 
