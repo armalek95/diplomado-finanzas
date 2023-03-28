@@ -14,10 +14,10 @@ formulaciones <- c("E1", "E2")
 # faltan opciones para "E1-E1", "E1-E2", "E1-E1-E2"
 
 # opciones de compuestos activos para formulacion "E1"
-opciones_E1 <- c("Phenylephrine Hydrochloride", "Diphenhydramine hydrochloride")
+opciones_E1 <- c("Clorhidrato de fenilefrina", "Clorhidrato de difenhidramina")
 
 # opciones de compuestos activos para formulacion E2
-opciones_E2 <- c("Acetaminophen")
+opciones_E2 <- c("Acetaminofén")
 
 # cargar composicion de las formulaciones
 composicion <- read_csv("datos/composicion.csv", show_col_types = FALSE)
@@ -172,10 +172,11 @@ if (file.exists("datos/ordenestabletassim.rds")) {
 }
 
 costo_ordenes_ej[1:5,] %>%
+  mutate(c_total=currency(c_total,"$",digits=2)) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
                     "Costo Material u.", "Costo Energético u.", 
                     "Costo Labor u.", "Costo Distribución u.", "Costo Total"),
-      align = "clcccccc",
+      align = "clcccccr",
       caption = "Preescripciones Aleatorias", label ="tabordenesej1") %>%
   kable_styling(latex_options = c("scale_down"))
 ```
@@ -186,10 +187,14 @@ costo_promedio <- costo_ordenes_ej %>%
 
 costo_promedio <- round(costo_promedio[[1]], 2)
 
-costo_ordenes_ej %>%
+ord_print <- costo_ordenes_ej %>%
   group_by(formulacion, compuesto_activo) %>%
   summarise(costo_tableta=round(sum(c_total)/sum(tabletas), 2), 
-            .groups="keep") %>%
+            .groups="keep") %>% 
+  as.data.frame() 
+
+ord_print %>%
+  mutate(costo_tableta=currency(costo_tableta, "$", digits=2)) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", 
                     "Costo Promedio"),
       align = "clc",
