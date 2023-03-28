@@ -3,10 +3,6 @@
 
 ```{r inputs}
 
-source("scripts/calcular_abs.R", local = knitr::knit_global())
-source("scripts/sim_tabletas.R", local = knitr::knit_global())
-source("scripts/costos_tabletas.R", local = knitr::knit_global())
-
 # inputs / suposiciones
 
 tipo_cambio <- 18.83 
@@ -65,9 +61,12 @@ numero_tabletas_viaje <- 1000 #[tabletas]
 info_compuestos <- read_csv("datos/compounds.csv", show_col_types = FALSE)
 
 info_compuestos <- info_compuestos[1:5] %>%
-  mutate(Precio_mxn_g=Price_kg_usd*tipo_cambio/1000) %>% select(-(Price_kg_usd))
+  mutate(Precio_mxn_g=Price_kg_usd*tipo_cambio/1000) %>% 
+  select(-(Price_kg_usd))
 
 info_compuestos %>%
+  mutate(Precio_mxn_g=currency(Precio_mxn_g,"$", digits=2)) %>% 
+  mutate_at(c("Specific_Heat", "Fusion_Heat", "Density"), ~na_if(.,0)) %>% 
   kbl(booktabs=T, col.names =
         c("Compuestos", "Calor Específico (J/gC)", 
                     "Calor de Fusión (J/g)", 
@@ -80,10 +79,10 @@ info_compuestos %>%
 ```
 La tabla \@ref(tab:tabinfocompuestos) muestra la información, relacionada a los 
 compuestos, utilizada para los cálculos de esta sección. Es importante recalcar 
-que en algunos casos el calor específico y/o el calor de fusión muestran un cero, 
-esto es ya que no participan en el cambio de fase (en el caso donde el calor de 
-fusión es cero) o no son sometidos a cambio de temperatura (en el caso donde 
-tanto el calor específico, como el calor de fusión son cero).
+que en algunos casos el calor específico y/o el calor de fusión muestran un 
+valor de *NA*, esto es ya que no participan en el cambio de fase (en el caso 
+donde el calor de fusión es *NA*) o no son sometidos a cambio de temperatura 
+(en el caso donde tanto el calor específico, como el calor de fusión son *NAs*).
 
 ## Costo de tabletas unitario
 
@@ -125,6 +124,7 @@ ejemplo_1$materiales[[1]] %>% select(Compound, masa, Componente) %>%
 
 ```
 
+\newpage
 
 ### Muestra `r sim_num` preescripciones
 
@@ -247,7 +247,7 @@ depreciacion %>%
 
 ```{r casobase}
 
-expectativa_anual <- 36000 #[tabletas/periodo]
+expectativa_anual <- 150000 #[tabletas/periodo]
 markup <- 0.3
 
 costos_anuales <- c(0, rep(expectativa_anual*costo_promedio, 10))

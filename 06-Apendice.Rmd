@@ -18,14 +18,23 @@ trabajo:
 ```{r, code = readLines("scripts/SensitivityAnalysis.R"),echo=TRUE, eval=FALSE}
 ```
 
-```{r, code = readLines("scripts/simulacionMonteCarlo.R"), echo=TRUE, eval=FALSE}
+```{r, code=readLines("scripts/simulacionMonteCarlo.R"), echo=TRUE, eval=FALSE}
 ```
 
-```{r, code = readLines("scripts/calcular_abs.R"), echo=TRUE, eval=FALSE}
+```{r, code=readLines("scripts/tree_functions.R"), echo=TRUE, eval=FALSE}
 
 ```
 
-```{r, code = readLines("scripts/tree_functions.R"), echo=TRUE, eval=FALSE}
+```{r, code=readLines("scripts/calcular_abs.R"), echo=TRUE, eval=FALSE}
+
+```
+
+```{r, code=readLines("scripts/sim_tabletas.R", echo=TRUE, eval=FALSE)}
+
+```
+
+```{r, code=readLines("scripts/costos_tabletas.R", echo=TRUE, eval=FALSE)}
+
 ```
 
 # Bibliografía

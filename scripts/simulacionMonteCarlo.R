@@ -1,6 +1,9 @@
 ## Este script va a contener las funciones necesarias para realizar la 
 ## simulación Monte Carlo
 
+# Dependencia
+#source("scripts/funciones_financieras.R")
+
 ## función que genera las distribuciones de probabilidad para el 
 ## cálculo de los valores a evaluar
 random_values <- function(n.period = 10, 
@@ -23,7 +26,7 @@ random_values <- function(n.period = 10,
     values <- rbeta(n.period, shape1 = shape, shape2 = shape2, ncp = 0)
   }
   
-  values # regresa los valores generados de forma aleatoria
+  return(values) # regresa los valores generados de forma aleatoria
 }
 
 monte_carlo <- function(df, 
@@ -35,8 +38,6 @@ monte_carlo <- function(df,
   # Generar los valores para todos los periodos considerados
   # Podriamos agregar funciones de forecasting para los precios y el volumen 
   # esperado
-  
-  set.seed(seed)
   
   # Generar valores pronosticados para el periodo
   for (i in seq_along(1:(n-1))) {
@@ -65,7 +66,6 @@ monte_carlo <- function(df,
                                  distribution = dist_pre)
       )
     
-    rand
     # Calcular variables necesarias para calcular FCF
     
     sim_revenue <- revenues(products_volume = filter(rand, tipo == "Producto") %>% 
@@ -123,13 +123,12 @@ monte_carlo <- function(df,
     #write_csv(sim_fcf, file = "monte_test.csv", append = TRUE)
     
     # Calcular Valor Presente Neto
-    
     monte_df[i,2] = npv(rate = discount_rate, 
                         cashflow = sim_fcf$fcf, 
                         period = sim_fcf$periodo)
   }
   
-  monte_df
+  return(monte_df)
 }
 
 

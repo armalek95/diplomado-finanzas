@@ -27,9 +27,6 @@ kbl(test_df, col.names = gsub("[.]", " ", names(test_df)),
 ```
 
 ```{r testcashflow2, echo=FALSE}
-  # Cargar función de Valor Presente Neto
-  source("scripts/funciones_financieras.R", local = knitr::knit_global())
-
   rate <- 0.08
   test_npv <- 
   npv(rate = rate, cashflow = test_df$cashflow, period = test_df$periods)
@@ -116,10 +113,6 @@ visualizar en la figura \@ref(fig:testemv2):
 
 ```{r testemv2, echo = FALSE, fig.cap = "Árbol de Decisión para el ejemplo de inversión", fig.align = 'center', out.width="90%"}
 
-library(data.tree)
-library(DiagrammeR)
-library(webshot)
-
 invest <- Node$new("Invertir?", type = "decision")
   yes <- invest$AddChild("Si", type = "chance")
     lowImplementation <- 
@@ -141,7 +134,6 @@ invest <- Node$new("Invertir?", type = "decision")
     noLow <- no$AddChild("2 Costo Bajo de Electricidad", type = "terminal")
 
 # Cargar funciones de arboles
-source("scripts/tree_functions.R", local = knitr::knit_global())    
     
 SetGraphStyle(invest, rankdir = "TB")
 SetNodeStyle(invest, style = "filled,rounded", 
@@ -170,10 +162,6 @@ invest$No$`2 Costo Bajo de Electricidad`$prob <- 0.4
 
 # Darle formato de porcentaje
 SetFormat(invest, "prob", formatFun = FormatPercent)
-
-# Cargar funcion de Valor Presente Neto
-source("scripts/funciones_financieras.R", local = knitr::knit_global())
-source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
 
 # Calcular los costos para los escenarios
 low_elect_per <- rep(lowElecCost, emv_test_n)
@@ -223,13 +211,6 @@ Otra forma de visualizar nuestros resultados, que puede llegar ser más
 amigable, se encuentra en la figura \@ref(fig:testemv4):
 
 ```{r testemv4, echo = FALSE, fig.cap = "Árbol de Decisión para el ejemplo de inversión con valores calculados de EMV", fig.align = 'center', out.width="90%"}
-
-library(data.tree)
-library(DiagrammeR)
-library(webshot)
-
-# Cargar funciones de arboles
-source("scripts/tree_functions.R", local = knitr::knit_global())
 
 PlotDecisionTree(invest)
 
@@ -533,7 +514,6 @@ aleatoria utilizando una función para generar estos valores.
 
 ```{r montetest3, echo = FALSE}
 # Generar valores aleatorios con base en el punto anterior
-source("scripts/simulacionMonteCarlo.R", local = knitr::knit_global())
 
 rand_prodmat_test <- prod_mat_test %>%
   rowwise() %>%
@@ -562,9 +542,6 @@ valores aleatorios con base en los valores pronosticados.
 
 ```{r montetest4, echo = FALSE}
 # Calcular el Flujo de Caja Libre (FCF)
-
-source("scripts/funciones_financieras.R", local = knitr::knit_global())
-source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
 # Calcular variables necesarias para calcular FCF
 
 test_rev <- revenues(products_volume = filter(rand_prodmat_test, tipo == "Producto") %>% 
@@ -620,10 +597,10 @@ test_tab <- test_tab %>%
 
 # Calcular Valor Presente Neto
 discount_rate = 0.09
-npv <- npv(rate = discount_rate,
+npv_m <- npv(rate = discount_rate,
     cashflow = test_tab$fcf, period = test_tab$periodo)
 
-npv_p <- currency(npv, symbol = "$", digits = 2L)
+npv_p <- currency(npv_m, symbol = "$", digits = 2L)
 
 # Cambiar formato
 print <- test_tab
@@ -645,9 +622,6 @@ presento neto, el cual resulta en `r npv_p`, con bas en una tasa de descuento de
 `r percent(discount_rate)`.
 
 ```{r montetest5, echo=FALSE, fig.cap = "Histograma de prueba de Monte Carlo", echo = FALSE, out.width="65%", fig.align = 'center'}
-source("scripts/funciones_financieras.R", local = knitr::knit_global())
-source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
-source("scripts/simulacionMonteCarlo.R", local = knitr::knit_global())
 
 # Correr Monte Carlo ilustrativo
 

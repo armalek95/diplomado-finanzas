@@ -44,8 +44,23 @@ header-includes:
 # lo que resta del trabajo 
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, EnvStats, knitr, scales, formattable, tinytex,
-               kableExtra)
+pacman::p_load(tidyverse, # Transformación, modelos, visualización
+               # Formato
+               EnvStats, knitr, scales, formattable, 
+               tinytex, kableExtra,
+               # Árboles de Decisión
+               data.tree, DiagrammeR, webshot, 
+               # Reproducibilidad
+               devtools)
+
+source("scripts/funciones_financieras.R", local = knitr::knit_global())
+source("scripts/SensitivityAnalysis.R", local = knitr::knit_global())
+source("scripts/tree_functions.R", local = knitr::knit_global())
+source("scripts/valorMonetarioEsperado.R", local = knitr::knit_global())
+source("scripts/simulacionMonteCarlo.R", local = knitr::knit_global())
+source("scripts/calcular_abs.R", local = knitr::knit_global())
+source("scripts/sim_tabletas.R", local = knitr::knit_global())
+source("scripts/costos_tabletas.R", local = knitr::knit_global())
 
 knitr::opts_chunk$set(
   echo = FALSE

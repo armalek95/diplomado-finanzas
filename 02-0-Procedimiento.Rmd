@@ -4,15 +4,49 @@
 rversion <- R.version.string
 ```
 
-Para el desarrollo de esta tesina se hace uso de `r rversion` de forma que el trabajo aquí descrito sea totalmente reproducible. A continuación podrán observar la información de la sesión activa durante la compilación de este trabajo:
+Para el desarrollo de esta tesina se hace uso de `r rversion`, de forma que el trabajo aquí descrito sea totalmente reproducible. A continuación podrán observar la información de la sesión activa (es decir, los paquetes que estaban cargados o activos) durante la compilación de este trabajo:
 
-```{r, echo = FALSE}
-sessionInfo()
+```{r platforminfo}
+#https://stackoverflow.com/questions/33156946/how-can-i-format-sessioninfo-in-rmarkdown
+
+session_platform <- devtools::session_info()$platform %>%
+  unlist(.) %>%
+  as.data.frame(.) %>%
+  rownames_to_column(.)
+
+colnames(session_platform) <- c("Ajuste", "Valor")
+
+session_platform <- session_platform %>% 
+  mutate(Valor=map(.x=Valor, ~strsplit(.x, split = "@")[[1]][1]))
+
+session_platform %>%
+  kbl(align="ll",
+      caption="Plataforma utilizada para el ambiente de la sesión")
 ```
+
+```{r packagesinfo}
+
+session_packages <- devtools::session_info()$packages %>%
+  as.data.frame(.) %>%
+  filter(attached == TRUE) %>%
+  dplyr::select(loadedversion, date) %>%
+  rownames_to_column
+
+colnames(session_packages) <- c("Paquete", "Versión cargada", "Fecha")
+
+session_packages %>%
+  kbl(align="lcc",
+      caption="Paquetes para reproducibilidad de resultados")
+```
+
+Podemos observar toda la información relevente a la sesión en la tabla \@ref(tab:platforminfo) y los paquetes utilizados en la tabla 
+\@ref(tab:packagesinfo).
+
+\newpage
 
 ## Métodos cuantitativos de toma de decisión
 
-En esta sección se describen los métodos cuantitativos que se usaron para el presente trabajo.
+En esta sección se describen los métodos cuantitativos utilizados.
 
 **rrr** Revisar el documento siguiente: [@Tapiero2013]
 
@@ -22,21 +56,24 @@ En esta sección se describen los métodos cuantitativos que se usaron para el p
 
 ### Orden de uso de los métodos
 
-El orden de los métodos utilizado en este trabajo para la evaluación de los proyectos de inversión es el representado en el siguiente diagrama:
+Como se mencionó anteriormente, se utilizarán diferentes métodos para la evaluación del proyecto de inversión. El orden de aplicación es representado en el siguiente diagrama:
 
 ![Diagrama del orden de uso de los métodos cuantitativos](Diagramas/OrdenMetodos.jpg){width="90%"}
 
-La razón de esto es la siguiente:
+Se eligió esta secuencia por varios motivos:
 
 1.  El método de valor monetario esperado lo utilizamos como primer acercamiento a la evaluación de los proyectos ya que con éste podemos evaluar el proyecto utilizando escenarios simples con base en una probabilidad asociada a cada escenario.
-2.  El método de análisis de sensibilidad nos permite cuantificar el impacto sobre la evaluación del proyecto que produce el cambio sobre las diferentes variables del modelo. Esto nos permite identificar las variables que tienen el mayor impacto sobre la evaluación del proyecto.
-3.  El método Monte Carlo utiliza distribuciones de probabilidad (en específico para las variables que tienen un mayor impacto sobre el proyecto), con el fin de calcular la confianza que se tiene sobre el resultado de la evaluación.
-4.  El método de matriz de toma de decisiones requiere de la cuantificación de diferentes factores de decisión entre los cuales se incluye el retorno esperado que calculamos con el método de simulación Monte Carlo. Esto nos sirve para tomar decisiones, entre diferentes alternativas de inversión, cuando se tiene más de un sólo parámetro de decisión.
+2.  El método de análisis de sensibilidad nos permite cuantificar el impacto sobre la evaluación del proyecto que produce el cambio sobre las diferentes variables del modelo. Esto nos permite identificar las variables que tienen el mayor efecto sobre la evaluación del proyecto.
+3.  El método Monte Carlo utiliza distribuciones de probabilidad, en específico para las variables que tienen un mayor impacto sobre el proyecto, con el fin de calcular la confianza que se tiene sobre el resultado de la evaluación.
+4.  El método de matriz de toma de decisiones requiere de la cuantificación de diferentes factores de decisión, entre los cuales se incluye el retorno esperado que calculamos con el método de simulación Monte Carlo. Esto nos sirve para tomar decisiones entre diferentes alternativas de inversión, cuando se tiene más de un sólo parámetro de decisión.
 
 ### Ecuaciones utilizadas
 
-**Flujo de Caja Libre (FCF)** 
-La ecuación (\@ref(eq:fcfeq)) para el cálculo del flujo de caja libre *"Free Cash Flow"* utilizada a lo largo del trabajo fue tomada de [@Berk2017].
+En esta sección se describen las ecuaciones financieras que sirven como base para los métodos cuantitativos mencionados previamente.
+
+**Flujo de Caja Libre (FCF)** La ecuación (\@ref(eq:fcfeq)) para el cálculo del flujo de caja libre *"Free Cash Flow"* utilizada a lo largo del trabajo fue tomada de [@Berk2017].
+
+\*\* fff ¿es correcta esta forma de mencionar de dónde se tomó la ecuación? \*\*
 
 ```{=tex}
 \begin{equation}
@@ -54,9 +91,7 @@ Donde:
 -   *Inv.* representa la inversión
 -   $\Delta CTN$ representa el cambio en el capital de trabajo neto
 
-**Valor Presente Neto (NPV)** 
-La ecuación (\@ref(eq:npveq)) utilizada para el Valor Presente Neto es una 
-adaptación de la ecuación para el método *"The Present Worth Method"* tomada de [@Sullivan2015].
+**Valor Presente Neto (NPV)** La ecuación (\@ref(eq:npveq)) utilizada para el Valor Presente Neto es una adaptación de la ecuación para el método *"The Present Worth Method"* tomada de [@Sullivan2015].
 
 ```{=tex}
 \begin{equation}
@@ -73,13 +108,14 @@ Donde:
 
 ### Valor Monetario Esperado
 
-Para los fines de este trabajo realizamos el cálculo del valor monetario esperado dado por la función \@ref(eq:emveq): 
+Para los fines de este trabajo realizamos el cálculo del valor monetario esperado dado por la función \@ref(eq:emveq):
 
+```{=tex}
 \begin{equation}
   EMV = \sum_{i=0}^{n}NPV_{i} \cdot p_{i}
   (\#eq:emveq)
 \end{equation}
-
+```
 Donde:
 
 -   *EMV* representa el valor monetario esperado (o Expected Monetary Value)
@@ -100,15 +136,15 @@ El cálculo del *EMV* se realizará a través de árboles de decisión (*decisio
 -   *Escenario medio*: representa el valor más probable resultado de la investigación (ej. 70%)
 -   *Escenario alto*: representa la posibilidad de que el valor sea mayor al resultado de la investigación (ej. 15%)
 
-Esto se llevó a cabo para cada uno de los tres componentes más importantes del modelo: ingresos, costos e inversión.
+Esto se llevó a cabo para cada uno de los tres componentes más importantes del modelo: ingresos, costos e inversión. Los consideramos como los más importantes, ya que la depreciación y la tasa gravable de impuestos están dadas por el ambiente regulatorio aplicable, sobre el cual no tendríamos injerencia.
 
 **rrr** La siguiente referencia tiene información del algoritmo [@Prellezo2017]
 
 ### Análisis de Sensibilidad
 
-El análisis de sensibilidad es un grupo de métodos que nos ayuda a validar el modelo, a calibrarlo y a enfocar los esfuerzos de recolección de información sobre las variables que tienen un mayor impacto sobre el modelo en cuestión [@Borgonovo2017]. Ya que si las decisiones son insensibles ante cambios sobre un aspecto del modelo, entonces no hay necesidad de modelar a mayor detalle ese aspecto en particular [@Felli2004].
+El análisis de sensibilidad es un grupo de métodos que nos ayuda a validar el modelo, a calibrarlo y a enfocar los esfuerzos de recolección de información sobre las variables que tienen un mayor impacto sobre el modelo en cuestión [@Borgonovo2017]. Si las decisiones son insensibles ante cambios sobre un aspecto del modelo, entonces no hay necesidad de modelar a mayor detalle ese aspecto en particular [@Felli2004].
 
-Estos métodos se pueden dividir en dos grupos distintivos: métodos dedicados al modelo en cuestión y métodos agnósticos al modelo. Los primeros buscan responder preguntas específicas al modelo, mientras que los segundos buscan responder preguntas más generales [@Borgonovo2017].
+Estos métodos se pueden dividir en dos grupos distintivos: métodos dedicados al modelo en cuestión y métodos agnósticos al modelo. Los primeros buscan responder preguntas específicas del modelo, mientras que los segundos buscan responder preguntas más generales [@Borgonovo2017].
 
 Borgonovo explica la importancia de la adecuada formulación de la pregunta de análisis de sensibilidad y presenta las siguientes configuraciones que han encontrado a lo largo de su investigación:
 
@@ -120,7 +156,11 @@ Borgonovo explica la importancia de la adecuada formulación de la pregunta de a
 
 Este trabajo utiliza principalmente las primeras dos configuraciones con el fin de definir qué parámetros deben de ser estudiados a mayor detalle para la simulación Monte Carlo.
 
-El método principal que revisamos en este trabajo es el método determinístico de diagramas tornado.
+\*\* rrr Explicar por qué solo usamos las dos primeras configuraciones \*\*
+
+El método principal que revisamos en este trabajo es el método determinístico de diagramas tornado. Este método conlleva la representación gráfica y el ordenamiento (de mayor a menor) del efecto sobre el resultado del caso base, que tiene el cambio de las variables de entrada del modelo. Ya que éste puede ser tanto positivo como negativo y el efecto suele ser proporcional en ambas direcciones, la gráfica resultante asimila a un tornado.
+
+\*\* rrr Agregar ejemplo de diagrama tornado? \*\*
 
 \newpage
 
@@ -132,9 +172,6 @@ El siguiente diagrama muestra el esquema de solución para el análisis de sensi
 ```{r tornadotest, fig.cap = "Ejemplo de una gráfica tornado con 6 variables y 6 pares de números aleatorios representando valores máximos y mínimos", echo = FALSE, out.width="65%", fig.align = 'center'}
 
 # El siguiente código es para crear una gráfica de tornado ejemplo
-# El código que crea la gráfica se encuentra en el archivo que se carga a 
-# continuación. Éste se puede encontrar más adelante en el apéndice
-source("Scripts/SensitivityAnalysis.R", local = knitr::knit_global())
 
   set.seed(1)
   tornado(sensitivity()) + 
@@ -166,7 +203,11 @@ rrr Ejemplo de simulación Monte Carlo para la evaluación económica de producc
 
 Para el método de simulación Monte Carlo se necesita generar valores aleatorios (una secuencia de estos) para las variables con mayor impacto sobre el resultado de la evaluación del proyecto.
 
-Una secuencia de números aleatorios se define como una secuencia R1, R2,... donde Ri\~U(0,1) para todo i donde Ri sea independiente de Rj para todos los casos donde i != j. [@Dagpunar2007]
+::: {.definition name="Secuencia de números aleatorios"}
+Una secuencia de números aleatorios se define como una secuencia 
+$R_1, R_2, ... R_n$ donde $R_i\sim U(0,1)$ para todo $i$ donde $R_i$ sea 
+independiente de $R_j$ para todos los casos donde $i \neq j$. [@Dagpunar2007]
+::: 
 
 El lenguaje R ya contiene funciones que nos permiten obtener secuencias de números aleatorios: *rnorm* para secuencias aleatorias de números con distribución normal, *rweibull* de distribución Weibull, *rcauchy* para distribución Cauchy, etc.
 
@@ -181,7 +222,7 @@ El siguiente diagrama muestra el flujo de información a través de las funcione
 Para utilizar el método de simulación Monte Carlo se desarrollaron 5 funciones (1. a 5. del diagrama) las cuales cumplen las siguientes funciones:
 
 1.  Función que recibe los valores de entrada para evaluar el proyecto específico (número de periodos a evaluar, número de simulaciones a realizar, etc.) y llama a las demás funciones el número de veces especificado.
-2.  Función que genera los valores aleatorios para calcular los ingresos, costos y/o gastos de capital. Esta función como valor de entrada necesita que se especifique el tipo de distribución de probabilidad a utilizar, el caso estándar utiliza la distribución normal para calcular los valores.
+2.  Función que genera los valores aleatorios para calcular los ingresos, costos y/o gastos de capital. Esta función como valor de entrada necesita que se especifique el tipo de distribución de probabilidad a utilizar; el caso estándar utiliza la distribución normal para calcular los valores.
 3.  Función que calcula el flujo de caja libre de efectivo tomando como valor de entrada las variables descritas en la sección de ecuaciones utilizadas.
 4.  Función que calcula el valor presente neto del flujo de caja libre calculado previamente.
 5.  Función que toma la información generada y genera las gráficas para su visualización.
@@ -190,15 +231,17 @@ Para utilizar el método de simulación Monte Carlo se desarrollaron 5 funciones
 
 ### Matriz de Toma de Decisiones
 
-Las metodologías, conceptos, modelos y técnicas utilizadas como soporte para la toma de decisiones, tienen como objetivo incrementar la consistencia entre el proceso de toma de decisiones con las metas y con el sistema de valores establecidos por el individuo o el grupo de individuos que buscan llegar a una decisión, es por esto que un problema de decisión no puede considerarse como un objeto independiente y completamente objetivo, sino que debe de considerarse en su relación con el individuo (o individuos) y la realidad [@Azzabi2020].
+Las metodologías, conceptos, modelos y técnicas utilizadas como soporte para la toma de decisiones tienen como objetivo incrementar la consistencia entre el proceso de toma de decisiones con las metas y el sistema de valores establecidos por el individuo o grupo de individuos que busca llegar a una decisión, es por esto que un problema de decisión no puede considerarse como un objeto independiente y completamente objetivo, sino que debe de considerarse a partir de su relación con el individuo (o individuos) y la realidad [@Azzabi2020].
 
-Los métodos de decisión utilizando múltiples criterios se pueden dividir en los siguientes [@Azzabi2020]:
+Los métodos de decisión utilizando múltiples criterios se pueden dividir en [@Azzabi2020]:
 
 -   Compensatorio: Compensación absoluta entre las diferentes evaluaciones (ej. Método de suma ponderada).
 -   Compensación parcial: Compensación parcial entre las diferentes evaluaciones.
 -   Sin compensación: No hay compensación entre las diferentes evaluaciones o dimensiones de la decisión.
 
-El acercamiento de toma de decisión multi-criterio (MCDA o Multi-Criteria Decision Approach) es tanto un marco teórico como un conjunto de técnicas, para la ayuda en la toma de decisiones, que tienen la finalidad de proveer con un orden de preferencia de opciones, de mayor a menor preferencia, con base en una serie de objetivos definidos (a lo que estaremos llamando sistema de valores en este trabajo) que pueden tener una naturaleza tanto monetaria como no monetaria [@Azzabi2020]. Esto nos permite simplificar un problema de decisión complejo en una serie de componentes sobre los cuales podemos utilizar nuestro sistema de valores al momento de llevar a cabo el proceso de decisión.
+** rrr - Agregar ejemplos como el del primer bullet **
+
+El acercamiento de toma de decisión multi-criterio (MCDA o Multi-Criteria Decision Approach) es tanto un marco teórico como un conjunto de técnicas para la ayuda en la toma de decisiones que tiene la finalidad de proveer con un orden de preferencia de opciones, de mayor a menor preferencia, con base en una serie de objetivos definidos (a lo que estaremos llamando sistema de valores en este trabajo), que pueden tener una naturaleza tanto monetaria como no monetaria [@Azzabi2020]. Esto nos permite simplificar un problema de decisión complejo a una serie de componentes sobre los cuales podemos utilizar nuestro sistema de valores al momento de llevar a cabo el proceso de decisión.
 
 Pasos para realizar el MCDA [@Azzabi2020]:
 
@@ -226,8 +269,6 @@ Los criterios a utilizar en este análisis son:
 
 Para este trabajo el valor relativo de los criterios se basa en el Proceso Analítico Jerárquico (*AHP o Analytic Hierarchy Process*). Este es un acercamiento sistemático para el análisis de decisiones complejas originalmente desarrollado por *Thomas L. Saaty* en los años setenta. Este acercamiento tiene el objetivo de encontrar una solución que mejor se adecue a las metas de los tomadores de decisión, al mismo tiempo que les ayuda a comprender de mejor forma lo que en realidad quieren [@Korhonen2020].
 
-Un ejemplo de valores relativos se pueden observar en la tabla \@ref(tab:critcomparison).
-
 ```{r critcomparison, echo = FALSE}
 
 # Este chunk crea y muestra la tabla de criterios para utilizar en la matriz
@@ -237,17 +278,19 @@ Criterio <- c("VPN","Beneficio Social","Impacto Ambiental")
 VPN <- c("1","2","4")
 Beneficio.Social <- c("1/2","1","2")
 Impacto.Ambiental <- c("1/4","1/2","1")
-df <- cbind(Criterio, VPN,Beneficio.Social,Impacto.Ambiental)
-df <- as.data.frame(df)
+crit_comp <- cbind(Criterio, VPN,Beneficio.Social,Impacto.Ambiental)
+crit_comp <- as.data.frame(crit_comp)
 
-kbl(df, col.names = gsub("[.]", " ", names(df)), 
-             caption = "Comparativo del valor de los criterios (AHP)", 
-             align = "lccc")
+
+crit_comp %>%
+  kbl(col.names = gsub("[.]", " ", names(crit_comp)), 
+      caption = "Comparativo del valor de los criterios (AHP)", 
+      align = "lccc")
 
 ```
 
-Esta tabla muestra la importancia relativa entre los criterios, siendo las columnas la representación de la importancia relativa del criterio mostrado en el renglón en relación al criterio que encabeza la columna. Si revisamos la tabla \@ref(tab:critcomparison) podemos observar que el valor Presente Neto tiene una importancia relativa de 1 contra si mismo, mientras que el criterio de Beneficio Social tiene una importancia relativa 2 veces mayor que el VPN y el Impacto Ambiental tiene una importancia relativa 4 veces mayor al VPN. Si continuamos a la siguiente columna podemos ver que el VPN tiene una importancia 2 veces menor al Beneficio Social y así sucesivamente.
+Un ejemplo de valores relativos se pueden observar en la tabla \@ref(tab:critcomparison). En ésta se muestra la importancia relativa entre los criterios, siendo las columnas la representación de la importancia relativa del criterio mostrado en el renglón en relación al criterio que encabeza la columna. Podemos observar que el valor Presente Neto tiene una importancia relativa de 1 contra si mismo, mientras que el criterio de Beneficio Social tiene una importancia relativa 2 veces mayor que el VPN y el Impacto Ambiental tiene una importancia relativa 4 veces mayor al VPN. Si continuamos a la siguiente columna podemos ver que el VPN tiene una importancia 2 veces menor al Beneficio Social y así sucesivamente.
 
-[@CISL2019]
+rrr - [@CISL2019]
 
 \newpage

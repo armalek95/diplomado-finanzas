@@ -1,31 +1,32 @@
+
 # Introducción
 
-El avance exponencial que hemos experimentado como sociedad, tanto en el
-desarrollo de nuevas tecnologías (reflejado en el incremento del número
-de patentes concedidas año con año, 391 mil patentes concedidas en 2019
-comparado con 49 mil en 1963) [@Marco2015], como en el aumento del
-volumen de información generada [@Holst2021], así como en el incremento
-en la rapidez con la que podemos analizarla y extraer significado de
-ella [@Davenport2013] aunado a un ambiente de inversión de mayor
-incentidumbre [@Ahir2020] hace más crítica la evaluación de proyectos
-previo a su implementación, dada la correlación existente entre el
-aumento de incertidumbre y la disminución en la inversión [@Leahy1996].
+La evaluación de proyectos, previa a su implementación, se ha vuelto más
+crítica debido al avance exponencial que hemos experimentado como
+sociedad, tanto en el desarrollo de nuevas tecnologías (reflejado en el
+incremento del número de patentes concedidas año con año, 391 mil
+patentes concedidas en 2019 comparado con 49 mil en 1963) [@Marco2015],
+como en el aumento del volumen de información generada [@Holst2021], así
+como en el incremento en la rapidez con la que podemos analizarla y
+extraer significado de ella [@Davenport2013] aunado a un ambiente de
+inversión de mayor incentidumbre [@Ahir2020], dada la correlación
+existente entre el aumento de incertidumbre y la disminución en la
+inversión [@Leahy1996].
 
-El uso de técnicas cuantitativas para la toma de decisiones es, sin lugar
-a duda, una idea que ha sido estudidada por más de seis lustros. John
-Bishop, Robert Schlaifer y Howard Raiffa revolucionaron el concepto de
-Toma de Decisiones por medio de la integración de conceptos de una
+El uso de técnicas cuantitativas para la toma de decisiones es, sin
+lugar a duda, una idea que ha sido estudidada por más de seis lustros.
+John Bishop, Robert Schlaifer y Howard Raiffa revolucionaron el concepto
+de Toma de Decisiones por medio de la integración de conceptos de una
 escuela de pensamiento estadístico en los años 50. En específico,
 Raiffer y Schlaifer desarrollaron un método para cuantificar el
 conocimiento subjetivo utilizando *Probabilidad Bayesiana Subjetiva*
-mientras trabajaban en *Harvard Business School*
-[@Mcdonald2017Golden], influenciando de esta manera a generaciones de
-administradores educados en HBS (a través del curso de *Managerial
-Economics Reporting and Control* o MERC) y por lo mismo, su efecto
-debería de sentirse a través de la comunidad de negocios hasta hoy en
-día. Sin embargo, resultados de un análisis de una encuesta a ejecutivos
-de compañías de *Fortune 500* indican que las mayores barreras de
-adopción eran [@Green1976survey]:
+mientras trabajaban en *Harvard Business School* [@Mcdonald2017Golden],
+influenciando de esta manera a generaciones de administradores educados
+en HBS (a través del curso de *Managerial Economics Reporting and
+Control* o MERC) y por lo mismo, su efecto debería de sentirse a través
+de la comunidad de negocios hasta hoy en día. Sin embargo, resultados de
+un análisis de una encuesta a ejecutivos de compañías de *Fortune 500*
+indican que las mayores barreras de adopción eran [@Green1976survey]:
 
 1.  Los beneficios de usar las técnicas no son claramente entendibles
     por los administradores
@@ -34,44 +35,52 @@ adopción eran [@Green1976survey]:
 3.  Los administradores no fueron expuestos a técnicas cuantitativas al
     inicio de su entrenamiento.
 
-La lista continúa. Sin embargo, este top 3 nos ayuda a ver cierta parte
-de la problemática que se relaciona al entendimiento de los métodos
-cuantitativos por parte de la administración de las empresas. Esto es un
+La lista continúa. Sin embargo, estas tres barreras nos ayudan a ver cierta 
+parte de la problemática que se relaciona con la falta de entendimiento de los 
+métodos cuantitativos por parte de la administración de las empresas. Esto es un
 problema importante que puede ser minimizado (al menos en parte) por el
 uso de tecnologías disponibles hoy en día.
 
 Para este trabajo, se busca comparar los resultados de decisión de
-inversión, para un proyecto de implementación de una nueva tecnología
-en la industria química, con base en los métodos cuantitativos:
-Simulación Monte Carlo, Análisis de Sensibilidad, Valor Monetario
-Esperado (EMV por sus siglas en inglés) y Matriz de Toma de Decisiones
-[@Stefanovic2005]. Esto con el fin de mostrar la diferencia entre las
-decisiones que se tomarían con cada uno de los métodos por separado y
-cómo se puede combinar el uso de estos métodos para mejorar la toma de
-decisiones.
+inversión, para un proyecto de implementación de una nueva tecnología en
+la industria química, con base en los métodos cuantitativos [@Stefanovic2005]: 
 
-El utilizar R, en específico RMarkdown y paquetes del tidyverse, nos
-permite crear un marco de análisis el cual es fácil de actualizar
-conforme se obtenga mayor (o nueva) información de la(s) inversión(es)
-que está(n) intentando analizarse. En mi experiencia en la industria,
-toma mucho tiempo utilizar herramientas distintas para el análisis de la
-información y para la presentación de la misma (ej. Excel y PowerPoint,
-si se utilizan las herramientas de Microsoft), mientras que el modelo mismo 
-es más difícil de analizar, dado que la información se encuentra en cada celda
-y tiene una ubicación espacial que no puede ser necesariamente intuitiva. 
-Incluso si se intenta utilizar esfuerzos de automatización para esto, como 
-macros o código en VBA, se requiere de mayor esfuerzo y es más fácil hacer 
-cambios sobre los documentos que causen errores al correr el código de 
-automatización.
 
-El proyecto de implementación a ser evaluado es uno de "Medicina Personalizada";
-este fue elegido con base en el impacto que puede llegar a tener,
-de acuerdo al cuadrante de tendencias disruptivas y con
-fines económicos de la industria química descritos en: [@Falter2017].
+1. Simulación Monte Carlo
+2. Análisis de Sensibilidad
+3. Valor Monetario Esperado (EMV por sus siglas en inglés)
+4. Matriz de Toma de Decisiones
+
+
+Esto con el fin de mostrar la diferencia entre las decisiones que se
+tomarían con cada uno de los métodos por separado y cómo se puede
+combinar el uso de estos métodos para mejorar la toma de decisiones.
+
+El utilizar el lenguaje de programación estadístico, R, en específico el uso de paquetes como RMarkdown y *tidyverse*, nos permite crear un marco de análisis el 
+cual es fácil de actualizar conforme se obtenga o se genere nueva información de 
+la(s) inversión(es) que está(n) intentando analizarse. En mi experiencia en la industria, toma mucho tiempo utilizar herramientas distintas para el análisis 
+de la información y para la presentación de la misma (ej. Excel y PowerPoint,
+si se utilizan las herramientas de Microsoft); además, el modelo
+mismo es más difícil de analizar, dado que la información se encuentra
+en cada celda y tiene una ubicación espacial que puede no ser
+necesariamente intuitiva. Incluso si se intenta automatizar usando macros o 
+código en VBA, se requiere un esfuerzo importante y es más fácil generar 
+errores al realizar cambios en el documento.
+
+El proyecto de implementación que evaluaremos es uno de "Medicina
+Personalizada", que fue elegido con base en el impacto que puede llegar
+a tener, de acuerdo al cuadrante de tendencias disruptivas y con fines
+económicos de la industria química descritos en: [@Falter2017]. Este documento 
+busca señalar y categorizar las tendencias en la industria química hasta el año 
+2023 con un énfasis en el impacto estimado de la tecnología, así como la 
+naturaleza del empuje (económico o social) y si la tecnología es incremental o 
+disruptiva. La Medicina Personalizada fue catalogada como de alto impacto, con un equilibrio entre social y económico, y levemente disruptiva.
 
 \newpage
 
 ## Medicina Personalizada
+
+rrr Agregar definición de Medicina Personalizada - Historia - etc..
 
 Dado que las enfermedades son más similares a una "red" de actividades
 aberrantes (comunicación y comportamiento celular, proteínas
@@ -80,74 +89,68 @@ lineal de síntomas [@Li2015], la medicina personalizada puede ayudar a
 determinar el tratamiento apropiado para un individuo con base en
 grandes cantidades de información a nivel de población [@Ho2020].
 
-La medicina personalizada o de precisión cuenta con dos acercamientos,
+La medicina personalizada o de precisión cuenta con dos acercamientos:
 el primero involucra el uso de tecnologías para adquirir y validar
 información de poblaciones, tales como análisis ómico de células y
 descubrimiento de biomarcadores para su subsecuente aplicación a nivel
 de paciente. El segundo, involucra el uso de tecnologías para adquirir y
 evaluar la información de un individuo para su propio tratamiento. El
 uso de ambos acercamientos se podría realizar a través de su
-integración, de manera que la información de población se utilice para
-guiar qué compuesto utilizar con base en la información genética de la
-persona, seguido de una dosificación dinámica guiada por información del
-individuo [@Ho2020].
+integración, es decir, de manera que la información de población se utilice 
+para guiar la elección de qué compuesto utilizar para tratar síntomas 
+específicos con base en la información genética de la persona, seguido de una dosificación dinámica determinada por información del individuo [@Ho2020].
 
-Para la tecnología específica a evaluar de Medicina Personalizada,
-escogimos una que queda bajo el segundo acercamiento. En específico, en
-una solución para dosificación dinámica, la cual se encuentra al cerca
-del final de la cadena de valor, es decir, de un método de producción de
-las tabletas para cada individuo.
+La tecnología de Medicina Personalizada que se evaluará utiliza el segundo 
+acercamiento. En específico, una solución para dosificación dinámica, la 
+cual se encuentra cerca del final de la cadena de valor, es decir, de un 
+método de producción de tabletas específicamente diseñadas (dosificación 
+dinámica, patrón de liberación) para cada individuo con base en impresión 3D.
 
 ### Tabletas Personalizables
 
-La tecnología, de Medicina Personalizada evaluada en este trabajo, está
-enfocada al paso siguiente de los acercamientos descritos en la sección
-anterior, en especial al segundo acercamiento con fines de dosificación
-dinámica y patrón de liberación del compuesto activo en tabletas
-impresas utilizando tecnología de impresión 3D.
-
-El método propuesto por Yan Jie Neriah Tan para resolver el problema de proveer
-medicina personalizada a la población en general para individuos
+El método propuesto por *Yan Jie Neriah Tan* para resolver el problema de
+proveer medicina personalizada a la población en general para individuos
 específicos efectiva y eficientemente, es a través de la fabricación
 versátil de tabletas utilizando moldes específicamente diseñados de
-diferentes formas y tamaños con el fin de permitir la personalización de
-los siguientes aspectos de una tableta: dósis, duración, perfil de
-liberación y combinación de diferentes compuestos [@Neriah2020].
+diferentes formas y tamaños con el fin de permitir la personalización de: dósis, duración, perfil de liberación y combinación de diferentes 
+compuestos [@Neriah2020].
 
 Este acercamiento para proveer medicina personalizada a la población en
-general cuenta con sus desafíos logísticos, y de producción, los cuales
-se podrían ver reflejados en costos operativos elevados. Continuaremos
-esta discusión en la sección de resultados específica a esta tecnología.
+general cuenta con sus desafíos logísticos y de producción, los cuales
+se podrían ver reflejados en sus elevados costos operativos. Continuaremos
+esta discusión en la sección de resultados.
 
 #### Modelos de negocio
 
 La implementación de esta tecnología se presta a dos modelos de negocio
 similares, pero que divergen en el punto de producción de las tabletas
-personalizadas. En el primer modelo de negocio la producción de las
+personalizadas. En el primero, la producción de las
 tabletas personalizadas se lleva a cabo en un centro operativo que
 atiende a un número definido de farmacias y hospitales que se encuentren
-en la cercanía. Mientras que en el segundo modelo de negocio se producen
+en la cercanía. Mientras que en el segundo se producen
 las tabletas en las farmacias o en los hospitales mismos.
 
-En ambos casos el cliente final haría un chequeo inicial en el hospital
-o la farmacia en donde, con la ayuda de un doctor y análisis del caso
-particular del paciente, se determina la dosis, así como el perfil y
+En ambos casos el consumidor final haría un chequeo inicial en el hospital
+o la farmacia en donde, con la ayuda de un doctor y análisis de su caso
+particular, se determinaría la dosis, así como el perfil y
 tiempo de liberación de los componentes de la tableta personalizada.
 Esta información se agregaría a un expediente compartido en donde cada
 orden contendría la información necesaria para producir las tabletas
 según las especificaciones indicadas por el personal de salud.
 
-La diferencia entre ambos casos de negocio radica en que uno centraliza la 
-producción de las tabletas y distribuye a hospitales y farmacias desde una 
-ubicación central, mientras que el otro busca producir las tabletas en el 
-lugar de entrega.
+La diferencia entre ambos casos de negocio radica en que uno centraliza
+la producción de las tabletas y distribuye a hospitales y farmacias
+desde una ubicación central, mientras que el otro busca producir las
+tabletas en el lugar de entrega.
 
-A continuación se muestran los diagramas que muestran dichos modelos de negocio.
+A continuación se muestran los diagramas que muestran dichos modelos de
+negocio.
 
 ![Diagrama de modelo de negocio con unidades operativas con producción
 semi-centralizada](Diagramas/TP_Business_Model_1.png){width="90%"}
 
 ![Diagrama de modelo de negocio con producción en cada punto de venta
-(Farmacias / Hospitales)](Diagramas/TP_Business_Model_2.png){width="90%"}
+(Farmacias /
+Hospitales)](Diagramas/TP_Business_Model_2.png){width="90%"}
 
 \newpage
