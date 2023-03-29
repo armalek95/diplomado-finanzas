@@ -158,17 +158,6 @@ Este trabajo utiliza principalmente las primeras dos configuraciones con el fin 
 
 \*\* rrr Explicar por qué solo usamos las dos primeras configuraciones \*\*
 
-El método principal que revisamos en este trabajo es el método determinístico de diagramas tornado. Este método conlleva la representación gráfica y el ordenamiento (de mayor a menor) del efecto sobre el resultado del caso base, que tiene el cambio de las variables de entrada del modelo. Ya que éste puede ser tanto positivo como negativo y el efecto suele ser proporcional en ambas direcciones, la gráfica resultante asimila a un tornado.
-
-\*\* rrr Agregar ejemplo de diagrama tornado? \*\*
-
-\newpage
-
-**Diagrama de solución**\
-El siguiente diagrama muestra el esquema de solución para el análisis de sensibilidad utilizando el método determinístico de diagrama de tornado.
-
-![Diagrama de Solución de Análisis de Sensibilidad](Diagramas/AnalisisSensibilidad.jpg){width="90%"}
-
 ```{r tornadotest, fig.cap = "Ejemplo de una gráfica tornado con 6 variables y 6 pares de números aleatorios representando valores máximos y mínimos", echo = FALSE, out.width="65%", fig.align = 'center'}
 
 # El siguiente código es para crear una gráfica de tornado ejemplo
@@ -182,6 +171,16 @@ El siguiente diagrama muestra el esquema de solución para el análisis de sensi
     x = "Valor Presente Neto", y = "Variable")
 
 ```
+
+El método principal que revisamos en este trabajo es el método determinístico de diagramas tornado. Este método conlleva la representación gráfica y el ordenamiento (de mayor a menor) del efecto sobre el resultado del caso base, que tiene el cambio de las variables de entrada del modelo. Ya que éste puede ser tanto positivo como negativo y el efecto suele ser proporcional en ambas direcciones, la gráfica resultante asimila a un tornado (ver figura \@ref(fig:tornadotest)).
+
+
+\newpage
+
+**Diagrama de solución**\
+El siguiente diagrama muestra el esquema de solución para el análisis de sensibilidad utilizando el método determinístico de diagrama de tornado.
+
+![Diagrama de Solución de Análisis de Sensibilidad](Diagramas/AnalisisSensibilidad.jpg){width="90%"}
 
 **rrr** Un ejemplo de evaluación económica con análisis de sensibilidad para revisar [@Lee2017]
 

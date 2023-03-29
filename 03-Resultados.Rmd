@@ -109,14 +109,16 @@ ejemplo_1$dimensiones[[1]] %>%
 
 ```{r cucomposicion}
 ejemplo_1$composicion[[1]] %>%
-  kbl(col.names = c("Compuesto", "Composicion"), 
+  mutate(Composicion=percent(Composicion,0)) %>% 
+  kbl(col.names = c("Compuesto", "Composición"), 
       caption = "Ejemplo Costo Unitario - Composición", 
       align = "lc", label = "tabcucomposicion")
 
 ```
 
 ```{r cucompuestos}
-ejemplo_1$materiales[[1]] %>% select(Compound, masa, Componente) %>%
+ejemplo_1$materiales[[1]] %>% 
+  select(Compound, masa, Componente) %>%
   mutate(masa=round(masa, 3)) %>%
   kbl(col.names = c("Compuesto", "Masa [g]", "Componente"), 
       caption = "Ejemplo Costo Unitario - Compuestos", 
@@ -172,14 +174,29 @@ if (file.exists("datos/ordenestabletassim.rds")) {
 }
 
 costo_ordenes_ej[1:5,] %>%
-  mutate(c_total=currency(c_total,"$",digits=2)) %>% 
+  select(-c_total) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
-                    "Costo Material u.", "Costo Energético u.", 
-                    "Costo Labor u.", "Costo Distribución u.", "Costo Total"),
-      align = "clcccccr",
+                    "Costo Material", "Costo Energético", 
+                    "Costo Labor", "Costo Distribución"),
+      align = "clccccc",
       caption = "Preescripciones Aleatorias", label ="tabordenesej1") %>%
-  kable_styling(latex_options = c("scale_down"))
+  kable_styling(latex_options = c("scale_down")) %>% 
+  column_spec(2:7, width="3cm")
 ```
+
+```{r ctotalpreescripcion}
+costo_ordenes_ej[1:5,] %>%
+  select("formulacion", "compuesto_activo", "c_total") %>% 
+  mutate(c_total=currency(c_total,"$",digits=2)) %>% 
+  kbl(col.names = c("Formulación","Compuesto Activo", "Costo Total"),
+      align = "clr",
+      caption = "Costo total por preescripcion", label ="tabctotalpreesc") 
+# %>%
+  # kable_styling(latex_options = c("scale_down")) %>% 
+  # column_spec(1:3, width="3cm")
+```
+
+
 
 ```{r costounitariotableta}
 costo_promedio <- costo_ordenes_ej %>%
@@ -199,7 +216,8 @@ ord_print %>%
                     "Costo Promedio"),
       align = "clc",
       caption = "Costo de Tableta Promedio por Formulación", 
-      label = "tabcostopromedioformula")
+      label = "tabcostopromedioformula") %>% 
+  column_spec(1:3, width="3cm")
 ```
 
 
@@ -285,6 +303,8 @@ caso_base%>%
 ```{r fcfcasobase}
 
 tasa_gravable <- 0.3
+tasa_descuento <- 0.09
+
 fcf_caso_base <- caso_base %>%
   mutate(fcf=fcf(revenues=ingresos, 
                 costs=costos, 
@@ -304,9 +324,171 @@ fcf_caso_base %>%
 ```
 
 ```{r npvcasobase}
-npv_caso_base <- npv(rate=0.08, cashflow=fcf_caso_base$fcf, 
+npv_caso_base <- npv(rate=tasa_descuento, cashflow=fcf_caso_base$fcf, 
                      period=fcf_caso_base$periodo)
 npv_caso_base_imp <- currency(npv_caso_base, "$", 0)
 ```
 
 Con lo cual obtenemos un Valor Presente Neto de `r npv_caso_base_imp`.
+
+## Valor Monetario Esperado
+
+Para esta parte suponemos que no podemos realizar este proceso de producción 
+indefinidamente desde la cochera de nuestros padres, por lo cual tenemos que
+preguntar si vale más la pena rentar o comprar un almacén. Al igual, tenemos que 
+considerar que los equipos que utilizamos necesitan mantenimiento para seguir 
+operando adecuadamente.
+
+
+```{r vmedatosentrada}
+escenarios_costo <- round(costo_promedio * c(0.85, 1, 1.5), 2)
+escenarios_tabletas <- expectativa_anual * c(0.7, 1, 1.2)
+escenarios_markup <- markup * c(0.80, 1, 1.5)
+escenarios_mantenimiento <- c(0.04, 0.05, 0.10)
+
+precio_compra <- 1000000
+renta_anual <- 120000
+# tasa_descuento se mantiene
+# inversion_total se mantiene
+
+compra_flujo <- c(precio_compra, rep(0, 10))
+renta_flujo <- c(0, rep(renta_anual,10))
+inversion_flujo <- c(inversion_sin_compra, rep(0,10))
+
+
+```
+
+
+```{r arboldecision, fig.cap="Árbol de Decisión Tabletas Personalizables"}
+
+escenarios <- c("B", "M", "A")
+probabilidad <- c(0.15, 0.7, 0.15)
+opciones_comprar <- c("CO", "RE")
+comprar <- Node$new("¿Comprar?", type="decision")
+
+# Agregar compra / renta
+for (a in 1:2) {
+  comprarenta <- comprar$AddChild(opciones_comprar[a], type="chance")
+  # Agregar costo
+  for (i in 1:3) {
+  
+    costo <- comprarenta$AddChild(paste(
+      # opciones_comprar[a], "_",
+                                        "C",escenarios[i], sep=""), 
+                                  type="chance")
+    costo$prob <- probabilidad[i]
+  
+    # Agregar tabletas
+    for (j in 1:3) {
+      
+      tabletas <- costo$AddChild(paste(
+        # opciones_comprar[a], "_",
+        #                                "C",escenarios[i], "_",
+                                       "T",escenarios[j], sep=""), 
+                                 type="chance")
+      tabletas$prob <- probabilidad[j]
+      # Agregar Markup
+      for (k in 1:3) {
+        markup_es <- tabletas$AddChild(paste(
+          # opciones_comprar[a], "_",
+          #                                    "C",escenarios[i], "_",
+          #                                    "T",escenarios[j], "_",
+                                             "U",escenarios[k],sep=""), 
+                                       type="chance")
+        markup_es$prob <- probabilidad[k]
+        # Agregar Mantenimiento
+        for (l in 1:3) {
+          mantenimiento <- markup_es$AddChild(
+            paste(
+              # opciones_comprar[a], "_",
+              #     "C",escenarios[i],"_",
+              #     "T",escenarios[j],"_",
+              #     "U",escenarios[k],"_",
+                  "M",escenarios[l],sep=""),
+            type="terminal")
+          mantenimiento$prob <- probabilidad[k]
+          
+          costo_anual_emv <- c(0, 
+                               rep(escenarios_costo[i]*escenarios_tabletas[j],
+                                   10))
+          ingr_anual_emv <- costo_anual_emv*(1 + escenarios_markup[k])
+          depreciacion_anual_emv <- c(0, MACRS(investment = inversion_total,
+                                               recovery_period = 5,
+                                               n.period=10))
+          
+          if (a == 1) {
+            
+            inversion_anual_emv <- inversion_flujo + compra_flujo
+            
+          } else {
+            inversion_anual_emv <- inversion_flujo
+            costo_anual_emv <- costo_anual_emv + renta_flujo
+          }
+          
+          
+          fcl <- fcf(revenues=ingr_anual_emv,
+                     costs=costo_anual_emv,
+                     depreciation=depreciacion_anual_emv,
+                     capital_expenditures=inversion_anual_emv,
+                     change_net_working_capital=cambio_CTN,
+                     tax_rate=tasa_gravable)
+          
+          mantenimiento$npv <- npv(tasa_descuento, fcl, 0:11)
+        }
+      }
+      
+    }
+  }
+}
+
+SetGraphStyle(comprar, rankdir = "TB")
+SetNodeStyle(comprar, style = "filled,rounded", 
+             label = AdjustNodeName, shape = "box")
+
+plot(comprar)
+```
+
+
+```{r ejemplotabletasmedio, fig.cap="Árbol de Decisión a partir de un nodo de tabletas"}
+t <- comprar$CO$CM$TM
+
+plot(t)
+```
+
+
+```{r emvcalculo}
+
+comprar$Do(function(node) node$npv <- w_npv(node), 
+           filterFun = isNotLeaf, traversal = "post-order")
+
+comprar_df <- ToDataFrameTypeCol(comprar, "prob", "npv")
+
+comprar_df$npv <- currency(comprar_df$npv, symbol = "$", digits = 0L)
+comprar_df$prob <- percent(comprar_df$prob, digits = 0)
+
+comprar_df %>% 
+  filter(npv >= 0) %>%
+  arrange(desc(npv)) %>%
+  select(c(2:6,8)) %>% 
+  mutate_at(c(2:5), ~str_replace_all(., c("[CTUM]{1}A{1}"="Alto",
+                                              "[CTUM]{1}M{1}"="Medio",
+                                              "[CTUM]{1}B{1}"="Bajo"))) %>%
+  mutate_at(1, ~str_replace_all(.,c("RE"="Rentar",
+                                    "CO"="Comprar"))) %>% 
+  kbl(longtable=T, booktabs=T, 
+      col.names = c("Decisión", "Costo", "Volumen", "Markup", 
+                    "Mantenimiento", "EMV"),
+      align = "lllllr",
+      caption = "VME Positivo - Tabletas Personalizables", 
+      label = "tabemvtabletasarbol") %>% 
+  kable_styling(latex_options = c("repeat_header")) %>% 
+  column_spec(1:6, width="2cm")
+
+```
+
+\newpage
+## Análisis de Sensibilidad
+
+
+\newpage
+## Simulación Monte Carlo
