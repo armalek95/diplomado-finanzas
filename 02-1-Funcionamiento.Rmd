@@ -263,10 +263,10 @@ base_case <- tibble(
 print_base <- base_case
 print_base$valor <- currency(print_base$valor, symbol = "", digits = 2L)
 
-# Mostrar como tabla usando knitr
+# Mostrar como tabla
 kbl(print_base, col.names = gsub("[.]", " ", names(print_base)), 
              caption = "Valores de caso base para prueba de Análisis de Sensibilidad", 
-             align = "lccc")
+             align = "lc")
 
 ```
 
@@ -321,8 +321,8 @@ variation <- tibble(
 
 print_var <- variation
 
-print_var$bajo <- percent(print_var$bajo)
-print_var$alto <- percent(print_var$alto)
+print_var$bajo <- percent(print_var$bajo, digits = 0)
+print_var$alto <- percent(print_var$alto, digits = 0)
 
 # Mostrar como tabla usando knitr
 kbl(print_var, col.names = gsub("[.]", " ", names(print_var)), 

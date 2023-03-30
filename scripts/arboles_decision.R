@@ -13,15 +13,16 @@ w_npv<- function(node) {
 # Modificadas de: 
 # https://cran.r-project.org/web/packages/data.tree/vignettes/applications.html
 # Bajo el encabezado de: Plot with the data.tree plotting facility
-GetNodeLabel <- 
-  function(node) 
-    switch(node$type,
-          terminal = 
-            paste0( '$ ', format(node$npv, scientific = FALSE, big.mark = ",")),
-          decision = 
-            paste0(node$name),
-          paste0('EMV\n', '$ ', 
-                 format(node$npv, scientific = FALSE, big.mark = ",")))
+GetNodeLabel <- function(node) {
+  switch(node$type,
+         terminal = 
+             paste0('$ ', format(node$npv, scientific = FALSE, big.mark = ",")),
+         decision = 
+             paste0(node$name),
+         chance = paste0('EMV\n', '$ ', 
+                  format(node$npv, scientific = FALSE, big.mark = ","))
+         )
+  }
 
 GetEdgeLabel <- function(node) {
   name = AdjustNodeName(node)
@@ -33,8 +34,12 @@ GetEdgeLabel <- function(node) {
   return (label)
 }
 
-GetNodeShape <- function(node) 
-  switch(node$type, decision = "box", chance = "circle", terminal = "none")
+GetNodeShape <- function(node) {
+  switch(node$type, 
+         decision = "box", 
+         chance = "circle", 
+         terminal = "none")
+}
 
 AdjustNodeName <- function(node) {
   if (str_starts(node$name, "\\d")) {

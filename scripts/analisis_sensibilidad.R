@@ -10,7 +10,7 @@ sensitivity <- function(variables = c("A","B","C","D","E","F"),
   
   # variables, high, and low
   variable.label <- rep(variables,2)
-  type <- c(rep("Max",length(variables)),rep("Min",length(variables)))
+  type <- c(rep("Alto",length(variables)),rep("Bajo",length(variables)))
   df <- data.frame(x = variable.label, type = type, val = c(high, low))
   df$absval <- rep(abs(high)+abs(low),2)
   df
@@ -26,10 +26,6 @@ tornado <- function(df) {
     # label_dollar le da formato de moneda al eje X
     scale_x_continuous(labels = label_dollar(scale_cut = cut_short_scale()))
   bplot
-}
-
-gen_values <- function(values = rnorm(6,50, sd = 1)){
-  
 }
 
 
@@ -84,3 +80,62 @@ sensitivity_npv <- function(base, variation, variable, type){
 
     return(sen_npv)
 }
+
+
+# Función que calcula el VPN del proyecto de Tabletas Personalizables
+calcular_npv_sens <- function(variable, escenario, n) {
+  
+  # Preparar indice de escenario
+  indice_esc <- switch(escenario, Bajo=2, Alto=3)
+  
+  # Preparar indices
+  indice_valores <- rep(1, n)
+  
+  # Ajustar indice al caso correspondiente
+  if (variable == col_sens[2]) {
+    indice_valores[2] <- indice_esc
+  } else if (variable == col_sens[3]) {
+    indice_valores[3] <- indice_esc
+  } else if (variable == col_sens[4]) {
+    indice_valores[4] <- indice_esc
+  } else if (variable == col_sens[5]) {
+    indice_valores[5] <- indice_esc
+  } else if (variable == col_sens[6]) {
+    indice_valores[6] <- indice_esc
+  } else if (variable == col_sens[7]) {
+    indice_valores[7] <- indice_esc
+  }
+  
+  # Asignar los valores individuales
+  inversion<- as.numeric(input_sens[indice_valores[2], 2])
+  tabletas <- as.numeric(input_sens[indice_valores[3], 3])
+  markup <- as.numeric(input_sens[indice_valores[4], 4])
+  costo <- as.numeric(input_sens[indice_valores[5], 5])
+  renta <- as.numeric(input_sens[indice_valores[6], 6])
+  descuento <- as.numeric(input_sens[indice_valores[7], 7])
+  
+  # Definir flujos anuales
+  inv_flujo <- c(inversion, rep(0, 10))
+  costo_flujo <- c(0, rep(costo * tabletas, 10))
+  ingreso_flujo <- costo_flujo * (1+markup)
+  renta_flujo <- c(0, rep(renta, 10))
+  depr_flujo <- c(0, MACRS(investment=inversion, 
+                           recovery_period = 5, 
+                           n.period = 10))
+  periodos <- 0:length(n)
+  
+  # Calcular Flujo de Caja Libre
+  fcf_sens <- fcf(revenues = ingreso_flujo,
+                  costs = costo_flujo + renta_flujo,
+                  depreciation = depr_flujo,
+                  capital_expenditures = inv_flujo,
+                  change_net_working_capital = cambio_CTN,
+                  tax_rate = tasa_gravable)
+  
+  # Calcular Valor Presente Neto
+  vpn_sens <- npv(rate = descuento, cashflow = fcf_sens, period = periodos)
+  
+  return(vpn_sens)
+}
+
+

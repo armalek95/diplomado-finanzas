@@ -175,6 +175,7 @@ if (file.exists("datos/ordenestabletassim.rds")) {
 
 costo_ordenes_ej[1:5,] %>%
   select(-c_total) %>% 
+  mutate_at(c(4:7), ~currency(., "$", 2)) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
                     "Costo Material", "Costo Energético", 
                     "Costo Labor", "Costo Distribución"),
@@ -268,16 +269,38 @@ depreciacion %>%
 
 ## Resultados Caso base
 
-```{r casobase}
+```{r inputscasobase}
+expectativa_anual <- 200000 #[tabletas/periodo]
+markup <- 0.5
+material_trabajo <- 10 # kg de cada compuesto
+tasa_gravable <- 0.3
+tasa_descuento <- 0.09
 
-expectativa_anual <- 150000 #[tabletas/periodo]
-markup <- 0.3
+input_caso_base <- tibble(
+  Variable=c("Expectativa de venta de tabletas", "Markup", 
+             "Material de Trabajo", "Tasa de Descuento", "Tasa Gravable"),
+  Valor=c(expectativa_anual, markup*100, material_trabajo, 
+          tasa_gravable*100, tasa_descuento*100),
+  Unidades=c("tabletas/año", "%", "kg/compuesto", "%", "%")
+)
+
+input_caso_base %>%
+  mutate(Valor=currency(Valor, "", 0)) %>% 
+  kbl(align = "lcc",
+      caption = "Datos de entrada para caso base", 
+      label = "tabdatentradacasobase")
+```
+
+
+
+```{r casobase}
 
 costos_anuales <- c(0, rep(expectativa_anual*costo_promedio, 10))
 ingresos_anuales <- costos_anuales * (1 + markup)
 
+
 capital_trabajo_inicial <- info_compuestos %>%
-  mutate(capital_trabajo=Precio_mxn_g*10*1000) %>%
+  mutate(capital_trabajo=Precio_mxn_g*material_trabajo*1000) %>%
   select(capital_trabajo) %>% sum()
 
 cambio_CTN <- c(capital_trabajo_inicial, rep(0,10))
@@ -301,9 +324,6 @@ caso_base%>%
 ```
 
 ```{r fcfcasobase}
-
-tasa_gravable <- 0.3
-tasa_descuento <- 0.09
 
 fcf_caso_base <- caso_base %>%
   mutate(fcf=fcf(revenues=ingresos, 
@@ -341,83 +361,96 @@ operando adecuadamente.
 
 
 ```{r vmedatosentrada}
-escenarios_costo <- round(costo_promedio * c(0.85, 1, 1.5), 2)
-escenarios_tabletas <- expectativa_anual * c(0.7, 1, 1.2)
-escenarios_markup <- markup * c(0.80, 1, 1.5)
-escenarios_mantenimiento <- c(0.04, 0.05, 0.10)
-
 precio_compra <- 1000000
 renta_anual <- 120000
 # tasa_descuento se mantiene
 # inversion_total se mantiene
 
+escenarios_costo <- round(costo_promedio * c(0.85, 1, 1.5), 2)
+escenarios_tabletas <- expectativa_anual * c(0.7, 1, 1.2)
+escenarios_markup <- markup * c(0.80, 1, 1.5)
+escenarios_mantenimiento <- inversion_total * c(0.04, 0.05, 0.10)
+
+escenarios <- c("B", "M", "A")
+probabilidad <- c(0.15, 0.7, 0.15)
+
 compra_flujo <- c(precio_compra, rep(0, 10))
 renta_flujo <- c(0, rep(renta_anual,10))
-inversion_flujo <- c(inversion_sin_compra, rep(0,10))
+inversion_flujo <- c(inversion_total, rep(0,10))
 
+input_emv <- tibble(
+  escenario=factor(c("Bajo", "Medio", "Alto")),
+  costo=escenarios_costo, 
+  tabletas=escenarios_tabletas,
+  markup=escenarios_markup, 
+  mant=escenarios_mantenimiento,
+  prob=probabilidad
+)
 
+input_emv %>%
+  mutate_at(2, ~currency(., "$", 2)) %>% 
+  mutate_at(5, ~currency(., "$", 0)) %>% 
+  mutate_at(3, ~currency(., "", 0)) %>% 
+  mutate_at(c(4,6), ~percent(., 0)) %>% 
+  kbl(col.names=c("Escenario", "Costo Promedio", "Expectativa Ventas", 
+                  "Markup","Mantenimiento Anual", "Probabilidad"),
+      align = "crrcrc",
+      caption = "Datos de entrada para Valor Monetario Esperado", 
+      label = "tabdatentradaemv")
 ```
 
 
 ```{r arboldecision, fig.cap="Árbol de Decisión Tabletas Personalizables"}
 
-escenarios <- c("B", "M", "A")
-probabilidad <- c(0.15, 0.7, 0.15)
 opciones_comprar <- c("CO", "RE")
 comprar <- Node$new("¿Comprar?", type="decision")
+
+depreciacion_anual_emv <- c(0, MACRS(investment = inversion_total,
+                                               recovery_period = 5,
+                                               n.period=10))
 
 # Agregar compra / renta
 for (a in 1:2) {
   comprarenta <- comprar$AddChild(opciones_comprar[a], type="chance")
+  
   # Agregar costo
   for (i in 1:3) {
   
-    costo <- comprarenta$AddChild(paste(
-      # opciones_comprar[a], "_",
-                                        "C",escenarios[i], sep=""), 
+    costo <- comprarenta$AddChild(paste("C",escenarios[i], sep=""), 
                                   type="chance")
     costo$prob <- probabilidad[i]
   
     # Agregar tabletas
     for (j in 1:3) {
       
-      tabletas <- costo$AddChild(paste(
-        # opciones_comprar[a], "_",
-        #                                "C",escenarios[i], "_",
-                                       "T",escenarios[j], sep=""), 
+      tabletas <- costo$AddChild(paste("T",escenarios[j], sep=""), 
                                  type="chance")
       tabletas$prob <- probabilidad[j]
+      
+      costo_anual_emv <- c(0, rep(escenarios_costo[i]*escenarios_tabletas[j],
+                                   10))
       # Agregar Markup
       for (k in 1:3) {
-        markup_es <- tabletas$AddChild(paste(
-          # opciones_comprar[a], "_",
-          #                                    "C",escenarios[i], "_",
-          #                                    "T",escenarios[j], "_",
-                                             "U",escenarios[k],sep=""), 
+        markup_es <- tabletas$AddChild(paste("U",escenarios[k],sep=""), 
                                        type="chance")
+        
         markup_es$prob <- probabilidad[k]
+        
+        ingr_anual_emv <- costo_anual_emv*(1 + escenarios_markup[k])
+        
         # Agregar Mantenimiento
         for (l in 1:3) {
           mantenimiento <- markup_es$AddChild(
-            paste(
-              # opciones_comprar[a], "_",
-              #     "C",escenarios[i],"_",
-              #     "T",escenarios[j],"_",
-              #     "U",escenarios[k],"_",
-                  "M",escenarios[l],sep=""),
+            paste("M",escenarios[l],sep=""),
             type="terminal")
-          mantenimiento$prob <- probabilidad[k]
           
-          costo_anual_emv <- c(0, 
-                               rep(escenarios_costo[i]*escenarios_tabletas[j],
-                                   10))
-          ingr_anual_emv <- costo_anual_emv*(1 + escenarios_markup[k])
-          depreciacion_anual_emv <- c(0, MACRS(investment = inversion_total,
-                                               recovery_period = 5,
-                                               n.period=10))
+          mantenimiento$prob <- probabilidad[l]
+          
+          mant_anual_emv <- c(0, rep(escenarios_mantenimiento[l], 10))
+          
+          costo_anual_emv <- costo_anual_emv + mant_anual_emv
           
           if (a == 1) {
-            
             inversion_anual_emv <- inversion_flujo + compra_flujo
             
           } else {
@@ -466,29 +499,159 @@ comprar_df <- ToDataFrameTypeCol(comprar, "prob", "npv")
 comprar_df$npv <- currency(comprar_df$npv, symbol = "$", digits = 0L)
 comprar_df$prob <- percent(comprar_df$prob, digits = 0)
 
-comprar_df %>% 
-  filter(npv >= 0) %>%
-  arrange(desc(npv)) %>%
+comprar_print <- comprar_df %>% 
   select(c(2:6,8)) %>% 
   mutate_at(c(2:5), ~str_replace_all(., c("[CTUM]{1}A{1}"="Alto",
                                               "[CTUM]{1}M{1}"="Medio",
                                               "[CTUM]{1}B{1}"="Bajo"))) %>%
   mutate_at(1, ~str_replace_all(.,c("RE"="Rentar",
-                                    "CO"="Comprar"))) %>% 
+                                    "CO"="Comprar")))
+comprar_print %>% 
+  filter(npv >= 0) %>%
+  arrange(desc(npv)) %>%
+  head(20) %>% 
   kbl(longtable=T, booktabs=T, 
       col.names = c("Decisión", "Costo", "Volumen", "Markup", 
                     "Mantenimiento", "EMV"),
       align = "lllllr",
-      caption = "VME Positivo - Tabletas Personalizables", 
+      caption = "VME Positivo (Top 20) - Tabletas Personalizables", 
       label = "tabemvtabletasarbol") %>% 
   kable_styling(latex_options = c("repeat_header")) %>% 
   column_spec(1:6, width="2cm")
 
 ```
 
+```{r graficacompravsrenta}
+comprar_dftree <- ToDataFrameTree(comprar, "npv")
+
+comprar_dftree %>% 
+  mutate(npv=currency(npv,"$",digits=0)) %>% 
+  filter(grepl("CO|RE", levelName)) %>% 
+  mutate_at(1, ~str_replace_all(.,c("°--RE"="Rentar",
+                                    "¦--CO"="Comprar"))) %>% 
+    kbl(booktabs=T, 
+      col.names = c("Decisión","EMV"),
+      align = "lr",
+      caption = "VME - Comprar vs Rentar", 
+      label = "tabemvcomprarrentar")
+```
+
+
+
+```{r graficaemv, fig.cap="Histograma del EMV esperado decisión"}
+
+comprar_print %>%
+  mutate(npv=npv/1000000) %>% 
+  ggplot(aes(npv)) +
+  geom_histogram() +
+  facet_wrap(~level_2) +
+  ylab("Cuenta") +
+  xlab("Costo Promedio de Producción")
+```
+
+
+```{r graficaemvboxplot}
+
+comprar_print %>%
+  mutate(npv=npv/1000000) %>% 
+  ggplot(aes(level_3, npv)) +
+  geom_boxplot() +
+  facet_wrap(~level_2) +
+  ylab("Cuenta") +
+  xlab("Costo Promedio de Producción")
+
+```
+
+```{r emvvaluesgraph}
+
+PlotDecisionTree(comprar$CO$CA$TA)
+
+```
+
+
 \newpage
 ## Análisis de Sensibilidad
 
+```{r sensdatosentrada}
+
+rango_sens <- c(1, 0.7, 1.3)
+
+tab_sens <- expectativa_anual * rango_sens
+mup_sens <- markup * rango_sens
+costo_sens <- costo_promedio * rango_sens
+ren_sens <- renta_anual * rango_sens
+desc_sens <- tasa_descuento * rango_sens
+inv_sens <- inversion_total * rango_sens
+
+input_sens <- tibble(
+  escenario=factor(c("Base", "Bajo", "Alto")),
+  inversion=inv_sens,
+  tabletas=tab_sens,
+  markup=mup_sens,
+  costo=costo_sens,
+  renta=ren_sens,
+  descuento=desc_sens
+)
+
+col_sens <- c("Escenario", "Inversión", "Expectativa Venta", "Markup", 
+              "Costo Promedio", "Renta", "Tasa de descuento")
+
+input_sens %>%
+  mutate_at(3, ~currency(., "",0)) %>% 
+  mutate_at(c(4,7), ~percent(.,1)) %>%
+  mutate_at(5, ~currency(., "$", 2)) %>% 
+  mutate_at(c(2,6), ~currency(., "$", 0)) %>% 
+  kbl(col.names = col_sens,
+      align = "crrcrrc",
+      caption = "Datos de Entrada para Análisis de Sensibilidad",
+      label = "tabentradasens")
+
+```
+
+```{r calculosensibilidad}
+
+# Preparar la tabla para graficar los resultados
+sens_setup <- tibble(
+variable=rep(col_sens[-1],2),
+escenario=c(rep("Bajo", length(col_sens)-1), rep("Alto", length(col_sens)-1))
+)
+
+# Preparar la lista para recibir los resultados de VPN
+sens_npv_inter <- list(rep(0,length(col_sens)*2-2))
+
+# Iterar sobre los casos
+for (i in seq_along(sens_setup$variable)) {
+  sens_npv_inter[i] <- calcular_npv_sens(sens_setup$variable[i], 
+                                         sens_setup$escenario[i], 
+                                         length(sens_setup$variable))
+}
+
+# Calcular caso base
+sens_base <- calcular_npv_sens("No aplica", "Alto", length(sens_setup$variable))
+sens_base <- unlist(sens_base)
+
+sens_npv_inter <- unlist(sens_npv_inter)
+
+sens_results <- sens_setup %>% 
+  mutate(npv=sens_npv_inter,
+         diff=npv-sens_base)
+
+n <- (length(sens_results$variable)/2)
+
+sensitivity(variables = sens_results$variable[1:n], 
+            high = sens_results$diff[1:n],
+            low = sens_results$diff[(n+1):(n*2)]) %>% 
+  tornado() +
+  labs(
+    title = "Gráfica de Tornado de Tabletas Personalizables",
+    subtitle = ,
+    caption = "Análisis de Sensibilidad",
+    fill = "",
+    x = "VPN - VPN Caso Base",
+    y = "Variable"
+  )
+
+```
 
 \newpage
 ## Simulación Monte Carlo
