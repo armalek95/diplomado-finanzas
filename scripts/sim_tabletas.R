@@ -12,11 +12,11 @@ compuesto <- function(formulacion) {
 
 # funcion para elegir la dosis de forma aleatoria
 dosis <- function(compuesto_activo) {
-  if (compuesto_activo == "Phenylephrine Hydrochloride") {
+  if (compuesto_activo == "Clorhidrato de fenilefrina") {
     return(rnorm(n=1, mean=0.01, sd=0.005))
-  } else if (compuesto_activo == "Diphenhydramine hydrochloride") {
+  } else if (compuesto_activo == "Clorhidrato de difenhidramina") {
     return(rnorm(n=1, mean=0.01, sd=0.005))
-  } else{ # Acetaminophen
+  } else{ # Acetaminofen
     return(rnorm(n=1, mean=0.5, sd=0.3))
   }
 }
@@ -80,9 +80,9 @@ requerimiento_material <- function(formulacion, CA, dosis, dimensiones, composic
     inner_join(info_compuestos[c("Compound", "Density")], by="Compound")
   
   dens_abs <- info_compuestos[info_compuestos$Compound == 
-                                "Acrylonitrile Butadiene Styrene",]$Density
+                                "Acrilonitrilo butadieno estireno",]$Density
   dens_cera <- info_compuestos[info_compuestos$Compound == 
-                                 "White Wax",]$Density
+                                 "Cera blanca",]$Density
   # calcular masa de abs y de cera necesaria
   mabs_cera <- masa_abs_cera(z=dimensiones[1, ]$valor, 
                              kappa=dimensiones[2,]$valor,
@@ -105,9 +105,9 @@ requerimiento_material <- function(formulacion, CA, dosis, dimensiones, composic
   
   compuestos <- comp_me %>%  
     bind_rows(comp_mi) %>%
-    add_row(Compound="White Wax", masa=mabs_cera[2], 
+    add_row(Compound="Cera blanca", masa=mabs_cera[2], 
             Density=dens_cera, Componente="CU") %>%
-    add_row(Compound="Acrylonitrile Butadiene Styrene", 
+    add_row(Compound="Acrilonitrilo butadieno estireno", 
             masa=mabs_cera[1], Density=dens_abs, Componente="MO")
   
   # A la lista de compuestos que conforman a nuestra tableta

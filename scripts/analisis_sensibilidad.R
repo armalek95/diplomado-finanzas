@@ -24,7 +24,7 @@ tornado <- function(df) {
     geom_bar(position="identity", stat="identity")
   bplot <- bplot + theme_bw() +
     # label_dollar le da formato de moneda al eje X
-    scale_x_continuous(labels = label_dollar(scale_cut = cut_short_scale()))
+    scale_x_continuous(labels = label_percent())
   bplot
 }
 

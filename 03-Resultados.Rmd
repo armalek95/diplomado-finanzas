@@ -51,6 +51,30 @@ precio_gasolina <- 25 #[MXN/L]
 eficiencia_vehiculo <- 35 #[km/L]
 numero_tabletas_viaje <- 1000 #[tabletas]
 
+
+input_inicial <- tibble(
+  variable=c("Tipo de Cambio", "Costo Frasco", "Tiempo de fabricación", 
+             "Salario Trabajador", "Eficiencia del Trabajador", 
+             "Tiempo de impresión", "Consumo Energético Impresora", 
+             "Eficiencia Calentador", "Costo Electricidad", 
+             "Tiempo de Transporte", "Distancia por viaje", "Precio Gasolina",
+             "Eficiencia del vehículo", "Tabletas por viaje"),
+  valor=c(tipo_cambio, costo_frasco, t_fabricacion, 
+          round(salario_trabajador*60, 2), eficiencia_trabajador*100, t_impresion,
+          consumo_energetico_impresora, eficiencia_calentador*100, 
+          round(costo_electricidad*1000*1000*1000,2), t_transporte, distancia, 
+          precio_gasolina, eficiencia_vehiculo, numero_tabletas_viaje),
+  unidades=c("MXN/USD", "MXN", "min", "MXN/h", "%", "min", "J/min", "%", 
+             "MXN/GJ", "min", "km", "MXN/L", "km/L", "tabletas")
+)
+
+input_inicial %>% 
+  mutate(valor=currency(valor, "", digits=2)) %>% 
+  kbl(col.names=c("Variable", "Valor", "Unidades"),
+      align= c("lcl"),
+      caption="Valores de entrada Tabletas Personalizables",
+      label = "tabdatosentrada")
+
 ```
 
 ```{r infocompuestos}
@@ -167,15 +191,15 @@ if (file.exists("datos/ordenestabletassim.rds")) {
   unnest(c_distribucion) %>%
   select(formulacion, compuesto_activo, tabletas, 
          c_materiales, c_energia, c_labor, c_distribucion) %>%
-  mutate(c_total=(c_materiales+c_energia+c_labor+c_distribucion)*tabletas) %>%
-  mutate(across(c(4:8), ~round(.x, digits = 2)))
+  mutate(c_total=(c_materiales+c_energia+c_labor+c_distribucion)*tabletas)
   
   write_rds(costo_ordenes_ej, "datos/ordenestabletassim.rds")
 }
 
 costo_ordenes_ej[1:5,] %>%
   select(-c_total) %>% 
-  mutate_at(c(4:7), ~currency(., "$", 2)) %>% 
+  mutate_at(c(4,6,7), ~currency(., "$", 2)) %>% 
+  mutate_at(5, ~currency(., "$", 5)) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
                     "Costo Material", "Costo Energético", 
                     "Costo Labor", "Costo Distribución"),
@@ -184,7 +208,8 @@ costo_ordenes_ej[1:5,] %>%
   kable_styling(latex_options = c("scale_down")) %>% 
   column_spec(2:7, width="3cm")
 ```
-
+\newpage
+**Costo Preescripción**
 ```{r ctotalpreescripcion}
 costo_ordenes_ej[1:5,] %>%
   select("formulacion", "compuesto_activo", "c_total") %>% 
@@ -221,6 +246,7 @@ ord_print %>%
   column_spec(1:3, width="3cm")
 ```
 
+\newpage
 
 ## Costo de inversión
 
@@ -249,6 +275,8 @@ inv_total_print <- currency(inversion_total, "$", 0)
 
 La inversión total estimada para el caso base es de `r inv_total_print`.
 
+\newpage
+
 ## Depreciación
 
 ```{r depbase}
@@ -266,11 +294,12 @@ depreciacion %>%
       label = "tabperfildepreciacion")
 ```
 
+\newpage
 
 ## Resultados Caso base
 
 ```{r inputscasobase}
-expectativa_anual <- 200000 #[tabletas/periodo]
+expectativa_anual <- 150000 #[tabletas/periodo]
 markup <- 0.5
 material_trabajo <- 10 # kg de cada compuesto
 tasa_gravable <- 0.3
@@ -278,7 +307,7 @@ tasa_descuento <- 0.09
 
 input_caso_base <- tibble(
   Variable=c("Expectativa de venta de tabletas", "Markup", 
-             "Material de Trabajo", "Tasa de Descuento", "Tasa Gravable"),
+             "Material de Trabajo", "Tasa Gravable", "Tasa de Descuento"),
   Valor=c(expectativa_anual, markup*100, material_trabajo, 
           tasa_gravable*100, tasa_descuento*100),
   Unidades=c("tabletas/año", "%", "kg/compuesto", "%", "%")
@@ -351,6 +380,8 @@ npv_caso_base_imp <- currency(npv_caso_base, "$", 0)
 
 Con lo cual obtenemos un Valor Presente Neto de `r npv_caso_base_imp`.
 
+\newpage
+
 ## Valor Monetario Esperado
 
 Para esta parte suponemos que no podemos realizar este proceso de producción 
@@ -361,8 +392,8 @@ operando adecuadamente.
 
 
 ```{r vmedatosentrada}
-precio_compra <- 1000000
-renta_anual <- 120000
+precio_compra <- 1000000 # [MXN]
+renta_anual <- 120000 # [MXN]
 # tasa_descuento se mantiene
 # inversion_total se mantiene
 
@@ -396,7 +427,8 @@ input_emv %>%
                   "Markup","Mantenimiento Anual", "Probabilidad"),
       align = "crrcrc",
       caption = "Datos de entrada para Valor Monetario Esperado", 
-      label = "tabdatentradaemv")
+      label = "tabdatentradaemv") %>% 
+  kable_styling(latex_options = c("scale_down"))
 ```
 
 
@@ -427,7 +459,7 @@ for (a in 1:2) {
                                  type="chance")
       tabletas$prob <- probabilidad[j]
       
-      costo_anual_emv <- c(0, rep(escenarios_costo[i]*escenarios_tabletas[j],
+      costo_anual_emv_j <- c(0, rep(escenarios_costo[i]*escenarios_tabletas[j],
                                    10))
       # Agregar Markup
       for (k in 1:3) {
@@ -436,7 +468,7 @@ for (a in 1:2) {
         
         markup_es$prob <- probabilidad[k]
         
-        ingr_anual_emv <- costo_anual_emv*(1 + escenarios_markup[k])
+        ingr_anual_emv <- costo_anual_emv_j*(1 + escenarios_markup[k])
         
         # Agregar Mantenimiento
         for (l in 1:3) {
@@ -448,19 +480,19 @@ for (a in 1:2) {
           
           mant_anual_emv <- c(0, rep(escenarios_mantenimiento[l], 10))
           
-          costo_anual_emv <- costo_anual_emv + mant_anual_emv
+          costo_anual_emv_k <- costo_anual_emv_j + mant_anual_emv
           
           if (a == 1) {
             inversion_anual_emv <- inversion_flujo + compra_flujo
             
           } else {
             inversion_anual_emv <- inversion_flujo
-            costo_anual_emv <- costo_anual_emv + renta_flujo
+            costo_anual_emv_k <- costo_anual_emv_k + renta_flujo
           }
           
           
           fcl <- fcf(revenues=ingr_anual_emv,
-                     costs=costo_anual_emv,
+                     costs=costo_anual_emv_k,
                      depreciation=depreciacion_anual_emv,
                      capital_expenditures=inversion_anual_emv,
                      change_net_working_capital=cambio_CTN,
@@ -489,7 +521,7 @@ plot(t)
 ```
 
 
-```{r emvcalculo}
+```{r emvtop10}
 
 comprar$Do(function(node) node$npv <- w_npv(node), 
            filterFun = isNotLeaf, traversal = "post-order")
@@ -509,17 +541,44 @@ comprar_print <- comprar_df %>%
 comprar_print %>% 
   filter(npv >= 0) %>%
   arrange(desc(npv)) %>%
-  head(20) %>% 
+  head(10) %>% 
   kbl(longtable=T, booktabs=T, 
       col.names = c("Decisión", "Costo", "Volumen", "Markup", 
                     "Mantenimiento", "EMV"),
       align = "lllllr",
-      caption = "VME Positivo (Top 20) - Tabletas Personalizables", 
+      caption = "VME Positivo (Top 10) - Tabletas Personalizables", 
       label = "tabemvtabletasarbol") %>% 
   kable_styling(latex_options = c("repeat_header")) %>% 
   column_spec(1:6, width="2cm")
 
 ```
+
+```{r emvbottom10}
+
+comprar_print %>% 
+  arrange(npv) %>%
+  head(10) %>% 
+  kbl(longtable=T, booktabs=T, 
+      col.names = c("Decisión", "Costo", "Volumen", "Markup", 
+                    "Mantenimiento", "EMV"),
+      align = "lllllr",
+      caption = "VME Positivo (Últimos 10) - Tabletas Personalizables", 
+      label = "tabemvtabletasarbolbot") %>% 
+  kable_styling(latex_options = c("repeat_header")) %>% 
+  column_spec(1:6, width="2cm")
+
+```
+
+```{r}
+
+comprar_df %>% 
+  mutate(npv=npv/1000000) %>% 
+  ggplot(mapping = aes(y=npv, x=level_3, color=level_2, shape = level_5)) +
+  geom_point() +
+  facet_grid(level_4 ~ level_6)
+  
+```
+
 
 ```{r graficacompravsrenta}
 comprar_dftree <- ToDataFrameTree(comprar, "npv")
@@ -538,7 +597,7 @@ comprar_dftree %>%
 
 
 
-```{r graficaemv, fig.cap="Histograma del EMV esperado decisión"}
+```{r graficaemv, fig.cap="Histograma del EMV esperado decisión", message=FALSE}
 
 comprar_print %>%
   mutate(npv=npv/1000000) %>% 
@@ -546,7 +605,7 @@ comprar_print %>%
   geom_histogram() +
   facet_wrap(~level_2) +
   ylab("Cuenta") +
-  xlab("Costo Promedio de Producción")
+  xlab("Valor Monetario Esperado (millones)")
 ```
 
 
@@ -557,14 +616,8 @@ comprar_print %>%
   ggplot(aes(level_3, npv)) +
   geom_boxplot() +
   facet_wrap(~level_2) +
-  ylab("Cuenta") +
+  ylab("Valor Monetario Esperado (millones)") +
   xlab("Costo Promedio de Producción")
-
-```
-
-```{r emvvaluesgraph}
-
-PlotDecisionTree(comprar$CO$CA$TA)
 
 ```
 
@@ -621,9 +674,15 @@ sens_npv_inter <- list(rep(0,length(col_sens)*2-2))
 
 # Iterar sobre los casos
 for (i in seq_along(sens_setup$variable)) {
+  
+  print(paste("Variable:", sens_setup$variable[i]))
+  print(paste("Escenario:", sens_setup$escenario[i]))
+  
   sens_npv_inter[i] <- calcular_npv_sens(sens_setup$variable[i], 
                                          sens_setup$escenario[i], 
-                                         length(sens_setup$variable))
+                                         length(col_sens))
+  
+  print(paste("NPV:", sens_npv_inter[i]))
 }
 
 # Calcular caso base
@@ -634,13 +693,13 @@ sens_npv_inter <- unlist(sens_npv_inter)
 
 sens_results <- sens_setup %>% 
   mutate(npv=sens_npv_inter,
-         diff=npv-sens_base)
+         diff=percent((npv-sens_base)/sens_base, 2))
 
 n <- (length(sens_results$variable)/2)
 
 sensitivity(variables = sens_results$variable[1:n], 
-            high = sens_results$diff[1:n],
-            low = sens_results$diff[(n+1):(n*2)]) %>% 
+            low = sens_results$diff[1:n],
+            high = sens_results$diff[(n+1):(n*2)]) %>% 
   tornado() +
   labs(
     title = "Gráfica de Tornado de Tabletas Personalizables",
@@ -655,3 +714,5 @@ sensitivity(variables = sens_results$variable[1:n],
 
 \newpage
 ## Simulación Monte Carlo
+
+

@@ -362,12 +362,12 @@ sens_npv <- unlist(sens_npv)
 
 variation_case <- variation_case %>% 
   mutate(npv = sens_npv, 
-         diff = npv - base_npv)
+         diff = (npv - base_npv)/base_npv)
 
 # Cambiar formato
 print_varc <- variation_case
 print_varc$npv <- currency(print_varc$npv, symbol = "$", digits = 0L)
-print_varc$diff <- currency(print_varc$diff, symbol = "$", digits = 0L)
+print_varc$diff <- percent(print_varc$diff, digits = 0)
 
 # Mostrar como tabla usando knitr
 kbl(print_varc, col.names = gsub("[.]", " ", names(print_varc)), 
