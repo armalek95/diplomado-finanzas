@@ -389,7 +389,7 @@ tornado(sensitivity(variables = gsub("[.]", " ", unique(variation_case$variable)
              subtitle = "Usando cuatro variables con casos alto y bajo",
              caption = "",
              fill = "",
-             x = "VPN - VPN Caso Base", y = "Variable")
+             x = "Cambio respecto a VPN Caso Base", y = "Variable")
 
 ```
 

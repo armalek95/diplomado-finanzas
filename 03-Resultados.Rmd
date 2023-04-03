@@ -22,8 +22,8 @@ opciones_E2 <- c("Acetaminofén")
 # cargar composicion de las formulaciones
 composicion <- read_csv("datos/composicion.csv", show_col_types = FALSE)
 
-# Definir parametros para simulacion
-sim_num <- 100
+# Definir parametros para simulacion de ordenes para costo promedio
+sim_num <- 5000
 
 # Definir variables para funciones de costos:
 
@@ -37,7 +37,8 @@ eficiencia_trabajador <- 0.75 #[]
 
 ## Energia
 t_impresion <- 20 #[min]
-consumo_energetico_impresora <- 100#[J/min]
+# 500[W]*3,600[J/Wh]*1/60[h/min]
+consumo_energetico_impresora <- 500*3600/60 #[J/min]
 eficiencia_calentador <- 0.6 #[]
 costo_electricidad <- 0.976 / 3600000 #[MXN/J]
 #https://www.cfe.mx/hogar/tarifas/Pages/Acuerdosdetarifasant.aspx#
@@ -61,10 +62,10 @@ input_inicial <- tibble(
              "Eficiencia del vehículo", "Tabletas por viaje"),
   valor=c(tipo_cambio, costo_frasco, t_fabricacion, 
           round(salario_trabajador*60, 2), eficiencia_trabajador*100, t_impresion,
-          consumo_energetico_impresora, eficiencia_calentador*100, 
+          consumo_energetico_impresora/1000, eficiencia_calentador*100, 
           round(costo_electricidad*1000*1000*1000,2), t_transporte, distancia, 
           precio_gasolina, eficiencia_vehiculo, numero_tabletas_viaje),
-  unidades=c("MXN/USD", "MXN", "min", "MXN/h", "%", "min", "J/min", "%", 
+  unidades=c("MXN/USD", "MXN", "min", "MXN/h", "%", "min", "KJ/min", "%", 
              "MXN/GJ", "min", "km", "MXN/L", "km/L", "tabletas")
 )
 
@@ -198,8 +199,7 @@ if (file.exists("datos/ordenestabletassim.rds")) {
 
 costo_ordenes_ej[1:5,] %>%
   select(-c_total) %>% 
-  mutate_at(c(4,6,7), ~currency(., "$", 2)) %>% 
-  mutate_at(5, ~currency(., "$", 5)) %>% 
+  mutate_at(c(4,5,6,7), ~currency(., "$", 2)) %>%
   kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
                     "Costo Material", "Costo Energético", 
                     "Costo Labor", "Costo Distribución"),
@@ -432,7 +432,7 @@ input_emv %>%
 ```
 
 
-```{r arboldecision, fig.cap="Árbol de Decisión Tabletas Personalizables"}
+```{r arboldecision, fig.cap="Medio Árbol de Decisión Tabletas Personalizables"}
 
 opciones_comprar <- c("CO", "RE")
 comprar <- Node$new("¿Comprar?", type="decision")
@@ -510,7 +510,7 @@ SetGraphStyle(comprar, rankdir = "TB")
 SetNodeStyle(comprar, style = "filled,rounded", 
              label = AdjustNodeName, shape = "box")
 
-plot(comprar)
+plot(comprar$RE)
 ```
 
 
@@ -558,6 +558,7 @@ comprar_print %>%
 comprar_print %>% 
   arrange(npv) %>%
   head(10) %>% 
+  arrange(desc(npv)) %>% 
   kbl(longtable=T, booktabs=T, 
       col.names = c("Decisión", "Costo", "Volumen", "Markup", 
                     "Mantenimiento", "EMV"),
@@ -569,7 +570,7 @@ comprar_print %>%
 
 ```
 
-```{r}
+```{r npvfacet, eval=FALSE}
 
 comprar_df %>% 
   mutate(npv=npv/1000000) %>% 
@@ -657,7 +658,8 @@ input_sens %>%
   kbl(col.names = col_sens,
       align = "crrcrrc",
       caption = "Datos de Entrada para Análisis de Sensibilidad",
-      label = "tabentradasens")
+      label = "tabentradasens") %>% 
+  kable_styling(latex_options = c("scale_down"))
 
 ```
 
@@ -675,14 +677,9 @@ sens_npv_inter <- list(rep(0,length(col_sens)*2-2))
 # Iterar sobre los casos
 for (i in seq_along(sens_setup$variable)) {
   
-  print(paste("Variable:", sens_setup$variable[i]))
-  print(paste("Escenario:", sens_setup$escenario[i]))
-  
   sens_npv_inter[i] <- calcular_npv_sens(sens_setup$variable[i], 
                                          sens_setup$escenario[i], 
                                          length(col_sens))
-  
-  print(paste("NPV:", sens_npv_inter[i]))
 }
 
 # Calcular caso base
@@ -703,10 +700,8 @@ sensitivity(variables = sens_results$variable[1:n],
   tornado() +
   labs(
     title = "Gráfica de Tornado de Tabletas Personalizables",
-    subtitle = ,
-    caption = "Análisis de Sensibilidad",
     fill = "",
-    x = "VPN - VPN Caso Base",
+    x = "Cambio respecto a VPN Caso Base",
     y = "Variable"
   )
 

@@ -26,7 +26,8 @@ ret_composicion <- function(formulacion){
 ordenes_personalizadas <- function(sim_num) {
   # Crear tabla para iniciar la simulacion
   simulaciones <- tibble(sim = 1:sim_num, 
-                         formulacion=sample(formulaciones, sim_num, replace = TRUE))
+                         formulacion=sample(formulaciones, sim_num, 
+                                            replace = TRUE))
   
   # Agregar compuesto activo
   simulaciones <- simulaciones %>%
