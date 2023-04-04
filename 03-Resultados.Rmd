@@ -74,11 +74,12 @@ input_inicial %>%
   kbl(col.names=c("Variable", "Valor", "Unidades"),
       align= c("lcl"),
       caption="Valores de entrada Tabletas Personalizables",
-      label = "tabdatosentrada")
+      label = "tabdatosentrada") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 
 ```
 En la tabla \@ref(tab:tabdatosentrada) podemos observar los datos de entrada, y
-sus unidades, que fueron utilizados en este trabajo que nos sirven para calcular 
+sus unidades, que fueron utilizados en este trabajo con el objetivo de calcular 
 los costos de energía, labor y distribución.
 
 ```{r infocompuestos}
@@ -127,7 +128,8 @@ ejemplo_1 %>% select(formulacion, compuesto_activo, dosis) %>%
   mutate(dosis = round(dosis, 3)) %>%
   kbl(col.names = c("Formulación", "Compuesto Activo", "Dosis [g]"), 
       caption = "Ejemplo Costo Unitario", 
-      align = "clc", label = "tabcostounitdatos")
+      align = "clc", label = "tabcostounitdatos") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 En la tabla \@ref(tab:tabcostounitdatos) podemos observar el inicio de la 
 simulación de una órden (o preescripción). Empezamos por la formulación (ésta 
@@ -140,7 +142,8 @@ correspondiente.
 ejemplo_1$dimensiones[[1]] %>%
   kbl(col.names = c("Variable", "Valor"), 
       caption = "Ejemplo Costo Unitario - Dimensiones", 
-      align = "lc", label = "tabcudimensiones")
+      align = "lc", label = "tabcudimensiones") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 Cada preescripción debe de tener una geometría específica (o dimensiones) de 
 acuerdo a la metodología definida en la sección 
@@ -152,7 +155,8 @@ ejemplo_1$composicion[[1]] %>%
   mutate(Composicion=percent(Composicion,0)) %>% 
   kbl(col.names = c("Compuesto", "Composición"), 
       caption = "Ejemplo Costo Unitario - Composición", 
-      align = "lc", label = "tabcucomposicion")
+      align = "lc", label = "tabcucomposicion") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 
 ```
 Al igual, cada una de las preescripciones requiere la composición de la matriz 
@@ -168,7 +172,8 @@ ejemplo_1$materiales[[1]] %>%
   mutate(masa=round(masa, 3)) %>%
   kbl(col.names = c("Compuesto", "Masa [g]", "Componente"), 
       caption = "Ejemplo Costo Unitario - Compuestos", 
-      align = "lcc", label = "tabcompuestos")
+      align = "lcc", label = "tabcompuestos") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 
 ```
 
@@ -231,7 +236,7 @@ costo_ordenes_ej[1:5,] %>%
                     "Costo Labor", "Costo Distribución"),
       align = "clcccc",
       caption = "Preescripciones Aleatorias", label ="tabordenesej1") %>%
-  kable_styling(latex_options = c("scale_down")) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>% 
   column_spec(2:6, width="3cm")
 ```
 Utilizando la cantidad de los compuestos necesarios para fabricar cada una de 
@@ -247,10 +252,8 @@ costo_ordenes_ej[1:5,] %>%
   mutate(c_total=currency(c_total,"$",digits=2)) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", "Costo Total"),
       align = "clr",
-      caption = "Costo total por preescripcion", label ="tabctotalpreesc") 
-# %>%
-  # kable_styling(latex_options = c("scale_down")) %>% 
-  # column_spec(1:3, width="3cm")
+      caption = "Costo total por preescripcion", label ="tabctotalpreesc") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 
 En la tabla \@ref(tab:tabctotalpreesc) podemos observar el resultado del 
@@ -263,21 +266,20 @@ costo_promedio <- costo_ordenes_ej %>%
 
 costo_promedio <- round(costo_promedio[[1]], 2)
 
-ord_print <- costo_ordenes_ej %>%
+costo_formulacion <- costo_ordenes_ej %>%
   group_by(formulacion, compuesto_activo) %>%
   summarise(costo_tableta=round(sum(c_total)/sum(tabletas), 2), 
             .groups="keep") %>% 
-  as.data.frame() 
+  as_tibble() 
 
-ord_print %>%
+costo_formulacion %>%
   mutate(costo_tableta=currency(costo_tableta, "$", digits=2)) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", 
                     "Costo Promedio"),
       align = "clr",
       caption = "Costo de Tableta Promedio por Formulación", 
-      label = "tabcostopromedioformula") 
-# %>% 
-#   column_spec(1:3, width="3cm")
+      label = "tabcostopromedioformula") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 En la tabla \@ref(tab:tabcostopromedioformula) podemos observar un resumen del 
 costo promedio por formulación y compuesto activo relacionado de las 
@@ -296,7 +298,8 @@ instrumentos[1:3] %>%
                     "Precio"),
       align = "lcr",
       caption = "Equipo de Producción de Tabletas", 
-      label = "tabequipoproduccion")
+      label = "tabequipoproduccion") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 
 En la tabla \@ref(tab:tabequipoproduccion) se describen los equipos e 
@@ -334,7 +337,8 @@ depreciacion %>%
     kbl(col.names = c("Periodo","Depreciación"),
       align = "cr",
       caption = "Perfil de Depreciación MACRS a 5 años", 
-      label = "tabperfildepreciacion")
+      label = "tabperfildepreciacion") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 
 Con base en la inversión estimada y el periodo de recuperación (MACRS a 
@@ -364,7 +368,8 @@ input_caso_base %>%
   mutate(Valor=currency(Valor, "", 0)) %>% 
   kbl(align = "lcc",
       caption = "Datos de entrada para caso base", 
-      label = "tabdatentradacasobase")
+      label = "tabdatentradacasobase") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 
 En la tabla \@ref(tab:tabdatentradacasobase) podemos encontrar los datos de 
@@ -397,7 +402,8 @@ caso_base%>%
                     "Depreciación", "Cambio de CTN"),
       align = "crrrrr",
       caption = "Flujos de Efectivo Caso Base", 
-      label = "tabflujoscasobase")
+      label = "tabflujoscasobase") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 
 ```
 
@@ -421,7 +427,8 @@ fcf_caso_base %>%
   kbl(col.names = c("Periodo","Flujo Libre"),
       align = "cr",
       caption = "Flujos de Efectivo Libre - Caso Base", 
-      label = "tabflujolibrecasobase")
+      label = "tabflujolibrecasobase") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
 ```
 
 En la tabla \@ref(tab:tabflujolibrecasobase) observamos el Flujo de Caja Libre 
@@ -486,7 +493,7 @@ input_emv %>%
       align = "crrcrc",
       caption = "Datos de entrada para Valor Monetario Esperado", 
       label = "tabdatentradaemv") %>% 
-  kable_styling(latex_options = c("scale_down"))
+  kable_styling(latex_options = c("scale_down", "hold_position"))
 ```
 
 
@@ -611,7 +618,7 @@ de tabletas. La nomenclatura del árbol de decisión es la siguiente:
 - M - Medio
 - B - Bajo
 
-
+\newpage
 ### Resultado del árbol de decisión
 
 ```{r calculoarboldecision}
@@ -630,28 +637,16 @@ comprar_print <- comprar_df %>%
                                               "[CTUM]{1}M{1}"="Medio",
                                               "[CTUM]{1}B{1}"="Bajo"))) %>%
   mutate_at(1, ~str_replace_all(.,c("RE"="Rentar",
-                                    "CO"="Comprar")))
+                                    "CO"="Comprar"))) %>% 
+  mutate_at(c(2:5), ~factor(., c("Alto", "Medio", "Bajo")))
+
+comprar_df <- comprar_df %>% 
+  mutate(level_2 = factor(level_2, c("CO", "RE")),
+         level_3 = factor(level_3, c("CA", "CM", "CB")),
+         level_4 = factor(level_4, c("TA", "TM", "TB")),
+         level_5 = factor(level_5, c("UA", "UM", "UB")),
+         level_6 = factor(level_6, c("MA", "MM", "MB")))
 ```
-
-
-```{r graficacompravsrenta}
-comprar_dftree <- ToDataFrameTree(comprar, "npv")
-
-comprar_dftree %>% 
-  mutate(npv=currency(npv,"$",digits=0)) %>% 
-  filter(grepl("CO|RE", levelName)) %>% 
-  mutate_at(1, ~str_replace_all(.,c("°--RE"="Rentar",
-                                    "¦--CO"="Comprar"))) %>% 
-    kbl(booktabs=T, 
-      col.names = c("Decisión","EMV"),
-      align = "lr",
-      caption = "VME - Comprar vs Rentar", 
-      label = "tabemvcomprarrentar")
-```
-
-La tabla \@ref(tab:tabemvcomprarrentar) señala la opción con el mayor Valor 
-Monetario Esperado de las opciones.
-
 
 ### 10 Nodos Terminales con el mayor Valor Presente Neto
 
@@ -669,7 +664,7 @@ top10 %>%
       align = "lllllr",
       caption = "VME Positivo (Top 10) - Tabletas Personalizables", 
       label = "tabemvtabletasarbol") %>% 
-  kable_styling(latex_options = c("repeat_header")) %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position")) %>% 
   column_spec(1:6, width="2cm")
 
 ```
@@ -688,7 +683,7 @@ comprar_print %>%
       align = "lllllr",
       caption = "VME Positivo (Últimos 10) - Tabletas Personalizables", 
       label = "tabemvtabletasarbolbot") %>% 
-  kable_styling(latex_options = c("repeat_header")) %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position")) %>% 
   column_spec(1:6, width="2cm")
 
 ```
@@ -749,7 +744,6 @@ comprar_print %>%
   )
 ```
 
-
 ```{r graficaemvboxplot, fig.cap="Distribución de VPN por cada escenario de costo"}
 
 comprar_print %>%
@@ -765,6 +759,25 @@ comprar_print %>%
   )
 
 ```
+
+```{r compravsrenta}
+comprar_dftree <- ToDataFrameTree(comprar, "npv")
+
+comprar_dftree %>% 
+  mutate(npv=currency(npv,"$",digits=0)) %>% 
+  filter(grepl("CO|RE", levelName)) %>% 
+  mutate_at(1, ~str_replace_all(.,c("°--RE"="Rentar",
+                                    "¦--CO"="Comprar"))) %>% 
+  kbl(booktabs=T, 
+      col.names = c("Decisión","EMV"),
+      align = "lr",
+      caption = "VME - Comprar vs Rentar", 
+      label = "tabemvcomprarrentar") %>% 
+  kable_styling(latex_options = c("repeat_header", "hold_position"))
+```
+
+La tabla \@ref(tab:tabemvcomprarrentar) señala la opción con el mayor Valor 
+Monetario Esperado de las opciones.
 
 
 \newpage
@@ -803,7 +816,7 @@ input_sens %>%
       align = "crrcrrc",
       caption = "Datos de Entrada para Análisis de Sensibilidad",
       label = "tabentradasens") %>% 
-  kable_styling(latex_options = c("scale_down"))
+  kable_styling(latex_options = c("scale_down", "hold_position"))
 
 ```
 
@@ -877,7 +890,86 @@ porción gravable.
 \newpage
 ## Simulación Monte Carlo
 
+```{r inputmontecarlo}
+# Calcular las ordenes anuales esperadas
+ordenes_anuales_mc <- expectativa_anual / 30
 
+formulacion_mc <- "E1"
+compuesto_activo_mc <- "Clorhidrato de difenhidramina"
+calc_costo_mc <- function(compuesto_activo_mc, tabletas) {
+  
+  test_mc <- costo_formulacion$compuesto_activo == compuesto_activo_mc
+  costo_tableta <- costo_formulacion$costo_tableta[test_mc]
+  
+  return(costo_tableta * tabletas)
+}
+
+```
+
+
+```{r montecarlotabletas}
+
+ordenes_mc <- ordenes_personalizadas(ordenes_anuales_mc)
+
+costo_ordenes_mc <- ordenes_mc %>%
+  # Agregar numero de tabletas a la preescripcion
+  mutate(tabletas=round(rnorm(ordenes_anuales_mc, 30, 1),0)) %>%
+  # Calcular el costo de los materiales necesarios para cada orden
+  mutate(c_materiales=pmap(list(materiales, tabletas), 
+                           .f=costo_materiales)) %>%
+  unnest(c_materiales) %>%
+  # Generar valores aleatorios de tiempo de fabricacion
+  mutate(t_fabricacion=round(rnorm(ordenes_anuales_mc, t_fabricacion, 1),0)) %>%
+  # Calcular el costo de labor
+  mutate(c_labor=pmap(list(tabletas, t_fabricacion), 
+                      .f=costo_labor)) %>%
+  unnest(c_labor) %>%
+  # Generar valores aleatorios para el tiempo de impresion
+  mutate(t_impresion=round(rnorm(ordenes_anuales_mc,t_impresion,1), 0),
+         # Calcular el costo de electricidad y el consumo electrico
+         costo_electricidad=rep(costo_electricidad,ordenes_anuales_mc),
+         consumo_energetico=rep(consumo_energetico_impresora, 
+                                ordenes_anuales_mc)) %>%
+  # Calcular el costo energetico total
+  mutate(c_energia=pmap(list(materiales, t_impresion, 
+                             costo_electricidad, consumo_energetico, 
+                             formulacion),
+                        .f=costo_energia)) %>%
+  unnest(c_energia) %>%
+  # Generar valores aleatorios del tiempo de transporte
+  mutate(t_transporte=rnorm(ordenes_anuales_mc,t_transporte,1),
+         salario_trabajador=rep(salario_trabajador, ordenes_anuales_mc), 
+         # Generar valores aleatorios de la distancia de recorrida por entrega
+         distancia=rnorm(ordenes_anuales_mc, distancia, 3), 
+         precio_gasolina=rep(precio_gasolina, ordenes_anuales_mc), 
+         eficiencia_vehiculo=rep(eficiencia_vehiculo, ordenes_anuales_mc),
+         numero_tabletas_viaje=rep(numero_tabletas_viaje, 
+                                   ordenes_anuales_mc)) %>%
+  # Calcular el tiempo de distribucion
+  mutate(c_distribucion=pmap(list(t_transporte, salario_trabajador, 
+                                  distancia, precio_gasolina, 
+                                  eficiencia_vehiculo,
+                                  numero_tabletas_viaje), 
+                             .f=costo_distribucion)) %>%
+  unnest(c_distribucion) %>%
+  select(formulacion, compuesto_activo, tabletas, 
+         c_materiales, c_energia, c_labor, c_distribucion) %>%
+  # Calcular costo total de produccion de la orden
+  mutate(c_total=(c_materiales+c_energia+c_labor+c_distribucion)*tabletas)
+
+costo_ordenes_mc %>% 
+  group_by(formulacion, compuesto_activo) %>% 
+  summarise(tabletas = round(mean(tabletas), 0),
+            c_total = round(mean(c_total), 2), .groups = "keep") %>%
+  as.data.frame() %>% 
+  mutate(c_total = currency(c_total, "$", 2)) %>% 
+  kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
+                    "Costo Promedio"),
+      align = "llcc",
+      caption = "Ordenes Promedio Monte Carlo", 
+      label = "tabordenesmontecarlos")
+
+```
 
 
 \newpage

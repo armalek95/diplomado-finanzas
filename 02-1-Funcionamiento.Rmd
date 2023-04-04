@@ -19,10 +19,11 @@ test_df <- tibble(
 
 test_df$cashflow <- currency(test_df$cashflow, digits = 0L)
 
-kbl(test_df, col.names = gsub("[.]", " ", names(test_df)), 
+kbl(test_df, col.names = c("Periodo", "Flujo de Efectivo"), 
              caption = 
                "Flujos de efectivo de prueba", 
-             align = "lccc")
+             align = "lccc") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
@@ -99,7 +100,8 @@ emv_test_df$Bajo <- currency(emv_test_df$Bajo, symbol = "$", digits = 0L)
 # Dar formato de tabla
 kbl(emv_test_df, col.names = gsub("[.]", " ", names(emv_test_df)), 
              caption = "Valores para prueba de funcionamiento de EMV", 
-             align = "lccc")
+             align = "lrr") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
@@ -202,7 +204,8 @@ df$prob <- percent(df$prob)
 # Mostrar como table usando knitr
 kbl(df, col.names = c("Nivel", "Probabilidad", "VME"), 
              caption = "Resultados de prueba de Valor Monetario Esperado", 
-             align = "lccc")
+             align = "lccc") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 
 
 ```
@@ -261,12 +264,19 @@ base_case <- tibble(
 
 # Cambiar formato
 print_base <- base_case
-print_base$valor <- currency(print_base$valor, symbol = "", digits = 2L)
+print_base$valor[4] <- print_base$valor[4] * 100
+print_base <- print_base %>% 
+  mutate(valor = currency(valor, symbol = "", digits = 0),
+         unidades = c("MXN", "MXN/año", "MXN/año", "%", "años"),
+         variable = c("Inversión de Capital", "Gasto Anual", 
+                      "Ahorro Anual", "TMAR", "Periodo"))
 
 # Mostrar como tabla
-kbl(print_base, col.names = gsub("[.]", " ", names(print_base)), 
-             caption = "Valores de caso base para prueba de Análisis de Sensibilidad", 
-             align = "lc")
+kbl(print_base, 
+    col.names = c("Variable", "Valor", "Unidades"), 
+    caption = "Valores de caso base para prueba de Análisis de Sensibilidad", 
+    align = "lrl") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
@@ -295,9 +305,12 @@ base_npv_p <- currency(base_npv, symbol = "$", digits = 2L)
 base_tib$cashflow <- currency(base_tib$cashflow, symbol = "$", digits = 0L)
 
 # Mostrar como tabla usando knitr
-kbl(base_tib, col.names = gsub("[.]", " ", names(base_tib)), 
-             caption = "Flujos de efectivo de caso base para prueba de Análisis de Sensibilidad", 
-             align = "lccc")
+base_tib %>% 
+kbl(col.names = c("Periodo", "Flujo de Efectivo"),
+    caption = "Flujos - caso base para prueba de Análisis de Sensibilidad",
+    align = "lc",
+    label = "tabflujobaseanalisissens") %>%
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
@@ -325,9 +338,10 @@ print_var$bajo <- percent(print_var$bajo, digits = 0)
 print_var$alto <- percent(print_var$alto, digits = 0)
 
 # Mostrar como tabla usando knitr
-kbl(print_var, col.names = gsub("[.]", " ", names(print_var)), 
-             caption = "Especificación de variación para prueba de Análisis de Sensibilidad", 
-             align = "lccc")
+kbl(print_var, col.names = c("Variable", "Bajo", "Alto"), 
+    caption = "Especificación de variación para prueba de Análisis de Sensibilidad", 
+             align = "lccc") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 ```
 
 Estos valores de especificación de los casos alto y bajo para cada una
@@ -370,9 +384,10 @@ print_varc$npv <- currency(print_varc$npv, symbol = "$", digits = 0L)
 print_varc$diff <- percent(print_varc$diff, digits = 0)
 
 # Mostrar como tabla usando knitr
-kbl(print_varc, col.names = gsub("[.]", " ", names(print_varc)), 
-             caption = "Valores de NPV para prueba de Análisis de Sensibilidad", 
-             align = "lccc")
+kbl(print_varc, col.names = c("Variable", "Caso", "VPN", "Diferencia"), 
+    caption = "Valores de NPV para prueba de Análisis de Sensibilidad", 
+    align = "lccc") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
@@ -457,9 +472,12 @@ print <- prod_mat_test
 print$precio <- currency(print$precio, symbol = "$", digits = 2L)
 
 # Mostrar como tabla usando knitr
-kbl(print, col.names = gsub("[_]", " ", names(print)), 
+kbl(print, col.names = c("Tipo", "Periodo", "Material", 
+                         "Volumen", "Precio", "Distribución Volumen",
+                        "Distribución Precio"), 
              caption = "Valores caso base de Prueba Monte Carlo", 
-             align = "lccc", label = "tabMonteTest1")
+             align = "lccc", label = "tabMonteTest1") %>% 
+  kable_styling(latex_options = c("repeat_header", "scale_down"))
 ```
 
 En esta primera parte definimos productos, así como materiales y
@@ -499,9 +517,15 @@ print <- prod_mat_test %>% filter(periodo > 8)
 print$precio <- currency(print$precio, symbol = "$", digits = 2L)
 
 # Mostrar como tabla usando knitr
-kbl(print, col.names = gsub("[_]", " ", names(print)), 
-             caption = "Pronóstico de valores caso base de Prueba Monte Carlo", 
-             align = "lccc")
+print %>% 
+  select(-X) %>% 
+  kbl(col.names = c("Tipo", "Periodo", "Material", 
+                    "Volumen", "Precio", "Distribución Volumen",
+                    "Distribución Precio"),
+      caption = "Pronóstico de valores caso base de Prueba Monte Carlo",
+      align = "lclrrll") %>% 
+  kable_styling(latex_options = c("repeat_header", "scale_down")) %>% 
+  column_spec(6:7, width="2cm")
 
 ```
 
@@ -526,15 +550,22 @@ rand_prodmat_test <- prod_mat_test %>%
   
 # Cambiar formato
 print <- rand_prodmat_test %>% filter(periodo < 3)
-#print$precio <- currency(print$precio, symbol = "$", digits = 2L)
-#print$precio_r <- currency(print$precio_r, symbol = "$", digits = 2L)
+print$precio <- currency(print$precio, symbol = "$", digits = 2L)
+print$precio_r <- currency(print$precio_r, symbol = "$", digits = 2L)
+print$volumen <- currency(print$volumen, symbol = "", digits = 0)
+print$volumen_r <- currency(print$volumen_r, symbol = "", digits = 0)
 
 # Mostrar como tabla usando knitr
-kbl(print, col.names = gsub("[.]", " ", names(print)), 
-             caption = "Valores aleatorios de Prueba Monte Carlo", 
-             align = "lccc", digits = 2,
-             format.args = list(big.mark = ",", scientific = FALSE)) %>%
-  kable_styling(latex_options = c("scale_down"))
+print %>% 
+  select(-X) %>% 
+  kbl(col.names = c("Tipo", "Periodo", "Material", 
+                    "Volumen", "Precio", "Distribución Volumen",
+                    "Distribución Precio", "Volumen Aleatorio", 
+                    "Precio Aleatorio"), 
+      caption = "Valores aleatorios de Prueba Monte Carlo", 
+      align = "lclrrllrr") %>%
+  kable_styling(latex_options = c("repeat_header", "scale_down")) %>% 
+  column_spec(6:9, width="2cm")
 ```
 
 Como podemos observar en la tabla \@ref(tab:montetest3), generamos
@@ -612,9 +643,11 @@ print$fcf <- currency(print$fcf,
                            symbol = "$", digits = 2L)
 
 # Mostrar como tabla usando knitr
-kbl(print, col.names = gsub("[_]", " ", names(print)), 
+kbl(print, col.names = c("Periodo", "Ingresos", "Costos", "FCL"), 
              caption = "Flujos de Caja Libre de Prueba Monte Carlo", 
-             align = "lccc", label = "tabMonteTest4")
+             align = "crrr", label = "tabMonteTest4") %>% 
+  kable_styling(latex_options = c("repeat_header"))
+
 ```
 
 Estos flujos de caja libre los podemos utilizar para calcular el valor

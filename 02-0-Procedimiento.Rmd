@@ -21,7 +21,8 @@ session_platform <- session_platform %>%
 
 session_platform %>%
   kbl(align="ll",
-      caption="Plataforma utilizada para el ambiente de la sesión")
+      caption="Plataforma utilizada para el ambiente de la sesión") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 ```
 
 ```{r packagesinfo}
@@ -36,7 +37,8 @@ colnames(session_packages) <- c("Paquete", "Versión cargada", "Fecha")
 
 session_packages %>%
   kbl(align="lcc",
-      caption="Paquetes para reproducibilidad de resultados")
+      caption="Paquetes para reproducibilidad de resultados") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 ```
 
 Podemos observar toda la información relevente a la sesión en la tabla \@ref(tab:platforminfo) y los paquetes utilizados en la tabla 
@@ -284,7 +286,8 @@ crit_comp <- as.data.frame(crit_comp)
 crit_comp %>%
   kbl(col.names = gsub("[.]", " ", names(crit_comp)), 
       caption = "Comparativo del valor de los criterios (AHP)", 
-      align = "lccc")
+      align = "lccc") %>% 
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
