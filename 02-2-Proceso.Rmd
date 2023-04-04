@@ -118,7 +118,7 @@ expresar en función de los costos directos de la siguiente forma:
   \end{equation}
 ```
 
-En donde $MU$ (**Markup**) es un número decimal que representa la cantidad 
+En donde $MU$ (**Markup** o Margen) es un número decimal que representa la cantidad 
 adicional sobre el costo de producción que estamos agregando al precio.
 
 Con esta definición para el componente de ingresos, la ecuación \@ref(eq:fcfeq) 
@@ -129,9 +129,9 @@ puede ser simplificada de la siguiente manera:
   FCF & = (Ing. - Cost. - Depr.) \times (1-\tau_{c}) + Depr. - Inv. - \Delta CTN 
   \notag \\
   & = \left( \left((1 + MU) \times C_{Directo} \right) - 
-  (C_{Directo} + C_{Mantenimiento})-Depr. \right)
+  (C_{Directo} + C_{Mant.})-Depr. \right)
   \times (1-\tau_{c}) + Depr. - Inv. - \Delta CTN \notag \\
-  & = \left( \left(MU \times C_{Directo} \right) - C_{Mantenimiento} - Depr.
+  & = \left( \left(MU \times C_{Directo} \right) - C_{Mant.} - Depr.
   \right)
   \times (1-\tau_{c}) + Depr. - Inv. - \Delta CTN
   (\#eq:fcfmod)

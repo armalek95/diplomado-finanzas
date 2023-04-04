@@ -23,7 +23,7 @@ opciones_E2 <- c("Acetaminofén")
 composicion <- read_csv("datos/composicion.csv", show_col_types = FALSE)
 
 # Definir parametros para simulacion de ordenes para costo promedio
-sim_num <- 5000
+sim_num <- 2000
 
 # Definir variables para funciones de costos:
 
@@ -77,6 +77,9 @@ input_inicial %>%
       label = "tabdatosentrada")
 
 ```
+En la tabla \@ref(tab:tabdatosentrada) podemos observar los datos de entrada, y
+sus unidades, que fueron utilizados en este trabajo que nos sirven para calcular 
+los costos de energía, labor y distribución.
 
 ```{r infocompuestos}
 
@@ -103,12 +106,14 @@ info_compuestos %>%
 
 ```
 La tabla \@ref(tab:tabinfocompuestos) muestra la información, relacionada a los 
-compuestos, utilizada para los cálculos de esta sección. Es importante recalcar 
-que en algunos casos el calor específico y/o el calor de fusión muestran un 
-valor de *NA*, esto es ya que no participan en el cambio de fase (en el caso 
-donde el calor de fusión es *NA*) o no son sometidos a cambio de temperatura 
-(en el caso donde tanto el calor específico, como el calor de fusión son *NAs*).
+compuestos, utilizada para los cálculos del costo de materiales y de energía
+de esta sección. Es importante recalcar que en algunos casos el calor específico 
+y/o el calor de fusión muestran un valor de *NA*, esto es ya que no participan 
+en el cambio de fase (en el caso donde el calor de fusión es *NA*) o no son 
+sometidos a cambio de temperatura (en el caso donde tanto el calor específico, 
+como el calor de fusión son *NAs*).
 
+\newpage
 ## Costo de tabletas unitario
 
 El cálculo del costo unitario de la producción de tabletas depende de la 
@@ -124,6 +129,12 @@ ejemplo_1 %>% select(formulacion, compuesto_activo, dosis) %>%
       caption = "Ejemplo Costo Unitario", 
       align = "clc", label = "tabcostounitdatos")
 ```
+En la tabla \@ref(tab:tabcostounitdatos) podemos observar el inicio de la 
+simulación de una órden (o preescripción). Empezamos por la formulación (ésta 
+puede ser E1 o E2), dependiendo del tipo de formulación escogemos un valor 
+aleatorio para el compuesto activo dentro de las opciones para dicha formulación.
+A continuación, generamos un valor aleatorio para la dosis del compuesto activo 
+correspondiente.
 
 ```{r cudimensiones}
 ejemplo_1$dimensiones[[1]] %>%
@@ -131,6 +142,10 @@ ejemplo_1$dimensiones[[1]] %>%
       caption = "Ejemplo Costo Unitario - Dimensiones", 
       align = "lc", label = "tabcudimensiones")
 ```
+Cada preescripción debe de tener una geometría específica (o dimensiones) de 
+acuerdo a la metodología definida en la sección 
+*Cálculo de material necesario para moldes*. Las dimensiones utilizadas para 
+este ejemplo se  observan en la tabla \@ref(tab:tabcudimensiones).
 
 ```{r cucomposicion}
 ejemplo_1$composicion[[1]] %>%
@@ -140,10 +155,16 @@ ejemplo_1$composicion[[1]] %>%
       align = "lc", label = "tabcucomposicion")
 
 ```
+Al igual, cada una de las preescripciones requiere la composición de la matriz 
+más allá del compuesto activo. Ver tabla \@ref(tab:tabcucomposicion).
 
 ```{r cucompuestos}
 ejemplo_1$materiales[[1]] %>% 
   select(Compound, masa, Componente) %>%
+    mutate_at(3, ~str_replace_all(., c("ME"="Matriz Externa",
+                                       "MI"="Matriz Interna",
+                                       "CU"="Cubierta",
+                                       "MO"="Molde"))) %>%
   mutate(masa=round(masa, 3)) %>%
   kbl(col.names = c("Compuesto", "Masa [g]", "Componente"), 
       caption = "Ejemplo Costo Unitario - Compuestos", 
@@ -151,9 +172,13 @@ ejemplo_1$materiales[[1]] %>%
 
 ```
 
+Utilizando la formulación, la dosis de compuesto activo, las dimensiones y la 
+composición podemos calcular la cantidad de compuestos necesarios para los 
+diferentes componentes de la tableta. Ver la tabla \@ref(tab:tabcompuestos).
+
 \newpage
 
-### Muestra `r sim_num` preescripciones
+### Muestra `r currency(sim_num, "", 0)` preescripciones
 
 ```{r ordenes}
 ordenes <- ordenes_personalizadas(sim_num)
@@ -200,14 +225,20 @@ if (file.exists("datos/ordenestabletassim.rds")) {
 costo_ordenes_ej[1:5,] %>%
   select(-c_total) %>% 
   mutate_at(c(4,5,6,7), ~currency(., "$", 2)) %>%
-  kbl(col.names = c("Formulación","Compuesto Activo", "Tabletas", 
+  select(-tabletas) %>% 
+  kbl(col.names = c("Formulación","Compuesto Activo", 
                     "Costo Material", "Costo Energético", 
                     "Costo Labor", "Costo Distribución"),
-      align = "clccccc",
+      align = "clcccc",
       caption = "Preescripciones Aleatorias", label ="tabordenesej1") %>%
   kable_styling(latex_options = c("scale_down")) %>% 
-  column_spec(2:7, width="3cm")
+  column_spec(2:6, width="3cm")
 ```
+Utilizando la cantidad de los compuestos necesarios para fabricar cada una de 
+las tabletas podemos calcular el costo unitario de cada una de las 
+preescripciones. En la tabla \@ref(tab:tabordenesej1) podemos observar los 
+primeros 5 valores de las `r currency(sim_num, "", 0)` órdenes simuladas.
+
 \newpage
 **Costo Preescripción**
 ```{r ctotalpreescripcion}
@@ -222,7 +253,9 @@ costo_ordenes_ej[1:5,] %>%
   # column_spec(1:3, width="3cm")
 ```
 
-
+En la tabla \@ref(tab:tabctotalpreesc) podemos observar el resultado del 
+producto entre las tabletas solicitadas en la preescripción y la suma de los 
+costos unitarios calculados.
 
 ```{r costounitariotableta}
 costo_promedio <- costo_ordenes_ej %>%
@@ -240,11 +273,15 @@ ord_print %>%
   mutate(costo_tableta=currency(costo_tableta, "$", digits=2)) %>% 
   kbl(col.names = c("Formulación","Compuesto Activo", 
                     "Costo Promedio"),
-      align = "clc",
+      align = "clr",
       caption = "Costo de Tableta Promedio por Formulación", 
-      label = "tabcostopromedioformula") %>% 
-  column_spec(1:3, width="3cm")
+      label = "tabcostopromedioformula") 
+# %>% 
+#   column_spec(1:3, width="3cm")
 ```
+En la tabla \@ref(tab:tabcostopromedioformula) podemos observar un resumen del 
+costo promedio por formulación y compuesto activo relacionado de las 
+`r currency(sim_num, "", 0)` preescripciones simuladas.
 
 \newpage
 
@@ -261,6 +298,10 @@ instrumentos[1:3] %>%
       caption = "Equipo de Producción de Tabletas", 
       label = "tabequipoproduccion")
 ```
+
+En la tabla \@ref(tab:tabequipoproduccion) se describen los equipos e 
+instrumentos, así como los precios y cantidades utilizadas para el cálculo del 
+costo de inversión del caso base.
 
 ```{r inversiontotal}
 inversion_total <- instrumentos %>%
@@ -280,10 +321,12 @@ La inversión total estimada para el caso base es de `r inv_total_print`.
 ## Depreciación
 
 ```{r depbase}
+
+periodo_recuperacion <- 5
 depreciacion <- tibble(
   periodo=0:10,
   depr=c(0, MACRS(investment = inversion_total, 
-                     recovery_period = 5, n.period = 10))
+                     recovery_period = periodo_recuperacion, n.period = 10))
 )
 
 depreciacion %>% 
@@ -293,6 +336,10 @@ depreciacion %>%
       caption = "Perfil de Depreciación MACRS a 5 años", 
       label = "tabperfildepreciacion")
 ```
+
+Con base en la inversión estimada y el periodo de recuperación (MACRS a 
+`r periodo_recuperacion` años). Podemos calcular los el perfil de depreciación 
+mostrado en la tabla \@ref(tab:tabperfildepreciacion).
 
 \newpage
 
@@ -320,7 +367,9 @@ input_caso_base %>%
       label = "tabdatentradacasobase")
 ```
 
-
+En la tabla \@ref(tab:tabdatentradacasobase) podemos encontrar los datos de 
+entrada faltantes para poder calcular el caso base, así como las unidades en 
+las que se encuentran los valores.
 
 ```{r casobase}
 
@@ -352,6 +401,9 @@ caso_base%>%
 
 ```
 
+En la tabla \@ref(tab:tabflujoscasobase) podemos observar todos los flujos de
+efectivo necesarios para calcular los Flujos de Caja Libre del caso base.
+
 ```{r fcfcasobase}
 
 fcf_caso_base <- caso_base %>%
@@ -372,13 +424,20 @@ fcf_caso_base %>%
       label = "tabflujolibrecasobase")
 ```
 
+En la tabla \@ref(tab:tabflujolibrecasobase) observamos el Flujo de Caja Libre 
+para cada uno de los periodos de evaluación del proyecto. Podemos notar el 
+efecto que tiene la depreciación en aumentar el Flujo de Caja Libre sobre los 
+periodos 1 a 6.
+
 ```{r npvcasobase}
 npv_caso_base <- npv(rate=tasa_descuento, cashflow=fcf_caso_base$fcf, 
                      period=fcf_caso_base$periodo)
 npv_caso_base_imp <- currency(npv_caso_base, "$", 0)
 ```
 
-Con lo cual obtenemos un Valor Presente Neto de `r npv_caso_base_imp`.
+Sumando el producto de los flujos de caja libre por el ajuste por la tasa de 
+descuento, obtenemos un Valor Presente Neto de `r npv_caso_base_imp` para el 
+caso base.
 
 \newpage
 
@@ -389,7 +448,6 @@ indefinidamente desde la cochera de nuestros padres, por lo cual tenemos que
 preguntar si vale más la pena rentar o comprar un almacén. Al igual, tenemos que 
 considerar que los equipos que utilizamos necesitan mantenimiento para seguir 
 operando adecuadamente.
-
 
 ```{r vmedatosentrada}
 precio_compra <- 1000000 # [MXN]
@@ -432,7 +490,11 @@ input_emv %>%
 ```
 
 
-```{r arboldecision, fig.cap="Medio Árbol de Decisión Tabletas Personalizables"}
+En la tabla \@ref(tab:tabdatentradaemv) se muestran los datos de entrada 
+relevantes para calcular el Valor Presente Neto de los nodos terminales del 
+árbol de decisión.
+
+```{r populararbol}
 
 opciones_comprar <- c("CO", "RE")
 comprar <- Node$new("¿Comprar?", type="decision")
@@ -484,6 +546,7 @@ for (a in 1:2) {
           
           if (a == 1) {
             inversion_anual_emv <- inversion_flujo + compra_flujo
+            cambio_CTN_emv_k <- cambio_CTN - c(rep(0,10), precio_compra)
             
           } else {
             inversion_anual_emv <- inversion_flujo
@@ -495,7 +558,7 @@ for (a in 1:2) {
                      costs=costo_anual_emv_k,
                      depreciation=depreciacion_anual_emv,
                      capital_expenditures=inversion_anual_emv,
-                     change_net_working_capital=cambio_CTN,
+                     change_net_working_capital=cambio_CTN_emv_k,
                      tax_rate=tasa_gravable)
           
           mantenimiento$npv <- npv(tasa_descuento, fcl, 0:11)
@@ -506,13 +569,21 @@ for (a in 1:2) {
   }
 }
 
+```
+
+
+```{r arboldecision, fig.cap="Medio Árbol de Decisión Tabletas Personalizables", fig.align='center', out.width="90%"}
+
 SetGraphStyle(comprar, rankdir = "TB")
 SetNodeStyle(comprar, style = "filled,rounded", 
              label = AdjustNodeName, shape = "box")
 
 plot(comprar$RE)
 ```
-
+Ya que contamos con dos nodos de decisión, y cuatro variables más con tres 
+escenarios cada una (es decir, $2 \times 3^4$), tenemos 162 nodos terminales.
+En la figura \@ref(fig:arboldecision) podemos observar 81 nodos. Aquellos 
+relacionados a la decisión de rentar un almacén central en lugar de comprarlo. 
 
 ```{r ejemplotabletasmedio, fig.cap="Árbol de Decisión a partir de un nodo de tabletas"}
 t <- comprar$CO$CM$TM
@@ -520,13 +591,35 @@ t <- comprar$CO$CM$TM
 plot(t)
 ```
 
+En la figura \@ref(fig:ejemplotabletasmedio) podemos observar el árbol de 
+decisión a partir del nodo de probabilidad del escenario medio para el volumen 
+de tabletas. La nomenclatura del árbol de decisión es la siguiente:
 
-```{r emvtop10}
 
+**Variables**
+
+- RE - Rentar
+- CO - Comprar
+- C - Costo Promedio de Producción
+- T - Volumen de Tabletas
+- U - Margen
+- M - Mantenimiento
+
+**Escenarios**
+
+- A - Alto
+- M - Medio
+- B - Bajo
+
+
+### Resultado del árbol de decisión
+
+```{r calculoarboldecision}
 comprar$Do(function(node) node$npv <- w_npv(node), 
            filterFun = isNotLeaf, traversal = "post-order")
 
-comprar_df <- ToDataFrameTypeCol(comprar, "prob", "npv")
+comprar_df <- ToDataFrameTypeCol(comprar, "prob", "npv") %>% 
+  as_tibble()
 
 comprar_df$npv <- currency(comprar_df$npv, symbol = "$", digits = 0L)
 comprar_df$prob <- percent(comprar_df$prob, digits = 0)
@@ -538,46 +631,6 @@ comprar_print <- comprar_df %>%
                                               "[CTUM]{1}B{1}"="Bajo"))) %>%
   mutate_at(1, ~str_replace_all(.,c("RE"="Rentar",
                                     "CO"="Comprar")))
-comprar_print %>% 
-  filter(npv >= 0) %>%
-  arrange(desc(npv)) %>%
-  head(10) %>% 
-  kbl(longtable=T, booktabs=T, 
-      col.names = c("Decisión", "Costo", "Volumen", "Markup", 
-                    "Mantenimiento", "EMV"),
-      align = "lllllr",
-      caption = "VME Positivo (Top 10) - Tabletas Personalizables", 
-      label = "tabemvtabletasarbol") %>% 
-  kable_styling(latex_options = c("repeat_header")) %>% 
-  column_spec(1:6, width="2cm")
-
-```
-
-```{r emvbottom10}
-
-comprar_print %>% 
-  arrange(npv) %>%
-  head(10) %>% 
-  arrange(desc(npv)) %>% 
-  kbl(longtable=T, booktabs=T, 
-      col.names = c("Decisión", "Costo", "Volumen", "Markup", 
-                    "Mantenimiento", "EMV"),
-      align = "lllllr",
-      caption = "VME Positivo (Últimos 10) - Tabletas Personalizables", 
-      label = "tabemvtabletasarbolbot") %>% 
-  kable_styling(latex_options = c("repeat_header")) %>% 
-  column_spec(1:6, width="2cm")
-
-```
-
-```{r npvfacet, eval=FALSE}
-
-comprar_df %>% 
-  mutate(npv=npv/1000000) %>% 
-  ggplot(mapping = aes(y=npv, x=level_3, color=level_2, shape = level_5)) +
-  geom_point() +
-  facet_grid(level_4 ~ level_6)
-  
 ```
 
 
@@ -596,29 +649,120 @@ comprar_dftree %>%
       label = "tabemvcomprarrentar")
 ```
 
+La tabla \@ref(tab:tabemvcomprarrentar) señala la opción con el mayor Valor 
+Monetario Esperado de las opciones.
 
 
-```{r graficaemv, fig.cap="Histograma del EMV esperado decisión", message=FALSE}
+### 10 Nodos Terminales con el mayor Valor Presente Neto
+
+```{r emvtop10}
+
+top10 <- comprar_print %>% 
+  filter(npv >= 0) %>%
+  arrange(desc(npv)) %>%
+  head(10)
+  
+top10 %>% 
+  kbl(longtable=T, booktabs=T, 
+      col.names = c("Decisión", "Costo", "Volumen", "Margen", 
+                    "Mantenimiento", "EMV"),
+      align = "lllllr",
+      caption = "VME Positivo (Top 10) - Tabletas Personalizables", 
+      label = "tabemvtabletasarbol") %>% 
+  kable_styling(latex_options = c("repeat_header")) %>% 
+  column_spec(1:6, width="2cm")
+
+```
+
+### 10 Nodos Terminales con el menor Valor Presente Neto
+
+```{r emvbottom10}
+
+comprar_print %>% 
+  arrange(npv) %>%
+  head(10) %>% 
+  arrange(desc(npv)) %>% 
+  kbl(longtable=T, booktabs=T, 
+      col.names = c("Decisión", "Costo", "Volumen", "Margen", 
+                    "Mantenimiento", "EMV"),
+      align = "lllllr",
+      caption = "VME Positivo (Últimos 10) - Tabletas Personalizables", 
+      label = "tabemvtabletasarbolbot") %>% 
+  kable_styling(latex_options = c("repeat_header")) %>% 
+  column_spec(1:6, width="2cm")
+
+```
+
+### Representación visual del VPN de los nodos terminales
+```{r npvfacet, fig.cap="VPN Representación Visual"}
+
+comprar_df %>%
+  mutate(npv=npv) %>% 
+  ggplot(mapping = aes(y=npv, x=level_3, color=level_2, shape = level_5)) +
+  geom_point() +
+  facet_grid(level_4 ~ level_6) +
+  theme_bw() +
+  scale_y_continuous(
+    labels = label_dollar(scale_cut = cut_short_scale())
+  ) +
+  ylab("Valor Presente Neto") +
+  xlab("Escenario de Costo de Producción") +
+  labs(color = "Decisión", 
+       shape = "Margen",
+       caption = "Escenarios: A=Alto, M=Medio, B=Bajo
+       Variables: M=Mantenimiento, T=Volumen Tabletas")
+  
+```
+
+```{r graficaemv, fig.cap="Histograma del VPN de nodos terminales", message=FALSE}
+opcion_emv <- comprar_print %>% 
+  group_by(level_2) %>% 
+  summarise(emv_mean = mean(npv),
+            emv_median = median(npv),
+            emv_05 = quantile(npv, 0.05),
+            emv_95 = quantile(npv, 0.95))
 
 comprar_print %>%
-  mutate(npv=npv/1000000) %>% 
-  ggplot(aes(npv)) +
-  geom_histogram() +
+  mutate(npv=npv) %>% 
+  ggplot() +
+  geom_histogram(aes(npv)) +
   facet_wrap(~level_2) +
+  geom_vline(data = opcion_emv, aes(xintercept = emv_mean, color="Promedio"),
+             linetype=1, linewidth=0.5) +
+    geom_vline(data = opcion_emv, aes(xintercept = emv_median, color="Media"),
+             linetype=2, linewidth=0.5) +
+    geom_vline(data = opcion_emv, aes(xintercept = emv_95, color="Quintil95"),
+             linetype=3, linewidth=0.5) +
+    geom_vline(data = opcion_emv, aes(xintercept = emv_05, color="Quintil05"),
+             linetype=4, linewidth=0.5) +
+  scale_color_manual(name = "Estadística", 
+                     values=c(Promedio="blue",
+                              Media="gray",
+                              Quintil95="green",
+                              Quintil05="red")) +
   ylab("Cuenta") +
-  xlab("Valor Monetario Esperado (millones)")
+  xlab("Valor Monetario Esperado (millones)") +
+  theme_bw() + 
+  coord_flip() +
+  scale_x_continuous(
+    labels = label_dollar(scale_cut = cut_short_scale())
+  )
 ```
 
 
-```{r graficaemvboxplot}
+```{r graficaemvboxplot, fig.cap="Distribución de VPN por cada escenario de costo"}
 
 comprar_print %>%
-  mutate(npv=npv/1000000) %>% 
+  mutate(npv=npv) %>% 
   ggplot(aes(level_3, npv)) +
   geom_boxplot() +
   facet_wrap(~level_2) +
-  ylab("Valor Monetario Esperado (millones)") +
-  xlab("Costo Promedio de Producción")
+  ylab("Valor Presente Neto") +
+  xlab("Costo Promedio de Producción") +
+  theme_bw() +
+  scale_y_continuous(
+    labels = label_dollar(scale_cut = cut_short_scale())
+  )
 
 ```
 
@@ -663,7 +807,10 @@ input_sens %>%
 
 ```
 
-```{r calculosensibilidad}
+En la tabla \@ref(tab:tabentradasens) podemos observar los valores de entrada 
+para el análisi de sensibilidad.
+
+```{r calculosensibilidad, fig.cap="Gráfica de Análisis de Sensibilidad"}
 
 # Preparar la tabla para graficar los resultados
 sens_setup <- tibble(
@@ -707,7 +854,33 @@ sensitivity(variables = sens_results$variable[1:n],
 
 ```
 
+La figura \@ref(fig:calculosensibilidad) muestra el impacto que tiene sobre el 
+Valor Presente Neto del caso base un cambio del $\pm30\%$ sobre el valor del 
+escenario base. En ésta podemos observar que las variables con mayor 
+influencia sobre el éxito de proyecto son: "Costo Promedio", "Margen" y 
+"Expectativa de Venta" o "Volumen de Tabletas". Estas variables muestran un 
+cambio igual sobre el Valor Presente Neto del caso base. 
+
+Aunque en un principio llame la atención que el "Costo Promedio" tenga un 
+impacto positivo sobre la viabilidad del proyecto, esto está dado por nuestra 
+definición de la ecuación de ingresos (ver ecuación \@ref(eq:ingresos)). 
+Examinando la ecuación \@ref(eq:fcfmod) vemos que el flujo libre de efectivo 
+depende producto del Margen y del Costo Directo (el cual está dado por 
+la ecuación \@ref(eq:costodirecto) y que depende directamente del producto del 
+costo unitario y del número de tabletas).
+
+Al igual podemos observar que la renta tiene un mayor impacto sobre el VPN que 
+la inversión inicial a pesar de tener un valor absoluto menor en los tres 
+escenarios. Esto está dado por el efecto que tiene la depreciación sobre el 
+porción gravable.
+
 \newpage
 ## Simulación Monte Carlo
+
+
+
+
+\newpage
+## Matriz de Decisiones
 
 
