@@ -44,6 +44,8 @@ session_packages %>%
 Podemos observar toda la información relevente a la sesión en la tabla \@ref(tab:platforminfo) y los paquetes utilizados en la tabla 
 \@ref(tab:packagesinfo).
 
+Purr: [@HadleyPurr], 
+
 \newpage
 
 ## Métodos cuantitativos de toma de decisión

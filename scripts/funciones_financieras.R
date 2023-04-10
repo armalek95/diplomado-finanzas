@@ -58,7 +58,7 @@ fcf <- function(revenues,
            -capital_expenditures-change_net_working_capital) %>%
     select(fcf)
   
-  free_cash_flow # regresa el valor del flujo de efectivo
+  return(free_cash_flow) # regresa el valor del flujo de efectivo
 }
 
 ## función que regresa el vector de depreciación utilizando 

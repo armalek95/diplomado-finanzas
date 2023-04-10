@@ -654,7 +654,7 @@ Estos flujos de caja libre los podemos utilizar para calcular el valor
 presento neto, el cual resulta en `r npv_p`, con bas en una tasa de descuento de 
 `r percent(discount_rate)`.
 
-```{r montetest5, echo=FALSE, fig.cap = "Histograma de prueba de Monte Carlo", echo = FALSE, out.width="65%", fig.align = 'center'}
+```{r montetest5, echo=FALSE, fig.cap = "Histograma de prueba de Monte Carlo", echo = FALSE, out.width="85%", fig.align = 'center'}
 
 # Correr Monte Carlo ilustrativo
 

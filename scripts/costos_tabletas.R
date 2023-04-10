@@ -50,6 +50,54 @@ ordenes_personalizadas <- function(sim_num) {
   return(simulaciones)
 }
 
+# Funcion que genera la simulación de órdenes para Monte Carlo
+ordenes_monte <- function(sim_num) {
+
+  # Crear tabla para iniciar la simulacion
+  simulaciones <- tibble(sim = 1:sim_num, 
+                         formulacion=sample(formulaciones, sim_num, 
+                                            replace = TRUE),
+                         compuesto_activo=rep("compuesto", sim_num))
+  
+  # Agregar compuesto activo
+  simulaciones <- simulaciones %>%
+    mutate(compuesto_activo = map_chr(formulacion, compuesto))
+  
+  return(simulaciones)
+}
+
+# Calcular el costo de una orden para la solucion Monte Carlo
+calc_costo_mc <- function(compuesto, tabletas) {
+  
+  test_mc <- costo_formulacion$compuesto_activo == compuesto
+  costo_tableta <- as.double(costo_formulacion$costo_tableta[test_mc])
+  
+  return(as.double(costo_tableta * tabletas))
+}
+
+# Funcion para calcular el costo total de las ordenes generadas en un año
+costo_anual_mc <- function(ordenes) {
+  
+  if (ordenes == 0) {
+    return (0)
+  }
+  
+  # Simulamos el numero de ordenes
+  ordenes_mc <- ordenes_monte(ordenes)
+  
+  # Calculamos el costo de cada una
+  ordenes_mc <- ordenes_mc %>% 
+    mutate(tabletas = round(rnorm(ordenes, 30, sd = 1), 0),
+           costo_orden = pmap(list(compuesto_activo, tabletas), 
+                              .f=calc_costo_mc)) %>% 
+    unnest(costo_orden)
+  
+  # Calculamos el costo total anual
+  costo_total <- sum(ordenes_mc$costo_orden)
+  
+  return(costo_total)
+}
+
 # Funcion para calcular el costo de los materiales
 
 costo_materiales <- function(materiales, tabletas) {

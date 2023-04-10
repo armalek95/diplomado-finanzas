@@ -119,8 +119,6 @@ monte_carlo <- function(df,
                        capital_expenditures = 0, 
                        change_net_working_capital = 0, 
                        tax_rate = tax_rate))
-
-    #write_csv(sim_fcf, file = "monte_test.csv", append = TRUE)
     
     # Calcular Valor Presente Neto
     monte_df[i,2] = npv(rate = discount_rate, 
@@ -131,4 +129,36 @@ monte_carlo <- function(df,
   return(monte_df)
 }
 
+# Funcion para general valores con distribucion lognormal (tomada de BrownIII)
+calc_lognorm_80L = function(p10, p90, samples) {
+  lp10 <- log(p10)
+  lp90 <- log(p90)
+  p50 <- p10*sqrt(p90/p10)
+  lp50 <- log(p50)
+  lgs <- abs(lp90 - lp50)/qnorm(0.9, 0, 1)
+  X <- rlnorm(samples, lp50, lgs)
+  return(X)
+}
 
+# Funcion para generar grafica de densidad
+generar_densidad <- function(datos) {
+  ggplot() +
+    geom_density(mapping = aes(x = datos), adjust = 10) +
+    geom_vline(aes(xintercept = mean(datos), 
+                   color="Promedio"),
+               linetype=5, linewidth=0.5) +
+    geom_vline(aes(xintercept = median(datos), color="Media"),
+               linetype=2, linewidth=0.5) +
+    geom_vline(aes(xintercept = quantile(datos, 0.95)[[1]], 
+                   color="Quintil95"),
+               linetype=3, linewidth=0.5) +
+    geom_vline(aes(xintercept = quantile(datos, 0.05)[[1]], 
+                   color="Quintil05"),
+               linetype=4, linewidth=0.5) +
+    scale_color_manual(name = "Estadística", 
+                       values=c(Promedio="blue",
+                                Media="gray",
+                                Quintil95="green",
+                                Quintil05="red")) +
+    theme_bw()
+}
