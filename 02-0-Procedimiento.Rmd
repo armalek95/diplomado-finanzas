@@ -62,7 +62,9 @@ En esta sección se describen los métodos cuantitativos utilizados.
 
 Como se mencionó anteriormente, se utilizarán diferentes métodos para la evaluación del proyecto de inversión. El orden de aplicación es representado en el siguiente diagrama:
 
-![Diagrama del orden de uso de los métodos cuantitativos](Diagramas/OrdenMetodos.jpg){width="90%"}
+```{r diagramaorden, out.width="90%", fig.align="center", fig.cap="Diagrama del orden de uso de los métodos cuantitativos"}
+knitr::include_graphics("diagramas/OrdenMetodos.jpg", auto_pdf = TRUE)
+```
 
 Se eligió esta secuencia por varios motivos:
 
@@ -132,7 +134,9 @@ Para fines de comparación utilizamos la metodología de análisis de problemas 
 
 **Diagrama de solución**
 
-![Diagrama de arbol de decisión tomando con tres escenarios por cada nodo de casualidad](Diagramas/DecisionTree.jpg){width="90%"}
+```{r arbolproc, out.width="90%", fig.align="center", fig.cap="Diagrama de arbol de decisión tomando con tres escenarios por cada nodo de casualidad"}
+knitr::include_graphics("diagramas/DecisionTree.jpg", auto_pdf = TRUE)
+```
 
 El cálculo del *EMV* se realizará a través de árboles de decisión (*decision trees*) en donde se representen tres posibles escenarios relacionados a la decisión de llevar a cabo la inversión:
 
@@ -184,7 +188,9 @@ El método principal que revisamos en este trabajo es el método determinístico
 **Diagrama de solución**\
 El siguiente diagrama muestra el esquema de solución para el análisis de sensibilidad utilizando el método determinístico de diagrama de tornado.
 
-![Diagrama de Solución de Análisis de Sensibilidad](Diagramas/AnalisisSensibilidad.jpg){width="90%"}
+```{r sensdiagram, out.width="90%", fig.align="center", fig.cap="Diagrama de Solución de Análisis de Sensibilidad"}
+knitr::include_graphics("diagramas/AnalisisSensibilidad.jpg", auto_pdf = TRUE)
+```
 
 **rrr** Un ejemplo de evaluación económica con análisis de sensibilidad para revisar [@Lee2017]
 
@@ -220,7 +226,10 @@ El lenguaje R ya contiene funciones que nos permiten obtener secuencias de núme
 
 El siguiente diagrama muestra el flujo de información a través de las funciones utilizadas para la evaluación por el método de Simulación Monte Carlo:
 
-![Diagrama de Solución Monte Carlo](Diagramas/DiagramaMonteCarlo.jpg){width="90%"}
+```{r mcdiagrama, out.width="90%", fig.align="center", fig.cap="Diagrama de Solución Monte Carlo"}
+knitr::include_graphics("diagramas/DiagramaMonteCarlo.jpg", auto_pdf = TRUE)
+```
+
 
 Para utilizar el método de simulación Monte Carlo se desarrollaron 5 funciones (1. a 5. del diagrama) las cuales cumplen las siguientes funciones:
 

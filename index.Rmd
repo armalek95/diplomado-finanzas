@@ -1,19 +1,12 @@
 ---
-title: |
-  ![](diagramas/FQ.jpg){width=2in}  ![](diagramas/UNAM.jpg){width=2in} \newline
-  Evaluación económica reproducible para proyectos de inversión bajo incertidumbre usando métodos cuantitativos para la toma de decisiones
-author: |
-  | Artur Herbert Malek Huidobro
-  | 415031756
-date: "`r Sys.Date()`"
 output: bookdown::pdf_book
 documentclass: book
 classoption: openany
 bibliography: [references.bib]
 biblio-style: apa.csl
 link-citations: yes
-toc-title: "Contenido"
-toc-depth: 3
+toc: false
+toc-depth: 2
 fontsize: 12pt
 linestrech: 2
 geometry: "left=3cm, right=3cm, top=2.5cm, bottom=2.5cm"
@@ -26,18 +19,114 @@ header-includes:
 ---
 
 ```{=tex}
+\renewcommand{\contentsname}{Contenido}
 \renewcommand{\listfigurename}{Lista de Figuras}
 \renewcommand{\listtablename}{Lista de Tablas}
 \renewcommand{\tablename}{Tabla}
 \renewcommand{\figurename}{Figura}
 ```
 
-```{=tex}
+```{r diagunam, fig.align='left', out.width="1.8in", echo=FALSE}
+knitr::include_graphics("diagramas/UNAM.jpg", auto_pdf = TRUE)
+```
+
+\begin{center}
+
+UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO
+\vspace{10 pt}
+
+
+FACULTAD DE QUÍMICA
+\vspace{10 pt}
+
+
+EVALUACIÓN ECONÓMICA REPRODUCIBLE PARA PROYECTOS DE
+INVERSIÓN BAJO INCERTIDUMBRE USANDO MÉTODOS CUANTITATIVOS PARA LA TOMA
+DE DECISIONES - TRABAJO ESCRITO
+\end{center}
+
+\vspace{20 pt}
+
+
+\begin{center}
+QUE PARA OBTENER EL TÍTULO DE
+\vspace{5 pt}
+
+INGENIERO QUÍMICO
+
+\vspace{20 pt}
+
+PRESENTA
+
+\vspace{10 pt}
+
+ARTUR HERBERT MALEK HUIDOBRO
+\end{center}
+
+```{r diagfq, fig.align='left', out.width="1.8in", echo=FALSE}
+knitr::include_graphics("diagramas/FQ.jpg", auto_pdf = TRUE)
+```
+
+\vspace{10 pt}
+
+\begin{center}
+CDMX  2023
+\end{center}
+
+\newpage
+
+JURADO ASIGNADO:
+
+\vspace{35 pt}
+
+\renewcommand{\arraystretch}{2.5}
+
+\begin{tabular}{ l l l }
+PRESIDENTE:     & Profesor:   & A \\
+
+VOCAL:          & Profesor:   & B \\
+
+SECRETARIO:     & Profesor:   & C \\
+
+1er. SUPLENTE:  & Profesor:   & D \\
+
+2do. SUPLENTE:  & Profesor:   & E
+\end{tabular}
+
+\renewcommand{\arraystretch}{1}
+\vspace{40 pt}
+
+SITIO DONDE SE DESARROLLÓ TEMA: Ciudad de México (Confirmar)
+
+\vspace{60 pt}
+
+
+ASESOR DEL TEMA:
+
+
+\vspace{30 pt}
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+(nombre y firma)
+
+\vspace{30 pt}
+
+
+SUSTENTANTE:
+
+
+\vspace{30 pt}
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ 
+
+(nombre y firma)
+
+\tableofcontents
+
 \listoffigures
-```
-```{=tex}
+
 \listoftables
-```
 
 ```{r setup, echo = FALSE, message=FALSE}
 # Setup chunk: Carga los paquetes necesarios para realizar los cálculos en 

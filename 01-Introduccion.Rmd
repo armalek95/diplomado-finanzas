@@ -146,11 +146,13 @@ tabletas en el lugar de entrega.
 A continuación se muestran los diagramas que muestran dichos modelos de
 negocio.
 
-![Diagrama de modelo de negocio con unidades operativas con producción
-semi-centralizada](Diagramas/TP_Business_Model_1.png){width="90%"}
+```{r diagrama1, out.width="80%", fig.align="center", fig.cap="Diagrama de modelo de negocio con unidades operativas con producción semi-centralizada"}
+knitr::include_graphics("diagramas/TP_Business_Model_1.png", auto_pdf = TRUE)
+```
 
-![Diagrama de modelo de negocio con producción en cada punto de venta
-(Farmacias /
-Hospitales)](Diagramas/TP_Business_Model_2.png){width="90%"}
+
+```{r diagrama2, out.width="80%", fig.align="center", fig.cap="Diagrama de modelo de negocio con producción en cada punto de venta (Farmacias / Hospitales)"}
+knitr::include_graphics("diagramas/TP_Business_Model_2.png", auto_pdf = TRUE)
+```
 
 \newpage

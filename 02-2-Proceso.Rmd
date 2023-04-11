@@ -1,7 +1,7 @@
 ## Proceso de Producción
 
 ```{r procesoprod, fig.cap="Proceso de Producción de Tabletas E1"}
-knitr::include_graphics("diagramas/ProcesoProduccion.jpg")
+knitr::include_graphics("diagramas/ProcesoProduccion.jpg", auto_pdf = TRUE)
 ```
 
 El proceso de producción de las tabletas personalizables se puede
@@ -169,7 +169,7 @@ kbl(col.names = c("Compuesto", "E1", "E2"),
 ## Cálculo de material necesario para moldes
 
 ```{r geotabletas, fig.width=0.9, fig.cap="Geometría de los componentes y sus moldes"}
-knitr::include_graphics("Diagramas/geometria_tabletas.jpg")
+knitr::include_graphics("Diagramas/geometria_tabletas.jpg", auto_pdf = TRUE)
 ```
 
 Para poder calcular la cantidad de ABS requerida, para imprimir los 
@@ -247,7 +247,7 @@ A^{MACA}=\frac{V^{MACA}}{z}
 *Paso 1b*: Cálculo de la base y de la altura de $A^{MACA}$
 
 ```{r geom1, out.width="50%", fig.align="center", fig.cap="Área transversal de la matriz interna"}
-knitr::include_graphics("diagramas/geom_1.png")
+knitr::include_graphics("diagramas/geom_1.png", auto_pdf = TRUE)
 ```
 
 
@@ -283,7 +283,7 @@ y &= \alpha\sqrt{\frac{A^{MACA}}{\alpha}}  \notag
 *Paso 2*: Cálculo de la masa necesaria para el primer molde
 
 ```{r geom2, out.width="50%", fig.align="center",  fig.cap="Volumen del molde de la matriz interna"}
-knitr::include_graphics("diagramas/geom_2.png")
+knitr::include_graphics("diagramas/geom_2.png", auto_pdf = TRUE)
 ```
 
 La figura \@ref(fig:geom2) muestra la geometría específica al molde necesario 
@@ -321,7 +321,7 @@ m_{ABS}^{MACA} & = V_{ABS}^{MACA}\times\rho_{ABS} \notag \\
 *Paso 3*: Cálculo del espesor ($\gamma$) de la matriz externa
 
 ```{r geom3, out.width="50%", fig.align="center", fig.cap="Volumen de la matriz externa"}
-knitr::include_graphics("diagramas/geom_3.png")
+knitr::include_graphics("diagramas/geom_3.png", auto_pdf = TRUE)
 ```
 
 Podemos representar el volumen de la matriz externa mostrada en la figura 
@@ -390,7 +390,7 @@ podemos reducir la ecuación de la siguiente forma:
 *Paso 4*: Cálculo de la masa necesaria para el segundo molde
 
 ```{r geom4, out.width="50%", fig.align="center", fig.cap="Volumen del molde para la matriz externa"}
-knitr::include_graphics("diagramas/geom_4.png")
+knitr::include_graphics("diagramas/geom_4.png", auto_pdf = TRUE)
 ```
 
 El flujo para calcular la masa de ABS que necesitamos para imprimir el 
@@ -418,7 +418,7 @@ m_{ABS}^{MAS}=V_{molde}^{MAS} \times \rho_{ABS} (\#eq:masaabsmas)
 *Paso 5*: Cálculo de la masa de cera
 
 ```{r geom5, out.width="50%", fig.align="center", fig.cap="Volumen del exterior de cera"}
-knitr::include_graphics("diagramas/geom_5.png")
+knitr::include_graphics("diagramas/geom_5.png", auto_pdf = TRUE)
 ```
 
 La cera exterior sólo nos ayuda a delimitar el camino a través del cuál se 
@@ -452,7 +452,7 @@ m_{cera} = V_{cera}\times \rho_{cera}(\#eq:masacera)
 *Paso 6*: Cálculo de la masa necesaria para el tercer molde
 
 ```{r geom6, out.width="50%", fig.align="center", fig.cap="Volumen del molde para la cubierta"}
-knitr::include_graphics("diagramas/geom_6.png")
+knitr::include_graphics("diagramas/geom_6.png", auto_pdf = TRUE)
 ```
 
 Mismo flujo que en los pasos 2, 4 y 5, empezamos con el cálculo del volumen 
