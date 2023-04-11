@@ -61,17 +61,20 @@ PRESENTA
 \vspace{10 pt}
 
 ARTUR HERBERT MALEK HUIDOBRO
+
+\vspace{15 pt}
+
+CDMX  2023
+
 \end{center}
 
 ```{r diagfq, fig.align='left', out.width="1.8in", echo=FALSE}
 knitr::include_graphics("diagramas/FQ.jpg", auto_pdf = TRUE)
 ```
 
-\vspace{10 pt}
 
-\begin{center}
-CDMX  2023
-\end{center}
+\pagenumbering{gobble}
+\thispagestyle{empty}
 
 \newpage
 
@@ -122,11 +125,18 @@ SUSTENTANTE:
 
 (nombre y firma)
 
+\thispagestyle{empty}
+
+\newpage
+
 \tableofcontents
+\thispagestyle{empty}
 
 \listoffigures
+\thispagestyle{empty}
 
 \listoftables
+\thispagestyle{empty}
 
 ```{r setup, echo = FALSE, message=FALSE}
 # Setup chunk: Carga los paquetes necesarios para realizar los cálculos en 
@@ -158,3 +168,5 @@ knitr::opts_chunk$set(
 ```
 
 \newpage
+
+\pagenumbering{arabic}
