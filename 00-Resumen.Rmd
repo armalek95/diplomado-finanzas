@@ -1,0 +1,19 @@
+# Resumen
+
+La Medicina Personalizable permite mejorar la salud de la población a través de un regreso al tratamiento de individuos de acuerdo a sus características particulares en lugar de la administración de un tratamiento para el paciente promedio.
+
+En específico en este trabajo se busca evaluar la viabilidad económica de la producción de tabletas personalizables desde un centro de producción especializado con base en una aplicación de impresoras 3D para imprimir los moldes para formar los componentes de una tableta: la matriz interna que contiene el compuesto activo, la matriz externa y la cubierta de cera.
+
+Para la evaluación económica en este trabajo utilizamos los métodos de Valor Monetario Esperado, Análisis de Sensibilidad y Simulación Monte Carlo.
+Fundamentados en conceptos financieros de Valor del Dinero en el Tiempo y Flujo de Caja Libre.
+
+Este trabajo muestra que la producción de tabletas personalizables es económicamente rentable bajo los escenarios analizados.
+El costo de producir una tableta está compuesto mayoritariamente por el costo de labor manual necesario para producir y ensamblar las tabletas, seguido por el costo de los materiales que forman parte de la tableta.
+
+El modelo utilizado en este trabajo presupone que el precio de las tabletas se puede fijar respecto al costo de fabricación, por lo cual a mayor precio de producción se muestran mayores ganancias. Este es un punto que requiere considerable atención ya que bajo este esquema existe un incentivo para incrementar los costos de producción, lo cual puede podría reducir la relación entre costo y beneficio posible.
+
+\newpage
+
+\thispagestyle{empty}
+
+\newpage
