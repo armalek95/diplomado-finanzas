@@ -1,0 +1,98 @@
+
+# Metodología
+
+## Justificación
+
+Este trabajo pretende realizar una evaluación económica del proceso de 
+producción de tabletas personalizables con base en métodos cuantitativos, 
+particularmente: Valor Monetario Esperado, Análisis de Sensibilidad y 
+Simulación Monte Carlo.
+
+El resultado de este trabajo permitirá comprender el impacto de diferentes 
+variables en la viabilidad del proyecto desde el análisis geométrico para 
+el cálculo de los materiales necesarios para fabricar las tabletas, incluyendo 
+el necesario para imprimir los moldes que permitirían generar los componentes 
+a ser ensamblados.
+
+La elección de R y Rmarkdown para evaluación del proyecto pretende aumentar la 
+reproducibilidad de los resultados presentados en este Trabajo Escrito.
+
+La finalidad de este trabajo es demostrar el manejo de los conceptos estudiados 
+en el Diplomado de Finanzas impartido por la Facultad de Química de la UNAM.
+
+## Planteamiento del Problema
+
+Hoy en día los compromidos están diseñados para el paciente "promedio" por la 
+manera en la que se producen los mismos. Los tabletas personalizadas pueden 
+mejorar la salud de los pacientes por medio de la medicina personalizada, dado 
+que los individuos difieren en sus características físicas, al igual que la 
+extensión de la enfermedad o condición es diferente en cada caso.
+
+Para poder tratar a un paciente con medicina personalizada es necesario un 
+conocimiento del efecto sobre diversas variables (como la dosis o el patrón de 
+liberación) sobre la efectividad del tratamiento en un paciente dada sus 
+características biológicas medibles (desde medidas fisiológicas hasta
+pruebas genéticas) con el fin de maximizar el beneficio del tratamiento.
+
+Una vez que se tiene el conocimiento adecuado para proponer un tratamiento 
+personalizado, es necesario que un doctor recomiende la dosis adecuada y el
+patrón óptimo de liberación, información con la cual se puede fabricar la 
+tableta personalizada. La producción de tabletas personalizadas podría ocurrir 
+en un diverso número de establecimientos: desde la industria, hasta los 
+hogares de los pacientes [@BEER20211].
+
+De los establecimientos en donde se podrían fabricar las tabletas personalizadas, 
+las farmacias de hospital y los centros de producción presentan el menor 
+número de desafíos en cuatro categorías clave: regulatorio, económico, ético y 
+organizacional. Los desafíos regulatorios que son aplicables a la producción de 
+tabletas personalizables son: la integridad de la información del paciente, 
+la responsabilidad en caso que algo salga mal cuando se tienen múltiples partes 
+involucradas desde la selección de la dosis apropiada y el diseño de la tableta, 
+hasta la entrega al paciente. Los desafíos económicos se relacionan al uso de 
+técnicas de producción costosas (en este caso la producción basada en la 
+Impresión 3D de los moldes) en un ambiente en donde la mayoría de los costos 
+son predominantemente asimulados por terceras partes y no los usuarios finales 
+[@BEER20211].
+
+Estudios demuestran que la medicina personalizada brinda mejoras a la salud, 
+pero lo hace a cambio de costos elevados [@Vellekoop2022]. En ambiente en donde 
+los costos de salud se reparten entre la sociedad, es importante asegurar que 
+se obtenga el mayor beneficio a la población en general al menor costo posible.
+
+## Objetivo General
+
+Analizar la viabilidad económica de la producción de tabletas personalizables 
+con base en la tecnología de impresión 3D.
+
+## Objetivos Particulares
+
+1. Calcular el costo promedio de fabricación por compuesto activo y formulación 
+2. Identificar las variables más relevantes del costo promedio
+3. Analizar los escenarios que lleven a la viabilidad económica del proyecto 
+4. Simular el efecto que tiene la incertidumbre de las variables asociadas sobre el VPN del proyecto
+5. Realizar el análisis de forma que sea completamente reproducible
+
+## Pregunta de investigación
+
+¿Es económicamente viable la producción de tabletas personalizables con base en 
+la producción centralizada?
+
+## Preguntas específicas
+
+1. ¿Cuál es el costo de fabricar las diferentes formulaciones de tabletas personalizables?
+2. ¿Cómo afectan las distintas variables al costo de producción?
+3. ¿Qué variables podrían obstaculizar la rentabilidad del proyecto?
+4. ¿Qué tan susceptible es la rentabilidad del proyecto a la incertidumbre inherente de las variables estudiadas?
+5. ¿Cuáles son los requerimientos para que los resultados sean completamente reproducibles?
+
+## Esquematización del trabajo escrito
+
+```{r esquematrab, out.width="80%", fig.align="center", fig.cap="Esquema del trabajo escrito"}
+knitr::include_graphics("diagramas/esquematrabajo.jpg", auto_pdf = TRUE)
+```
+
+\newpage
+
+\thispagestyle{empty}
+
+\newpage

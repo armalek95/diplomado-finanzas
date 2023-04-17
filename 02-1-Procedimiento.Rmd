@@ -41,22 +41,25 @@ session_packages %>%
   kable_styling(latex_options = c("repeat_header"))
 ```
 
-Podemos observar toda la información relevente a la sesión en la tabla \@ref(tab:platforminfo) y los paquetes utilizados en la tabla 
-\@ref(tab:packagesinfo).
+Podemos observar toda la información relevente a la sesión en la tabla \@ref(tab:platforminfo) y los paquetes utilizados en la tabla \@ref(tab:packagesinfo).
 
-Purr: [@HadleyPurr], 
+Los archivos base que se utilizaron para generar este trabajo escrito se pueden encontrar en la liga siguiente [https://github.com/armalek95/diplomado-finanzas](https://github.com/armalek95/diplomado-finanzas). 
+
+Los siguientes paquetes fueron son los más relevantes para el trabajo en cuestión.
+
+*Archivo PDF:* libros y documentos técnicos en Rmarkdown [@R-bookdown], generación dinámica de reportes en R [@R-knitr] y compilación de documentos LaTex [@R-tinytex].
+
+*General:* Manipulación de datos[@R-dplyr], variables categóricas [@R-forcats], funciones para crear gráficas [@R-ggplot2], herramientas de programación funcional [@R-purrr], manejo de strings [@R-stringr], lectura de datos [@R-readr], manejo de información [@R-tidyr], ajustes a Data Frame [@R-tibble] y carga e instalación de paquetes del tidyverse [@R-tidyverse].
+
+*Árboles de decisión:* Estructuras de datos jerárquicas [@R-data.tree], visualización de gráficas de red [@R-DiagrammeR] y captura de gráficos para formatos estáticos [@R-webshot].
+
+*Formato y reproducibiliad:* Información de sesión [@R-devtools], formato de cifras [@R-formattable], formato de tablas [@R-kableExtra] y formato de escalas para gráficos [@R-scales]
 
 \newpage
 
 ## Métodos cuantitativos de toma de decisión
 
 En esta sección se describen los métodos cuantitativos utilizados.
-
-**rrr** Revisar el documento siguiente: [@Tapiero2013]
-
-**rrr** Revisión de métodos de evaluación que puede ser útil para este trabajo. [@Crundwell2008]
-
-**rrr** Artículo que se ve interesante para la introducción a tomar en cuenta los riesgos para la evaluación económica de proyectos de inversión [@Bartovsova2015]
 
 ### Orden de uso de los métodos
 
@@ -78,8 +81,6 @@ Se eligió esta secuencia por varios motivos:
 En esta sección se describen las ecuaciones financieras que sirven como base para los métodos cuantitativos mencionados previamente.
 
 **Flujo de Caja Libre (FCF)** La ecuación (\@ref(eq:fcfeq)) para el cálculo del flujo de caja libre *"Free Cash Flow"* utilizada a lo largo del trabajo fue tomada de [@Berk2017].
-
-\*\* fff ¿es correcta esta forma de mencionar de dónde se tomó la ecuación? \*\*
 
 ```{=tex}
 \begin{equation}
@@ -146,8 +147,6 @@ El cálculo del *EMV* se realizará a través de árboles de decisión (*decisio
 
 Esto se llevó a cabo para cada uno de los tres componentes más importantes del modelo: ingresos, costos e inversión. Los consideramos como los más importantes, ya que la depreciación y la tasa gravable de impuestos están dadas por el ambiente regulatorio aplicable, sobre el cual no tendríamos injerencia.
 
-**rrr** La siguiente referencia tiene información del algoritmo [@Prellezo2017]
-
 ### Análisis de Sensibilidad
 
 El análisis de sensibilidad es un grupo de métodos que nos ayuda a validar el modelo, a calibrarlo y a enfocar los esfuerzos de recolección de información sobre las variables que tienen un mayor impacto sobre el modelo en cuestión [@Borgonovo2017]. Si las decisiones son insensibles ante cambios sobre un aspecto del modelo, entonces no hay necesidad de modelar a mayor detalle ese aspecto en particular [@Felli2004].
@@ -162,9 +161,10 @@ Borgonovo explica la importancia de la adecuada formulación de la pregunta de a
 4.  Dirección del cambio
 5.  Estabilidad
 
-Este trabajo utiliza principalmente las primeras dos configuraciones con el fin de definir qué parámetros deben de ser estudiados a mayor detalle para la simulación Monte Carlo.
-
-\*\* rrr Explicar por qué solo usamos las dos primeras configuraciones \*\*
+Este trabajo utiliza principalmente las primeras dos configuraciones con el fin de definir qué parámetros deben de ser estudiados a mayor detalle para la simulación Monte Carlo. La primera porque su fin es de identificar las variables que tienen un mayor impacto sobre el 
+comportamiento del modelo y la segunda porque busca definir qué variables podemos 
+fijar un un valor nominal [@Borgonovo2017]. Las demás configuraciones están fuera 
+del alcance definido para este trabajo.
 
 ```{r tornadotest, fig.cap = "Ejemplo de una gráfica tornado con 6 variables y 6 pares de números aleatorios representando valores máximos y mínimos", echo = FALSE, out.width="65%", fig.align = 'center'}
 
@@ -192,21 +192,11 @@ El siguiente diagrama muestra el esquema de solución para el análisis de sensi
 knitr::include_graphics("diagramas/AnalisisSensibilidad.jpg", auto_pdf = TRUE)
 ```
 
-**rrr** Un ejemplo de evaluación económica con análisis de sensibilidad para revisar [@Lee2017]
-
 \newpage
 
 ### Simulación Monte Carlo
 
 El método Monte Carlo es una técnica para analizar fenómenos por medio de algoritmos computacionales basados, en esencia, en la generación de números aleatorios. De hecho, uno de los primeros usos de la computadora fue la solución de problemas a través del uso de Métodos Monte Carlo. Hoy en día los métodos de simulación Monte Carlo siguen teniendo un domino casi exclusivo sobre la simulación de interacciones complejas en cualquier área donde los modelos cuantitativos son posibles [@Shonkwiler2009].
-
-rrr Temas más avanzados con aplicación en finanzas [@Shonkwiler2013]
-
-rrr Framework ejemplo [@Dheskali2020]
-
-rrr Ejemplo de simulación Monte Carlo para la inversión en tecnología de tercera generación de plantas nucleares [@Wealer2021]
-
-rrr Ejemplo de simulación Monte Carlo para la evaluación económica de producción de hidrógeno [@Lee2017economic]
 
 **Números aleatorios**
 
@@ -248,10 +238,8 @@ Las metodologías, conceptos, modelos y técnicas utilizadas como soporte para l
 Los métodos de decisión utilizando múltiples criterios se pueden dividir en [@Azzabi2020]:
 
 -   Compensatorio: Compensación absoluta entre las diferentes evaluaciones (ej. Método de suma ponderada).
--   Compensación parcial: Compensación parcial entre las diferentes evaluaciones.
--   Sin compensación: No hay compensación entre las diferentes evaluaciones o dimensiones de la decisión.
-
-** rrr - Agregar ejemplos como el del primer bullet **
+-   Compensación parcial: Compensación parcial entre las diferentes evaluaciones (la mayoría de métodos se encuentran en esta categoría).
+-   Sin compensación: No hay compensación entre las diferentes evaluaciones o dimensiones de la decisión (ej. Método lexicográfico).
 
 El acercamiento de toma de decisión multi-criterio (MCDA o Multi-Criteria Decision Approach) es tanto un marco teórico como un conjunto de técnicas para la ayuda en la toma de decisiones que tiene la finalidad de proveer con un orden de preferencia de opciones, de mayor a menor preferencia, con base en una serie de objetivos definidos (a lo que estaremos llamando sistema de valores en este trabajo), que pueden tener una naturaleza tanto monetaria como no monetaria [@Azzabi2020]. Esto nos permite simplificar un problema de decisión complejo a una serie de componentes sobre los cuales podemos utilizar nuestro sistema de valores al momento de llevar a cabo el proceso de decisión.
 
@@ -303,7 +291,5 @@ crit_comp %>%
 ```
 
 Un ejemplo de valores relativos se pueden observar en la tabla \@ref(tab:critcomparison). En ésta se muestra la importancia relativa entre los criterios, siendo las columnas la representación de la importancia relativa del criterio mostrado en el renglón en relación al criterio que encabeza la columna. Podemos observar que el valor Presente Neto tiene una importancia relativa de 1 contra si mismo, mientras que el criterio de Beneficio Social tiene una importancia relativa 2 veces mayor que el VPN y el Impacto Ambiental tiene una importancia relativa 4 veces mayor al VPN. Si continuamos a la siguiente columna podemos ver que el VPN tiene una importancia 2 veces menor al Beneficio Social y así sucesivamente.
-
-rrr - [@CISL2019]
 
 \newpage

@@ -280,10 +280,6 @@ kbl(print_base,
 
 ```
 
-Utilizando estos valores para replicar sobre el periodo de análisis de
-la inversión obtenemos los flujos de efectivo mostrados en la tabla
-\@ref(tab:testsens2):
-
 ```{r testsens2, echo=FALSE}
 # Calcular caso base contra lo cual se van a comparar los demás resultados
 
@@ -314,9 +310,13 @@ kbl(col.names = c("Periodo", "Flujo de Efectivo"),
 
 ```
 
-Utilizando los valores de la tabla \@ref(tab:testsens2) calculamos el
-valor presente neto en `r base_npv_p`. Lo cual muestra que el caso base
-es rentable.
+Utilizando estos valores para replicar sobre el periodo de análisis de
+la inversión obtenemos los flujos de efectivo mostrados en la tabla
+\@ref(tab:tabflujobaseanalisissens):
+
+Utilizando los valores de la tabla \@ref(tab:tabflujobaseanalisissens) 
+calculamos el valor presente neto en `r base_npv_p`. Lo cual muestra que 
+el caso base es rentable.
 
 Ahora proseguiremos a revisar la sensibilidad a los cambios sobre las
 cuatro variables que mencionamos previamente. Para esto vamos a
@@ -712,3 +712,4 @@ simulaciones igual a: `r sim_n`, podemos observar los resultados en la Figura:
 **[Agregar ejemplo de matriz de toma de decisiones]**
 
 \newpage
+

@@ -478,3 +478,9 @@ m_{ABS}^{cubierta} =V_{molde}^{cubierta}\times \rho_{ABS}
 Con la masa de ABS obtenida en los pasos 2, 4 y 6, así como la masa de cera 
 obtenida en el paso 5, podemos continuar con el cálculo de costos directos 
 de producción.
+
+\newpage
+
+\thispagestyle{empty}
+
+\newpage
