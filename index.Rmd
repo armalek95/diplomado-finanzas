@@ -2,13 +2,12 @@
 output: bookdown::pdf_book
 documentclass: book
 classoption: openany
-bibliography: [references.bib]
-biblio-style: apa.csl
+bibliography: [references.bib, packages.bib]
+csl: apa.csl
 link-citations: yes
 toc: false
 toc-depth: 2
 fontsize: 12pt
-linestrech: 2
 geometry: "left=3cm, right=3cm, top=2.5cm, bottom=2.5cm"
 description: "Tesina para obtener el titulo de Licenciatura en Ingenieria Quimica"
 header-includes:
@@ -16,6 +15,7 @@ header-includes:
   - \titleformat{\chapter}{}{}{0em}{\bf\LARGE}
   - \pagestyle{plain}
   - \usepackage{makecell}
+  - \usepackage{setspace}
 ---
 
 ```{=tex}
@@ -85,21 +85,21 @@ JURADO ASIGNADO:
 \renewcommand{\arraystretch}{2.5}
 
 \begin{tabular}{ l l l }
-PRESIDENTE:     & Profesor:   & A \\
+PRESIDENTE:     & Profesor:   & SAMANO CASTILLO JOSE SABINO \\
 
-VOCAL:          & Profesor:   & B \\
+VOCAL:          & Profesor:   & LOPEZ VILLALOBOS HECTOR \\
 
-SECRETARIO:     & Profesor:   & C \\
+SECRETARIO:     & Profesor:   & CAUDILLO MARTINEZ FRANCISCO \\
 
-1er. SUPLENTE:  & Profesor:   & D \\
+1er. SUPLENTE:  & Profesor:   & GONZALEZ GARCIA JOSE LUIS \\
 
-2do. SUPLENTE:  & Profesor:   & E
+2do. SUPLENTE:  & Profesor:   & -
 \end{tabular}
 
 \renewcommand{\arraystretch}{1}
 \vspace{40 pt}
 
-SITIO DONDE SE DESARROLLÓ TEMA: Ciudad de México (Confirmar)
+SITIO DONDE SE DESARROLLÓ TEMA: Ciudad de México
 
 \vspace{60 pt}
 
@@ -169,4 +169,5 @@ knitr::opts_chunk$set(
 
 \newpage
 
+\doublespace
 \pagenumbering{arabic}
