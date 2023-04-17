@@ -1,3 +1,47 @@
 # Conclusiones
 
-Aquí van a ir las conclusiones del trabajo.
+La producción de Tabletas Personalizadas con base en los compuestos y las 
+formulaciones estudiadas en este trabajo es económicamente rentable en todos los 
+casos analizados.
+
+El uso de un margen sobre los costos de producción ayuda a impulsar el VPN del 
+proyecto ya que sin importar en dónde caigan los costos de producción reales, el 
+precio de venta refleja el costo subyacente e incluso genera un mayor flujo 
+a mayores costos de producción. Los márgenes utilizados en el análisis están 
+dentro del rango observado en el mercado, por lo cual el riesgo es menor en ese 
+aspecto. Una consideración importante es que el uso del margen como lo hicimos 
+en este análisis lleva a la conclusión de que es más rentable vender comprimidos 
+que contengan compuestos activos de mayor costo, ya que esto incrementa el 
+flujo de caja libre y por lo tanto el valor presente neto del proyecto. Sin 
+embargo, para un proyecto cuyo producto busca mejorar la salud de la población 
+que lo consume, debe de tenerse cuidado al hacer decisiones sólo con base en 
+consideraciones económicas.
+
+El uso de flujo de caja libre para calcular el valor presente neto asimila 
+cercanamente el flujo real de efectivo, lo cual es lo más importante para 
+el análisis económico de un proyecto. Dos puntos importantes a considerar son:
+
+1. Efecto de la depreciación sobre el FCL - la depreciación nos ayuda a 
+disminuir el flujo gravable, lo cual es una ayuda considerable en especial 
+para los primeros años del periodo de evaluación de un proyecto.
+2. Diferentes reglas de depreciación - en diferentes países existen diferentes 
+reglas de depreciación, e incluso dentro de un país diferentes activos son 
+sujetos a diferentes perfiles de depreciación. En general, entre más cercano a 
+los primeros años del periodo de evaluación se puedan depreciar los activos, 
+mayor será la dismunición de la porción gravable y por lo tanto el proyecto 
+tendrá un mayor valor presente neto.
+
+Por último, pero no menos importante, el uso de R como lenguage principal de 
+análisis, aunado al uso de Rmarkdown, permitió crear un documento que es más 
+fácilmente "auditable" y donde todos los resultados se pueden recrear por 
+cualquier persona con acceso a una computadora. Es importante incrementar el 
+nivel de reproducibilidad tanto en el mundo académico como en el mundo de los 
+negocios y R en definitiva es una de las herramientas que podemos utilizar para 
+lograrlo.
+
+\newpage
+
+\thispagestyle{empty}
+
+\newpage
+

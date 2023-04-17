@@ -80,7 +80,12 @@ disruptiva. La Medicina Personalizada fue catalogada como de alto impacto, con u
 
 ## Medicina Personalizada
 
-rrr Agregar definición de Medicina Personalizada - Historia - etc..
+El concepto de Medicina Personalizada, como lo conocemos hoy en día, ganó 
+popularidad después de un reporte publicado en 1997 en la revista 
+*Nature Biotechnology*, el cual mencionaba el rol fundacional de los avances 
+en ciencia genómica para una nueva 'generación 
+de medicinas personalizadas', es decir, medicamentos dirigidos a individuos en 
+lugar de a la persona promedio [@Tutton2012].
 
 Dado que las enfermedades son más similares a una "red" de actividades
 aberrantes (comunicación y comportamiento celular, proteínas
@@ -141,10 +146,13 @@ según las especificaciones indicadas por el personal de salud.
 La diferencia entre ambos casos de negocio radica en que uno centraliza
 la producción de las tabletas y distribuye a hospitales y farmacias
 desde una ubicación central, mientras que el otro busca producir las
-tabletas en el lugar de entrega.
+tabletas en el lugar de entrega. Existen otros posibles escenarios: producción 
+en industria, en farmacias locales y en los hogares de los pacientes. Estos 
+últimos tres escenarios presentan mayores retos que los dos mencionados como 
+modelos de negocio en este trabajo [@BEER20211].
 
-A continuación se muestran los diagramas que muestran dichos modelos de
-negocio.
+A continuación se muestran los diagramas que muestran de los primeros dos 
+modelos de negocio.
 
 ```{r diagrama1, out.width="80%", fig.align="center", fig.cap="Diagrama de modelo de negocio con unidades operativas con producción semi-centralizada"}
 knitr::include_graphics("diagramas/TP_Business_Model_1.png", auto_pdf = TRUE)
@@ -154,5 +162,9 @@ knitr::include_graphics("diagramas/TP_Business_Model_1.png", auto_pdf = TRUE)
 ```{r diagrama2, out.width="80%", fig.align="center", fig.cap="Diagrama de modelo de negocio con producción en cada punto de venta (Farmacias / Hospitales)"}
 knitr::include_graphics("diagramas/TP_Business_Model_2.png", auto_pdf = TRUE)
 ```
+
+\newpage
+
+\thispagestyle{empty}
 
 \newpage

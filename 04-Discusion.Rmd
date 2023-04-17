@@ -1,1 +1,222 @@
 # Discusión
+
+## Costo Unitario de Tabletas
+
+Podemos observar en la tabla \@ref(tab:tabporcentajecosto) que los
+componentes más importantes del costo unitario de las tabletas son el
+costo de labor y el costo de material, siendo el costo de labor el más
+relevante para tabletas con formulación E1, mientras que el orden se
+invierte para la formulación E2.
+
+Esta inversión en el porcentaje de contribución al costo unitario está
+dado por la combinación de compuesto activo utilizado en la tableta y el
+costo del mismo. Los compuestos utilizados en la formulación E1 tienen
+un precio más elevado que el Acetaminofén, sin embargo hay una
+diferencia de 50 veces en la cantidad utilizada del compuesto en
+cuestión para la formulación E2 (500 mg vs 10 mg en promedio).
+
+Cualquier cambio que impacte sobre los insumos materiales, o en la
+eficiencia de los trabajadores puede tener un impacto directamente
+proporcional sobre el costo unitario de producción.
+
+## Caso Base
+
+El valor presente neto del caso base es positivo
+(`r npv_caso_base_imp`), con en los flujos presentados en la tabla
+\@ref(tab:tabflujolibrecasobase). Esto nos indica que el proyecto es
+rentable en cuanto a que el margen es suficiente para compensar el costo
+de inversión a lo largo del periodo de evaluación.
+
+El costo de inversión proviene mayoritariamente de tres artículos: 1.
+Impresoras 3D, 2. Vehículo de reparto y 3. Básculas de Precisión.
+Podemos observar todos los artículos y sus costos en la tabla
+\@ref(tab:tabequipoproduccion). Estos tres costos corresponden a más del
+95% del costo total de inversión.
+
+El perfil de depreciación utilizado es el MACRS a 5 años. Podemos ver el
+efecto tiene sobre el flujo de caja libre en el periodo 2 de la tabla
+\@ref(tab:tabflujolibrecasobase). Con MACRS-5 el segundo periodo tiene
+el mayor porcentaje de depreciación lo cual eleva el flujo de caja libre
+\$6,793 en comparación a los periodos 1 y 3, y una diferencia de
+\$18,113 en comparación a los periodos 7 a 10. Dada la importancia del
+valor del dinero en el tiempo esto termina siendo una diferencia
+considerable. Con una tasa de descuento de 9%, la aportación al Valor
+Presente Neto del periodo 2 es \$61,652 mayor a la del periodo 7 y
+\$81,280 mayor a la del periodo 7. Incluso en los periodos cercanos
+tiene un efecto considerable: \$17,799 más de contribución que el flujo
+del periodo 3 y tan solo \$6,656 menor a la contribución del periodo 1
+(casi la mitad de la diferencia en caso de que el flujo del periodo 2
+hubiese sido igual al del periodo 1 y 3).
+
+## Valor Monetario Esperado
+
+En esta sección de los resultados buscamos responder cuál es la mejor
+elección entre comprar o rentar un almacén desde el cuál se lleve a cabo
+la producción. El resultado que obtuvimos es que la mejor opción es
+rentar dado el VME con base en las cuatro variables: Costo de
+producción, Volumen Anual, Margen y Mantenimiento Anual. Este resultado
+lo podemos observar en la tabla \@ref(tab:tabemvcomprarrentar).
+
+En las tablas \@ref(tab:tabemvtabletasarbol) y
+\@ref(tab:tabemvtabletasarbolbot) se encuentran los diez escenarios con
+mayor y menor valor presente neto, respectivamente. En ellas podemos
+observar el impacto que tienen las variables sobre el VPN de la
+combinación de escenarios. Siendo las variables de Margen, Costo y
+Volumen las más importantes en la rentabilidad del proyecto.
+
+En la primera tabla podemos observar que en todos los casos, el escenario Alto de Margen conduce a un VPN alto, mientras que sólo uno de los casos presenta un escenario Medio del Costo Promedio. En la segunda tabla podemos observar que los escenarios de Compra, Volumen Bajo, Margen Bajo y Costo Bajo conducen a un VPN negativo. La relación para Costo, Volumen y Margen es directamente proporcional con el VPN, mientras que la relación es inversamente proporcional al Mantenimiento.
+
+Podemos observar mejor dichas relaciones en la figura \@ref(fig:npvfacet). 
+En ésta vemos que los casos en donde se elige rentar el VPN tiende a ser mayor que en los casos en donde se compra. Al igual observamos que el VPN disminuye conforme al siguiente orden (Alto \> Medio \> Bajo) para las variables de Costo, Margen y Volumen. 
+En la figura \@ref(fig:graficanpvboxplot) podemos observar de mejor forma el efecto que tiene el Costo Promedio de Producción sobre el VPN en caso de Compra y Renta.
+
+La figura \@ref(fig:graficanpv) nos permite comparar fácilmente los
+escenarios de Compra y de Renta a través de un histograma del valor
+presente neto de los 81 nodos terminales asociados a cada uno. En ella
+podemos observar que un más de un 5% de los casos poseen un VPN negativo
+en el caso de Comprar, mientras que menos de 5% tienen un VPN negativo
+en el caso de Rentar.
+
+```{r calcdiscemv}
+
+disc_emv <- comprar_dftree %>% 
+  mutate(levelName = str_replace_all(levelName, " ", "")) %>% 
+  mutate(npv=currency(npv,"$",digits=0)) %>% 
+  filter(grepl("CO|RE", levelName)) %>% 
+  mutate_at(1, ~str_replace_all(.,c("°--RE"="Rentar",
+                                    "¦--CO"="Comprar")))
+
+disc_comp <- disc_emv$npv[disc_emv$levelName == "Comprar"]
+disc_rent <- disc_emv$npv[disc_emv$levelName == "Rentar"]
+
+disc_diff <- abs(disc_rent - disc_comp)
+disc_diff_desc <- disc_diff/((1+0.09)^-10)
+disc_incr <- percent(as.double(disc_diff_desc)/precio_compra, 2)
+
+```
+
+Es importante recalcar que para el análisis estamos suponiendo que vendemos el almacén, en el último año del periodo de evaluación, al precio de compra. 
+Si no consideramos el valor del almacén en los cálculos, habría una mayor diferencia contra el escenario de renta que no reflejaría la realidad.
+Aunque podríamos haber considerado la apreciación del inmueble para el cálculo, consideramos que no es el punto del ejercicio. Aunque podemos darnos una idea a través del valor monetario esperado de la siguiente manera:
+
+1.  Calculamos la diferencia entre los escenarios `r disc_diff`
+2.  Calculamos un valor al final del periodo de evaluación (10) con una
+    tasa de descuento de 9% que nos de un valor igual a la diferencia
+    del VME `r disc_diff_desc`
+
+Si consideramos que la apreciación del inmueble puede ser mayor al
+`r disc_incr` respecto al precio de compra durante el periodo de
+evaluación, entonces cambiaría nuestra decisión de rentar o comprar
+el almacén.
+
+## Análisis de Sensibilidad
+
+En la figura \@ref(fig:calculosensibilidad) podemos observar que las variables 
+con mayor influencia sobre el éxito de proyecto son: "Costo Promedio", "Margen" 
+y "Expectativa de Venta" o "Volumen de Tabletas". Estas variables muestran un 
+cambio igual sobre el Valor Presente Neto del caso base. Además de éstas, la 
+única otra variable cuyo cambio tiene un efecto mayor al cambio inicial es la 
+"Renta Anual".
+
+Aunque en un principio llame la atención que el "Costo Promedio" tenga un 
+impacto positivo sobre la viabilidad del proyecto, esto está dado por nuestra 
+definición de la ecuación de ingresos (ver ecuación \@ref(eq:ingresos)). 
+Examinando la ecuación \@ref(eq:fcfmod) vemos que el flujo libre de efectivo 
+depende producto del Margen y del Costo Directo (el cual está dado por 
+la ecuación \@ref(eq:costodirecto) y que depende directamente del producto del 
+costo unitario y del número de tabletas).
+
+## Simulación Monte Carlo
+
+La figura \@ref(fig:mctabletas) nos muestra que bajo las condiciones 
+especificadas el proyecto es rentable en todo el rango de simulaciones. La 
+distribución resultante es asimétrica con un sesgo a la derecha del valor 
+promedio (`r mc_helpers$mean %>% currency("$", 0)`). Incluso el 90% del VPN se 
+encuentra entre `r mc_helpers$quantile05 %>% currency("$", 0)` y `r mc_helpers$quantile95 %>% currency("$", 0)`, tan sólo 5% de los valores 
+quedaron por debajo de `r mc_helpers$quantile05 %>% currency("$", 0)`. 
+
+Con base en estos valores podemos decir que el proyecto tiene una alta 
+probabilidad de ser rentable.
+
+
+### Matriz de Decisiones
+
+
+
+### Comparativa contra precios de mercado
+
+```{r comparativoprecios}
+
+comp_precios <- tibble(
+  compuesto_activo = c("Acetaminofén", 
+                       "Acetaminofén",
+                       "Clorhidrato de fenilefrina", 
+                       "Clorhidrato de fenilefrina",
+                       "Clorhidrato de difenhidramina", 
+                       "Clorhidrato de difenhidramina"),
+  precio = c(55, 54, 374, 115, 149, 165),
+  tabletas = c(10, 12, 20, 10, 15, 8), 
+  mg = c(500, 500, 30, 30, 25, 50),
+  text = c("Tempra - San Pablo", 
+           "Mejoral - San Pablo",
+           "Sensibit RIN - San Pablo",
+           "Ahorro - del Ahorro",
+           "NyQuil Z - San Pablo",
+           "Nytol - San Pablo"),
+  url_link = c("(https://www.farmaciasanpablo.com.mx/medicamentos/dolor/analgesicos/tempra/p/000000000042060014)", 
+           "(https://www.farmaciasanpablo.com.mx/medicamentos/dolor/analgesicos/mejoral/p/000000000004610129)",
+           "(https://www.farmaciasanpablo.com.mx/medicamentos/gripe-y-tos/antigripales/sensibit-rin/p/000000000007550285)",
+           "(https://www.fahorro.com/fenilefrina-loratadina-30-mg-5-mg-con-10-tabletas-marca-del-ahorro.html)",
+           "(https://www.farmaciasanpablo.com.mx/medicamentos/relajantes/relajantes/nyquilz-auxiliar-en-el-insomnio/p/000000000070000751)",
+           "(https://www.farmaciasanpablo.com.mx/medicamentos/relajantes/relajantes/nytol/p/000000000040210037)")
+)
+
+comp_precios %>%
+  mutate(link_spec = cell_spec(text, "latex", link = url_link),
+         precio = currency(precio, "$", 0)) %>%
+  select(c(1, 2, 3, 4, 7)) %>% 
+  kbl(col.names = c("Compuesto Activo", "Precio", "Tabletas", 
+                      "Dosis (mg)", "Nombre - Farmacia"),
+      label = "tabcomparativaprecios",
+      caption = "Precios de Mercado",
+      format = "pipe", escape = FALSE)
+
+```
+
+
+```{r comparativopreciounit, warning=FALSE}
+
+gr_normal <- c(500, 500, 10, 10, 10, 10)
+
+comp_precios %>%
+  select(c(1, 2, 3, 4)) %>% 
+  mutate(precio = currency(precio, "$", 2),
+         precio_tab = precio/tabletas) %>%
+  select(c(1, 4, 5)) %>% 
+  mutate(precio_tab = precio_tab*gr_normal/mg) %>% 
+  group_by(compuesto_activo) %>% 
+  summarize(precio_tab = mean(precio_tab)) %>% 
+  inner_join(select(costo_formulacion, -"formulacion"), by="compuesto_activo") %>% 
+  mutate(costo_tableta = currency(costo_tableta, "$", 2),
+         margen = percent(precio_tab/costo_tableta -1, digits = 1)) %>% 
+  kbl(col.names = c("Compuesto Activo", "Precio Unitario", 
+                    "Costo Tableta", "Margen"),
+      label = "tabcomparativapreciosunit",
+      caption = "Precios Unitarios de Mercado", escape = TRUE,
+      align = "lccc") %>% 
+  footnote(general = "Costo Tableta es el resultado obtenido en el trabajo para cada uno de los compuestos activos, por lo que la columna de Margen representa el posible Margen respecto a Precios de Mercado encontrados", 
+           general_title = "Nota:")
+
+```
+
+En la tabla \@ref(tab:tabcomparativaprecios) mostramos los precios encontrados  para preescripciones de los compuestos activos analizados en este trabajo. 
+Si ajustamos el precio por la dosis de acuerdo a los promedios utilizados para las simulaciones (500mg, 10mg y 10mg), obtenemos los precios y los márgenes que  podríamos tener de acuerdo a precios de mercado (ver tabla  \@ref(tab:tabcomparativapreciosunit)).
+
+Con base en estos precios podemos confirmar que el margen utilizado en el trabajo es fácilmente alcanzable con los precios de mercado encontrados. 
+Sólo en el caso específico del Acetaminofén el margen es menor al promedio considerado.
+
+\newpage
+
+\thispagestyle{empty}
+
+\newpage

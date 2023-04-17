@@ -186,11 +186,12 @@ diferentes componentes de la tableta. Ver la tabla \@ref(tab:tabcompuestos).
 ### Muestra `r currency(sim_num, "", 0)` preescripciones
 
 ```{r ordenes}
-ordenes <- ordenes_personalizadas(sim_num)
 
 if (file.exists("datos/ordenestabletassim.rds")) {
   costo_ordenes_ej <- read_rds("datos/ordenestabletassim.rds")
 } else {
+  ordenes <- ordenes_personalizadas(sim_num)
+  
   costo_ordenes_ej <- ordenes %>%
   mutate(tabletas=round(rnorm(sim_num, 30, 1),0)) %>%
   mutate(c_materiales=pmap(list(materiales, tabletas), 
@@ -243,6 +244,32 @@ Utilizando la cantidad de los compuestos necesarios para fabricar cada una de
 las tabletas podemos calcular el costo unitario de cada una de las 
 preescripciones. En la tabla \@ref(tab:tabordenesej1) podemos observar los 
 primeros 5 valores de las `r currency(sim_num, "", 0)` órdenes simuladas.
+
+```{r porccostotab}
+
+costo_ordenes_ej %>% 
+  group_by(formulacion, compuesto_activo) %>% 
+  mutate(total = c_materiales + c_energia + c_labor + c_distribucion) %>% 
+  summarise(material = sum(c_materiales)/sum(total),
+            energia = sum(c_energia)/sum(total),
+            labor = sum(c_labor)/sum(total),
+            distr = sum(c_distribucion)/sum(total),
+            .groups = "keep") %>% 
+  mutate_at(c("material", "energia", "labor", "distr"), 
+            ~percent(., digits = 2)) %>% 
+  kbl(col.names = c("Formulación","Compuesto Activo", 
+                    "Costo Material", "Costo Energético", 
+                    "Costo Labor", "Costo Distribución"),
+      align = "clcccc",
+      caption = "Desglose de Costo", label ="tabporcentajecosto") %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+  
+
+```
+
+La tabla \@ref(tab:tabporcentajecosto) muestra el desglose de los costos 
+promedio para cada uno de los componentes de costo unitario para cada una de 
+las combinaciones de formulación y compuesto activo.
 
 \newpage
 **Costo Preescripción**
@@ -318,8 +345,6 @@ inv_total_print <- currency(inversion_total, "$", 0)
 ```
 
 La inversión total estimada para el caso base es de `r inv_total_print`.
-
-\newpage
 
 ## Depreciación
 
@@ -499,7 +524,11 @@ input_emv %>%
 
 En la tabla \@ref(tab:tabdatentradaemv) se muestran los datos de entrada 
 relevantes para calcular el Valor Presente Neto de los nodos terminales del 
-árbol de decisión.
+árbol de decisión. Cada una de las variables mostradas en la tabla (columnas 2 
+a 5), está sujeta a tres escenarios distintivos: Bajo, Medio y Alto. Cada uno de 
+estos escenarios tiene una probabilidad asociada (15%, 70% y 15%, 
+respectivamente), la cual es necesaria para calcular el Valor Monetario 
+Esperado.
 
 ```{r populararbol}
 
@@ -579,18 +608,33 @@ for (a in 1:2) {
 ```
 
 
-```{r arboldecision, fig.cap="Medio Árbol de Decisión Tabletas Personalizables", fig.align='center', out.width="90%"}
+```{r arboldecision, fig.cap="Árbol de Decisión - hasta 2do nivel", fig.align='center', out.width="90%"}
 
-SetGraphStyle(comprar, rankdir = "TB")
-SetNodeStyle(comprar, style = "filled,rounded", 
+comprar_short_print <- Node$new("¿Comprar?", type="decision")
+
+for (a in 1:2) {
+  emv_print_ver <- comprar_short_print$AddChild(opciones_comprar[a], type="chance")
+  
+  # Agregar costo
+  for (i in 1:3) {
+  
+    costo <- emv_print_ver$AddChild(paste("C",escenarios[i], sep=""), 
+                                  type="chance")
+    costo$prob <- probabilidad[i]
+  }
+}
+
+SetGraphStyle(comprar_short_print, rankdir = "TB")
+SetNodeStyle(comprar_short_print, style = "filled,rounded", 
              label = AdjustNodeName, shape = "box")
 
-plot(comprar$RE)
+plot(comprar_short_print)
 ```
 Ya que contamos con dos nodos de decisión, y cuatro variables más con tres 
 escenarios cada una (es decir, $2 \times 3^4$), tenemos 162 nodos terminales.
-En la figura \@ref(fig:arboldecision) podemos observar 81 nodos. Aquellos 
-relacionados a la decisión de rentar un almacén central en lugar de comprarlo. 
+En la figura \@ref(fig:arboldecision) podemos observar hasta los 18 nodos de 
+los escenarios combinados de compra, costo promedio y volumen anual 
+($2 \times 3 ^2 = 18$).
 
 ```{r ejemplotabletasmedio, fig.cap="Árbol de Decisión a partir de un nodo de tabletas"}
 t <- comprar$CO$CM$TM
@@ -799,6 +843,7 @@ Producción y su relación con el VPN.
 comprar_dftree <- ToDataFrameTree(comprar, "npv")
 
 comprar_dftree %>% 
+  mutate(levelName = str_replace_all(levelName, " ", "")) %>% 
   mutate(npv=currency(npv,"$",digits=0)) %>% 
   filter(grepl("CO|RE", levelName)) %>% 
   mutate_at(1, ~str_replace_all(.,c("°--RE"="Rentar",
@@ -905,23 +950,10 @@ sensitivity(variables = sens_results$variable[1:n],
 
 La figura \@ref(fig:calculosensibilidad) muestra el impacto que tiene sobre el 
 Valor Presente Neto del caso base un cambio del $\pm30\%$ sobre el valor del 
-escenario base. En ésta podemos observar que las variables con mayor 
-influencia sobre el éxito de proyecto son: "Costo Promedio", "Margen" y 
-"Expectativa de Venta" o "Volumen de Tabletas". Estas variables muestran un 
-cambio igual sobre el Valor Presente Neto del caso base. 
-
-Aunque en un principio llame la atención que el "Costo Promedio" tenga un 
-impacto positivo sobre la viabilidad del proyecto, esto está dado por nuestra 
-definición de la ecuación de ingresos (ver ecuación \@ref(eq:ingresos)). 
-Examinando la ecuación \@ref(eq:fcfmod) vemos que el flujo libre de efectivo 
-depende producto del Margen y del Costo Directo (el cual está dado por 
-la ecuación \@ref(eq:costodirecto) y que depende directamente del producto del 
-costo unitario y del número de tabletas).
-
-Al igual podemos observar que la renta tiene un mayor impacto sobre el VPN que 
-la inversión inicial a pesar de tener un valor absoluto menor en los tres 
-escenarios. Esto está dado por el efecto que tiene la depreciación sobre el 
-porción gravable.
+escenario base. La manera en la que se lee esta gráfica es la siguiente:
+Un cambio en la variable $y$ del $\pm30\%$ genera un cambio sobre el VPN del 
+proyecto de inversión correspondiente a la longitud horizontal de la barra sobre 
+el eje $x$.
 
 \newpage
 ## Simulación Monte Carlo
@@ -1156,4 +1188,10 @@ La simulación resulta en un VPN promedio de
 \newpage
 ## Matriz de Decisiones
 
+
+\newpage
+
+\thispagestyle{empty}
+
+\newpage
 
